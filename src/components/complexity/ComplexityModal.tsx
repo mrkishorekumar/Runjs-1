@@ -36,6 +36,11 @@ function ComplexityModal({
   useEffect(() => {
     if (isOpen) {
       previousFocusRef.current = document.activeElement as HTMLElement | null;
+      modalRef.current
+        ?.querySelector<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        ?.focus();
 
       function handleKeyDown(e: KeyboardEvent) {
         if (e.key === 'Escape') {
@@ -73,16 +78,20 @@ function ComplexityModal({
 
   if (!isOpen || !result) return null;
 
-  const handleCopySummary = () => {
+  const handleCopySummary = async () => {
     const summaryText = `/*
  * Time Complexity: ${result.timeComplexity} (${result.timeClassification})
  * Space Complexity: ${result.spaceComplexity} (${result.spaceClassification})
  *
  * ${result.explanation.replace(/\n\n/g, '\n * ')}
  */`;
-    navigator.clipboard.writeText(summaryText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(summaryText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
   };
 
   const getTimeTheme = (rank: ComplexityRank) => {

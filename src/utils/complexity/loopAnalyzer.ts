@@ -7,6 +7,7 @@ import {
   isSquareRootBound,
   isDoubleLogarithmicStep,
   inspectCallExpression,
+  referencesVarName,
 } from './astUtils';
 import { ComplexityFactor, ComplexityRank } from './types';
 
@@ -29,6 +30,8 @@ interface LoopContext {
   isSqrt: boolean;
   isDoubleLog: boolean;
   isGeometric: boolean;
+  isPowerSet: boolean;
+  boundInputs: string[];
   loopVarName?: string;
   nestedBuiltinCount: number;
   line?: number;
@@ -46,7 +49,6 @@ export function analyzeLoops(
   let maxDepth = 0;
   let hasLinearLoop = false;
   let hasLogarithmicLoop = false;
-  const hasPowerSet = detectPowerSetLoop(ast);
 
   const chainTracker = {
     highestChainRank: ComplexityRank.O_1 as ComplexityRank,
@@ -55,15 +57,20 @@ export function analyzeLoops(
   };
 
   const evaluateCurrentChain = (currentStack: LoopContext[]) => {
-    if (currentStack.length === 0 && !hasPowerSet) return;
+    if (currentStack.length === 0) return;
 
     let linearCount = 0;
     let logCount = 0;
     let sqrtCount = 0;
     let doubleLogCount = 0;
     let hasGeometric = false;
+    let hasChainPowerSet = false;
+    const distinctInputs = new Set<string>();
 
     for (const ctx of currentStack) {
+      if (ctx.isPowerSet) {
+        hasChainPowerSet = true;
+      }
       if (ctx.isGeometric) {
         hasGeometric = true;
       }
@@ -77,13 +84,16 @@ export function analyzeLoops(
         linearCount++;
       }
       linearCount += ctx.nestedBuiltinCount;
+      ctx.boundInputs.forEach((b) => distinctInputs.add(b));
     }
+
+    const isMultiDimension = linearCount === 2 && distinctInputs.size >= 2;
 
     let chainRank: ComplexityRank = ComplexityRank.O_1;
     let chainDesc = '';
     let chainType: ComplexityFactor['type'] = 'loop';
 
-    if (hasPowerSet) {
+    if (hasChainPowerSet) {
       chainRank = ComplexityRank.O_2_N;
       chainType = 'nested_loop';
       chainDesc =
@@ -115,12 +125,16 @@ export function analyzeLoops(
     } else if (linearCount >= 3) {
       chainRank = ComplexityRank.O_N_3;
       chainType = 'nested_loop';
-      chainDesc = `${linearCount} levels of nested loops detected, scaling cubically with input size`;
+      chainDesc =
+        linearCount === 3
+          ? '3 levels of nested loops detected, scaling cubically with input size'
+          : `${linearCount} levels of nested loops detected, scaling as O(n^${linearCount}) with input size`;
     } else if (linearCount === 2) {
       chainRank = ComplexityRank.O_N_2;
       chainType = 'nested_loop';
-      chainDesc =
-        '2 nested loops detected (inner loop executes for each iteration of outer loop)';
+      chainDesc = isMultiDimension
+        ? '2 nested loops iterating over independent dimensions, executing in O(n * m) time'
+        : '2 nested loops detected (inner loop executes for each iteration of outer loop)';
     } else if (linearCount === 1 && logCount >= 1) {
       chainRank = ComplexityRank.O_N_LOG_N;
       chainType = 'nested_loop';
@@ -179,6 +193,8 @@ export function analyzeLoops(
               isSqrt: false,
               isDoubleLog: false,
               isGeometric: false,
+              isPowerSet: false,
+              boundInputs: getBoundInputs(n, inputNames),
               nestedBuiltinCount: 0,
               line,
             };
@@ -218,6 +234,8 @@ export function analyzeLoops(
         isSqrt: false,
         isDoubleLog: false,
         isGeometric: false,
+        isPowerSet: isPowerSetLoopNode(n),
+        boundInputs: getBoundInputs(n, inputNames),
         nestedBuiltinCount: 0,
         line,
       };
@@ -277,6 +295,8 @@ export function analyzeLoops(
         isSqrt,
         isDoubleLog: false,
         isGeometric,
+        isPowerSet: isPowerSetLoopNode(n),
+        boundInputs: getBoundInputs(n, inputNames),
         loopVarName: loopVar,
         nestedBuiltinCount: 0,
         line,
@@ -323,6 +343,8 @@ export function analyzeLoops(
         isSqrt,
         isDoubleLog,
         isGeometric: false,
+        isPowerSet: false,
+        boundInputs: getBoundInputs(n, inputNames),
         nestedBuiltinCount: 0,
         line,
       };
@@ -359,15 +381,35 @@ export function analyzeLoops(
       const callInfo = inspectCallExpression(n);
       if (callInfo && callInfo.timeComplexity === 'O(n)') {
         builtinsInsideLoops.push(callInfo.name);
+        const callee = n.callee as AnyNode;
+        let targetObj = '';
+        if (
+          callee &&
+          callee.type === 'MemberExpression' &&
+          (callee.object as AnyNode)?.type === 'Identifier'
+        ) {
+          targetObj = (callee.object as AnyNode).name as string;
+        }
+
+        let isIndependent = false;
         if (loopStack.length > 0) {
-          loopStack[loopStack.length - 1].nestedBuiltinCount++;
+          const topLoop = loopStack[loopStack.length - 1];
+          topLoop.nestedBuiltinCount++;
+          if (targetObj && inputNames.has(targetObj)) {
+            if (!topLoop.boundInputs.includes(targetObj)) {
+              topLoop.boundInputs.push(targetObj);
+              isIndependent = true;
+            }
+          }
         }
         evaluateCurrentChain(loopStack);
         factors.push({
           type: 'nested_loop',
-          description: `Linear method '${callInfo.name}()' is called inside a loop, multiplying operations`,
+          description: isIndependent
+            ? `Linear method '${callInfo.name}()' on '${targetObj}' is called inside a loop over independent input, executing in O(n * m) time`
+            : `Linear method '${callInfo.name}()' is called inside a loop, multiplying operations`,
           impact: 'time',
-          order: 'O(n²)',
+          order: isIndependent ? 'O(n * m)' : 'O(n²)',
           line: callInfo.line,
         });
       }
@@ -386,9 +428,7 @@ export function analyzeLoops(
 
   traverse(ast, 0);
 
-  if (hasPowerSet) {
-    evaluateCurrentChain([]);
-  }
+  const hasAnyPowerSet = allLoops.some((l) => l.isPowerSet);
 
   const totalLoopsCount = allLoops.length;
   const isAllConstantBound =
@@ -396,9 +436,9 @@ export function analyzeLoops(
 
   let timeRank: ComplexityRank = ComplexityRank.O_1;
 
-  if (totalLoopsCount === 0 && !hasPowerSet) {
+  if (totalLoopsCount === 0 && !hasAnyPowerSet) {
     timeRank = ComplexityRank.O_1;
-  } else if (isAllConstantBound && !hasPowerSet) {
+  } else if (isAllConstantBound && !hasAnyPowerSet) {
     timeRank = ComplexityRank.O_1;
     factors.push({
       type: 'constant',
@@ -414,12 +454,43 @@ export function analyzeLoops(
       totalLoopsCount > 1 &&
       maxDepth === 1
     ) {
-      factors.push({
-        type: 'sequential_loop',
-        description: `${totalLoopsCount} sequential loops execute one after another in O(n) time`,
-        impact: 'time',
-        order: 'O(n)',
-      });
+      const partitionVars = new Set<string>();
+      for (const l of allLoops) {
+        if (l.loopNode.type === 'ForStatement' && l.loopNode.init) {
+          for (const other of allLoops) {
+            if (other === l) continue;
+            for (const b of other.boundInputs) {
+              if (referencesVarName(l.loopNode.init as AnyNode, b)) {
+                partitionVars.add(b);
+              }
+            }
+          }
+        }
+      }
+
+      const distinctSeqInputs = new Set<string>();
+      for (const l of allLoops) {
+        l.boundInputs.forEach((b) => {
+          if (!partitionVars.has(b)) {
+            distinctSeqInputs.add(b);
+          }
+        });
+      }
+      if (distinctSeqInputs.size >= 2) {
+        factors.push({
+          type: 'sequential_loop',
+          description: `${totalLoopsCount} sequential loops iterating over independent inputs, executing in O(n + m) time`,
+          impact: 'time',
+          order: 'O(n + m)',
+        });
+      } else {
+        factors.push({
+          type: 'sequential_loop',
+          description: `${totalLoopsCount} sequential loops execute one after another in O(n) time`,
+          impact: 'time',
+          order: 'O(n)',
+        });
+      }
     } else if (chainTracker.highestChainFactorDesc) {
       factors.push({
         type: chainTracker.highestChainFactorType,
@@ -427,9 +498,13 @@ export function analyzeLoops(
         impact: 'time',
         order:
           timeRank === ComplexityRank.O_N_3
-            ? 'O(n³)'
+            ? maxDepth > 3
+              ? `O(n^${maxDepth})`
+              : 'O(n³)'
             : timeRank === ComplexityRank.O_N_2
-              ? 'O(n²)'
+              ? chainTracker.highestChainFactorDesc.includes('O(n * m)')
+                ? 'O(n * m)'
+                : 'O(n²)'
               : timeRank === ComplexityRank.O_N_LOG_N
                 ? 'O(n log n)'
                 : timeRank === ComplexityRank.O_N_SQRT_N
@@ -578,72 +653,142 @@ function referencesVar(node: AnyNode, varName: string): boolean {
   return found;
 }
 
+function getBoundInputs(n: AnyNode, inputNames: Set<string>): string[] {
+  const result: string[] = [];
+  let testNode: AnyNode | null = null;
+
+  if (n.type === 'ForStatement' || n.type === 'WhileStatement') {
+    testNode = n.test as AnyNode;
+  } else if (n.type === 'ForOfStatement' || n.type === 'ForInStatement') {
+    testNode = n.right as AnyNode;
+  } else if (n.type === 'CallExpression') {
+    let receiver = (n.callee as AnyNode)?.object as AnyNode;
+    while (
+      receiver &&
+      receiver.type === 'CallExpression' &&
+      (receiver.callee as AnyNode)?.type === 'MemberExpression'
+    ) {
+      receiver = (receiver.callee as AnyNode).object as AnyNode;
+    }
+    testNode = receiver;
+  }
+
+  if (testNode) {
+    const visit = (c: unknown) => {
+      if (!c || typeof c !== 'object') return;
+      const cn = c as AnyNode;
+      if (cn.type === 'Identifier' && typeof cn.name === 'string') {
+        if (
+          inputNames.has(cn.name) ||
+          [
+            'rows',
+            'cols',
+            'row',
+            'col',
+            'matrix',
+            'arr1',
+            'arr2',
+            'arr',
+            'str',
+            'target',
+          ].includes(cn.name)
+        ) {
+          if (!result.includes(cn.name)) result.push(cn.name);
+        }
+      }
+      for (const v of Object.values(cn)) {
+        if (Array.isArray(v)) for (const item of v) visit(item);
+        else visit(v);
+      }
+    };
+    visit(testNode);
+  }
+  return result;
+}
+
 /**
- * Detects iterative power set generation: nested loops doubling result collection.
+ * Detects iterative power set generation: nested loop iterating collection receiving push of spread elements.
  */
-export function detectPowerSetLoop(ast: AnyNode): boolean {
-  let found = false;
+export function isPowerSetLoopNode(n: AnyNode): boolean {
+  if (!isLoopNode(n)) return false;
+  const body = (n.body as AnyNode) || n;
+  let innerLoop: AnyNode | null = null;
+  const findInner = (c: unknown) => {
+    if (innerLoop || !c || typeof c !== 'object') return;
+    const cn = c as AnyNode;
+    if (isLoopNode(cn) && cn !== n) {
+      innerLoop = cn;
+      return;
+    }
+    for (const v of Object.values(cn)) {
+      if (Array.isArray(v)) for (const item of v) findInner(item);
+      else findInner(v);
+    }
+  };
+  findInner(body);
 
-  const visit = (curr: unknown) => {
-    if (found || !curr || typeof curr !== 'object') return;
-    const n = curr as AnyNode;
+  if (!innerLoop) return false;
 
-    if (isLoopNode(n)) {
-      const body = (n.body as AnyNode) || n;
-      let innerLoop: AnyNode | null = null;
-      const findInner = (c: unknown) => {
-        if (innerLoop || !c || typeof c !== 'object') return;
-        const cn = c as AnyNode;
-        if (isLoopNode(cn) && cn !== n) {
-          innerLoop = cn;
-          return;
-        }
-        for (const v of Object.values(cn)) {
-          if (Array.isArray(v)) for (const item of v) findInner(item);
-          else findInner(v);
-        }
-      };
-      findInner(body);
+  let pushCollectionName = '';
+  let spreadsTarget = false;
 
-      if (innerLoop) {
-        let hasSpreadPush = false;
-        const checkPush = (c: unknown) => {
-          if (hasSpreadPush || !c || typeof c !== 'object') return;
-          const cn = c as AnyNode;
-          if (
-            cn.type === 'CallExpression' &&
-            (cn.callee as AnyNode)?.type === 'MemberExpression' &&
-            ((cn.callee as AnyNode).property as AnyNode)?.name === 'push'
-          ) {
-            const args = (cn.arguments as AnyNode[]) || [];
-            if (args.length > 0 && args[0].type === 'ArrayExpression') {
-              const elements = (args[0].elements as AnyNode[]) || [];
-              if (elements.some((el) => el && el.type === 'SpreadElement')) {
-                hasSpreadPush = true;
-                return;
-              }
+  const checkPush = (c: unknown) => {
+    if (spreadsTarget || !c || typeof c !== 'object') return;
+    const cn = c as AnyNode;
+    if (
+      cn.type === 'CallExpression' &&
+      (cn.callee as AnyNode)?.type === 'MemberExpression' &&
+      ((cn.callee as AnyNode).property as AnyNode)?.name === 'push'
+    ) {
+      const obj = (cn.callee as AnyNode).object as AnyNode;
+      if (obj && obj.type === 'Identifier') {
+        pushCollectionName = obj.name as string;
+      }
+      const args = (cn.arguments as AnyNode[]) || [];
+      if (args.length > 0 && args[0].type === 'ArrayExpression') {
+        const elements = (args[0].elements as AnyNode[]) || [];
+        for (const el of elements) {
+          if (el && el.type === 'SpreadElement') {
+            const arg = el.argument as AnyNode;
+            if (
+              arg &&
+              pushCollectionName &&
+              referencesVarName(arg, pushCollectionName)
+            ) {
+              spreadsTarget = true;
+              return;
             }
           }
-          for (const v of Object.values(cn)) {
-            if (Array.isArray(v)) for (const item of v) checkPush(item);
-            else checkPush(v);
-          }
-        };
-        checkPush((innerLoop as AnyNode).body || innerLoop);
-
-        if (hasSpreadPush) {
-          found = true;
-          return;
         }
       }
     }
+    for (const v of Object.values(cn)) {
+      if (Array.isArray(v)) for (const item of v) checkPush(item);
+      else checkPush(v);
+    }
+  };
+  checkPush((innerLoop as AnyNode).body || innerLoop);
 
-    for (const v of Object.values(n)) {
+  return spreadsTarget;
+}
+
+/**
+ * Iterates through an AST to check if any loop is a power set loop.
+ */
+export function detectPowerSetLoop(ast: AnyNode): boolean {
+  let found = false;
+  const visit = (c: unknown) => {
+    if (found || !c || typeof c !== 'object') return;
+    const cn = c as AnyNode;
+    if (isPowerSetLoopNode(cn)) {
+      found = true;
+      return;
+    }
+    for (const v of Object.values(cn)) {
       if (Array.isArray(v)) for (const item of v) visit(item);
       else visit(v);
     }
   };
-
   visit(ast);
   return found;
 }

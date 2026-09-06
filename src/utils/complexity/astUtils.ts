@@ -168,12 +168,35 @@ export function referencesInput(
 }
 
 /**
+ * Recursively checks if an AST subtree references a variable name.
+ */
+export function referencesVarName(node: AnyNode, varName: string): boolean {
+  let found = false;
+  const visit = (curr: unknown) => {
+    if (found || !curr || typeof curr !== 'object') return;
+    const n = curr as AnyNode;
+    if (n.type === 'Identifier' && n.name === varName) {
+      found = true;
+      return;
+    }
+    for (const v of Object.values(n)) {
+      if (Array.isArray(v)) for (const item of v) visit(item);
+      else visit(v);
+    }
+  };
+  visit(node);
+  return found;
+}
+
+/**
  * Checks whether an update expression or assignment modifies a variable logarithmically (e.g. i *= 2, i /= 2, i >>= 1).
  */
-export function isLogarithmicStep(node: AnyNode | null | undefined): boolean {
-  if (!node) return false;
+export function isLogarithmicStep(
+  stepNode: AnyNode | null | undefined
+): boolean {
+  if (!stepNode) return false;
+  const node = stepNode;
 
-  // e.g. i *= 2, i /= 2, i >>= 1, i <<= 1, i >>>= 1
   if (node.type === 'AssignmentExpression') {
     const operator = node.operator as string;
     if (
@@ -188,18 +211,25 @@ export function isLogarithmicStep(node: AnyNode | null | undefined): boolean {
 
     // e.g. i = i * 2, i = Math.floor(i / 2), i = i >> 1, i = parseInt(i / 2)
     const right = node.right as AnyNode;
-    if (right) {
+    const targetNode = node.left as AnyNode | undefined;
+    const targetName =
+      targetNode?.type === 'Identifier' ? (targetNode.name as string) : '';
+    const usesTarget = (n: AnyNode | null | undefined): boolean =>
+      !!targetName && !!n && referencesVarName(n, targetName);
+
+    if (right && operator === '=' && targetName) {
       if (
         right.type === 'BinaryExpression' &&
         (right.operator === '*' ||
           right.operator === '/' ||
           right.operator === '>>' ||
           right.operator === '<<' ||
-          right.operator === '>>>')
+          right.operator === '>>>') &&
+        usesTarget(right)
       ) {
         return true;
       }
-      if (right.type === 'CallExpression') {
+      if (right.type === 'CallExpression' && usesTarget(right)) {
         const callee = right.callee as AnyNode;
         if (
           callee &&
@@ -222,7 +252,12 @@ export function isLogarithmicStep(node: AnyNode | null | undefined): boolean {
       // Bitwise truncation: (i / 2) | 0 or ~~(i / 2)
       if (right.type === 'BinaryExpression' && right.operator === '|') {
         const left = right.left as AnyNode;
-        if (left && left.type === 'BinaryExpression' && left.operator === '/') {
+        if (
+          left &&
+          left.type === 'BinaryExpression' &&
+          left.operator === '/' &&
+          usesTarget(left)
+        ) {
           return true;
         }
       }

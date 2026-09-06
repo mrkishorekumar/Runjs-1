@@ -1,4 +1,9 @@
-import { AnyNode, inspectCallExpression, isLoopNode } from './astUtils';
+import {
+  AnyNode,
+  inspectCallExpression,
+  isFunctionNode,
+  isLoopNode,
+} from './astUtils';
 import { detectPowerSetLoop } from './loopAnalyzer';
 import { ComplexityFactor, ComplexityRank } from './types';
 
@@ -30,12 +35,33 @@ export function analyzeSpace(
   // Track all collections created with their scope depth
   const trackedCollections = new Map<string, CollectionTracking>();
 
+  let scopeCounter = 0;
+  const scopeStack: number[] = [0];
+
+  const getScopeKey = (varName: string): string => {
+    const currentScopeId = scopeStack[scopeStack.length - 1] ?? 0;
+    return `${currentScopeId}:${varName}`;
+  };
+
+  const resolveCollectionKey = (varName: string): string | null => {
+    for (let i = scopeStack.length - 1; i >= 0; i--) {
+      const key = `${scopeStack[i]}:${varName}`;
+      if (trackedCollections.has(key)) return key;
+    }
+    return null;
+  };
+
   const traverse = (curr: unknown, loopDepth: number) => {
     if (!curr || typeof curr !== 'object') return;
     const n = curr as AnyNode;
 
+    const isFn = isFunctionNode(n);
+    if (isFn) {
+      scopeStack.push(++scopeCounter);
+    }
+
     const isLoop = isLoopNode(n);
-    const currentLoopDepth = isLoop ? loopDepth + 1 : loopDepth;
+    const currentLoopDepth = isFn ? 0 : isLoop ? loopDepth + 1 : loopDepth;
 
     // 1. Check Variable Declarators
     const idNode = n.id as AnyNode | undefined;
@@ -45,6 +71,7 @@ export function analyzeSpace(
       typeof idNode.name === 'string'
     ) {
       const varName = idNode.name;
+      const collKey = getScopeKey(varName);
       const init = n.init as AnyNode | null;
 
       if (init) {
@@ -70,7 +97,7 @@ export function analyzeSpace(
             if (['Set', 'Map', 'WeakMap', 'WeakSet'].includes(callee.name)) {
               hasLinearDataStructure = true;
               dataStructuresCreated.push(`new ${callee.name}()`);
-              trackedCollections.set(varName, {
+              trackedCollections.set(collKey, {
                 name: varName,
                 declaredDepth: currentLoopDepth,
                 maxPushDepth: 0,
@@ -85,7 +112,7 @@ export function analyzeSpace(
             } else if (callee.name === 'Array') {
               hasLinearDataStructure = true;
               dataStructuresCreated.push('new Array()');
-              trackedCollections.set(varName, {
+              trackedCollections.set(collKey, {
                 name: varName,
                 declaredDepth: currentLoopDepth,
                 maxPushDepth: 0,
@@ -106,7 +133,7 @@ export function analyzeSpace(
           if (callInfo && callInfo.createsNewDataStructure) {
             hasLinearDataStructure = true;
             dataStructuresCreated.push(callInfo.name);
-            trackedCollections.set(varName, {
+            trackedCollections.set(collKey, {
               name: varName,
               declaredDepth: currentLoopDepth,
               maxPushDepth: 0,
@@ -123,7 +150,7 @@ export function analyzeSpace(
         }
         // Array literal or object literal: const arr = [] or const obj = {}
         else if (init.type === 'ArrayExpression') {
-          trackedCollections.set(varName, {
+          trackedCollections.set(collKey, {
             name: varName,
             declaredDepth: currentLoopDepth,
             maxPushDepth: 0,
@@ -134,7 +161,7 @@ export function analyzeSpace(
             dataStructuresCreated.push('Array literal in loop');
           }
         } else if (init.type === 'ObjectExpression') {
-          trackedCollections.set(varName, {
+          trackedCollections.set(collKey, {
             name: varName,
             declaredDepth: currentLoopDepth,
             maxPushDepth: 0,
@@ -167,31 +194,34 @@ export function analyzeSpace(
           obj &&
           obj.type === 'Identifier' &&
           typeof obj.name === 'string' &&
-          trackedCollections.has(obj.name) &&
           prop &&
           prop.type === 'Identifier' &&
           typeof prop.name === 'string' &&
           ['push', 'unshift', 'add', 'set'].includes(prop.name)
         ) {
-          hasDynamicGrowthInLoop = true;
-          hasLinearDataStructure = true;
-          dataStructuresCreated.push(`${obj.name}.${prop.name}()`);
+          const resolvedKey = resolveCollectionKey(obj.name);
+          if (resolvedKey) {
+            hasDynamicGrowthInLoop = true;
+            hasLinearDataStructure = true;
+            dataStructuresCreated.push(`${obj.name}.${prop.name}()`);
 
-          const tracking = trackedCollections.get(obj.name)!;
-          tracking.maxPushDepth = Math.max(
-            tracking.maxPushDepth,
-            currentLoopDepth
-          );
+            const tracking = trackedCollections.get(resolvedKey)!;
+            tracking.maxPushDepth = Math.max(
+              tracking.maxPushDepth,
+              currentLoopDepth
+            );
 
-          // Check argument: is it another collection?
-          const args = (n.arguments as AnyNode[]) || [];
-          if (args.length > 0 && args[0].type === 'Identifier') {
-            const argName = args[0].name as string;
-            if (trackedCollections.has(argName)) {
-              tracking.storedCollectionNames.add(argName);
+            // Check argument: is it another collection?
+            const args = (n.arguments as AnyNode[]) || [];
+            if (args.length > 0 && args[0].type === 'Identifier') {
+              const argName = args[0].name as string;
+              const childKey = resolveCollectionKey(argName);
+              if (childKey) {
+                tracking.storedCollectionNames.add(childKey);
+              }
+            } else if (args.length > 0 && args[0].type === 'ArrayExpression') {
+              tracking.storedCollectionNames.add('__inline_array__');
             }
-          } else if (args.length > 0 && args[0].type === 'ArrayExpression') {
-            tracking.storedCollectionNames.add('__inline_array__');
           }
         }
       }
@@ -205,28 +235,31 @@ export function analyzeSpace(
         left.type === 'MemberExpression' &&
         left.object &&
         (left.object as AnyNode).type === 'Identifier' &&
-        typeof (left.object as AnyNode).name === 'string' &&
-        trackedCollections.has((left.object as AnyNode).name as string)
+        typeof (left.object as AnyNode).name === 'string'
       ) {
-        hasDynamicGrowthInLoop = true;
-        hasLinearDataStructure = true;
-        dataStructuresCreated.push(`${(left.object as AnyNode).name}[key]`);
-
         const collName = (left.object as AnyNode).name as string;
-        const tracking = trackedCollections.get(collName)!;
-        tracking.maxPushDepth = Math.max(
-          tracking.maxPushDepth,
-          currentLoopDepth
-        );
+        const resolvedKey = resolveCollectionKey(collName);
+        if (resolvedKey) {
+          hasDynamicGrowthInLoop = true;
+          hasLinearDataStructure = true;
+          dataStructuresCreated.push(`${collName}[key]`);
 
-        const right = n.right as AnyNode;
-        if (right && right.type === 'Identifier') {
-          const argName = right.name as string;
-          if (trackedCollections.has(argName)) {
-            tracking.storedCollectionNames.add(argName);
+          const tracking = trackedCollections.get(resolvedKey)!;
+          tracking.maxPushDepth = Math.max(
+            tracking.maxPushDepth,
+            currentLoopDepth
+          );
+
+          const right = n.right as AnyNode;
+          if (right && right.type === 'Identifier') {
+            const argName = right.name as string;
+            const childKey = resolveCollectionKey(argName);
+            if (childKey) {
+              tracking.storedCollectionNames.add(childKey);
+            }
+          } else if (right && right.type === 'ArrayExpression') {
+            tracking.storedCollectionNames.add('__inline_array__');
           }
-        } else if (right && right.type === 'ArrayExpression') {
-          tracking.storedCollectionNames.add('__inline_array__');
         }
       }
     }
@@ -251,6 +284,10 @@ export function analyzeSpace(
       } else {
         traverse(v, currentLoopDepth);
       }
+    }
+
+    if (isFn) {
+      scopeStack.pop();
     }
   };
 
@@ -284,7 +321,7 @@ export function analyzeSpace(
           if (childColl && childColl.maxPushDepth >= 1) {
             hasMatrixAllocation = true;
             dataStructuresCreated.push(
-              `${coll.name} -> ${childName} (nested 2D collections)`
+              `${coll.name} -> ${childColl.name} (nested 2D collections)`
             );
           }
         }
@@ -367,16 +404,28 @@ function createsArrayLike(n: AnyNode | null | undefined): boolean {
     if (callee && callee.type === 'Identifier' && callee.name === 'Array')
       return true;
     if (callee && callee.type === 'MemberExpression') {
+      const obj = callee.object as AnyNode;
       const prop = callee.property as AnyNode;
       if (
+        obj &&
+        obj.type === 'Identifier' &&
+        obj.name === 'Array' &&
         prop &&
-        (prop.name === 'fill' ||
+        (prop.name === 'from' || prop.name === 'of')
+      ) {
+        return true;
+      }
+      if (
+        prop &&
+        (prop.name === 'map' ||
+          prop.name === 'filter' ||
           prop.name === 'slice' ||
-          prop.name === 'map' ||
-          prop.name === 'from' ||
           prop.name === 'concat')
       ) {
-        return createsArrayLike(callee.object as AnyNode) || true;
+        return true;
+      }
+      if (prop && prop.name === 'fill') {
+        return createsArrayLike(obj);
       }
     }
   }

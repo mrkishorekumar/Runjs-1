@@ -83,6 +83,13 @@ function analyzeBuiltins(ast: AnyNode): {
       if (builtinTimeRank < ComplexityRank.O_N) {
         builtinTimeRank = ComplexityRank.O_N;
       }
+      builtinFactors.push({
+        type: 'builtin',
+        description:
+          'Spread syntax expands every element of the collection, taking O(n) time',
+        impact: 'time',
+        order: 'O(n)',
+      });
     }
 
     for (const [k, v] of Object.entries(node)) {
@@ -109,9 +116,11 @@ export function analyzeComplexity(code: string): ComplexityResult {
       spaceComplexity: 'O(?)',
       timeRank: ComplexityRank.UNKNOWN,
       spaceRank: ComplexityRank.UNKNOWN,
-      timeClassification: 'Syntax Error',
-      spaceClassification: 'Syntax Error',
-      explanation: `Unable to analyze code due to a syntax error on line ${parseRes.errorLine || 'unknown'}: ${parseRes.error || 'Invalid JavaScript'}. Please ensure your code is valid JavaScript syntax.`,
+      timeClassification: parseRes.errorLine ? 'Syntax Error' : 'No Input',
+      spaceClassification: parseRes.errorLine ? 'Syntax Error' : 'No Input',
+      explanation: parseRes.errorLine
+        ? `Unable to analyze code due to a syntax error on line ${parseRes.errorLine}: ${parseRes.error}. Please ensure your code is valid JavaScript syntax.`
+        : (parseRes.error ?? 'Unable to analyze the provided code.'),
       factors: [],
       isEstimate: false,
       notes: [
@@ -242,13 +251,19 @@ export function analyzeComplexity(code: string): ComplexityResult {
       rec.explanation ||
         `Detected recursive function '${rec.functionName}'. The function calls itself, creating a call stack depth of up to n.`
     );
-  } else if (loopResult.maxNestingDepth >= 3) {
+  } else if (
+    timeRank === ComplexityRank.O_N_3 &&
+    loopResult.maxNestingDepth >= 3
+  ) {
     explanationParts.push(
-      `The code contains ${loopResult.maxNestingDepth} levels of nested loops that depend on the input size. Because each nested layer multiplies iterations, the total number of operations grows as n³, resulting in cubic time complexity O(n³).`
+      `The code contains ${loopResult.maxNestingDepth} levels of nested loops that depend on the input size. Because each nested layer multiplies iterations, the total number of operations grows as n³, resulting in cubic time complexity ${timeLabelInfo.notation}.`
     );
-  } else if (loopResult.maxNestingDepth === 2) {
+  } else if (
+    timeRank === ComplexityRank.O_N_2 &&
+    loopResult.maxNestingDepth === 2
+  ) {
     explanationParts.push(
-      `The code contains two nested loops that both depend on the input size. Because each iteration of the outer loop executes the inner loop, the total number of operations grows approximately as n × n, yielding O(n²) time complexity.`
+      `The code contains two nested loops that both depend on the input size. Because each iteration of the outer loop executes the inner loop, the total number of operations grows approximately as n × n, yielding ${timeLabelInfo.notation} time complexity.`
     );
   } else if (timeRank === ComplexityRank.O_N_LOG_N) {
     if (builtinTimeRank === ComplexityRank.O_N_LOG_N) {
@@ -329,11 +344,30 @@ export function analyzeComplexity(code: string): ComplexityResult {
     );
   }
 
+  const hasWhileNode = (() => {
+    let found = false;
+    const visit = (node: unknown) => {
+      if (found || !node || typeof node !== 'object') return;
+      const n = node as AnyNode;
+      if (n.type === 'WhileStatement' || n.type === 'DoWhileStatement') {
+        found = true;
+        return;
+      }
+      for (const [k, v] of Object.entries(n)) {
+        if (k === 'loc' || k === 'range') continue;
+        if (Array.isArray(v)) v.forEach(visit);
+        else visit(v);
+      }
+    };
+    visit(ast);
+    return found;
+  })();
+
   const isEstimate =
     loopResult.maxNestingDepth === 0 &&
     !recResult.hasRecursion &&
     builtinTimeRank === ComplexityRank.O_1 &&
-    code.includes('while');
+    hasWhileNode;
 
   const notes: string[] = [
     'Static complexity analysis is estimated from the AST structure and common algorithmic patterns without executing arbitrary code.',
@@ -354,14 +388,17 @@ export function analyzeComplexity(code: string): ComplexityResult {
     }
   }
 
+  const RANK_BY_ORDER: Record<string, ComplexityRank> = {
+    'O(log log n)': ComplexityRank.O_LOG_LOG_N,
+    'O((log n)²)': ComplexityRank.O_LOG_N_2,
+    'O(sqrt(n))': ComplexityRank.O_SQRT_N,
+    'O(n sqrt(n))': ComplexityRank.O_N_SQRT_N,
+    'O(n * 2^n)': ComplexityRank.O_2_N,
+    'O(n + m)': ComplexityRank.O_N,
+    'O(n * m)': ComplexityRank.O_N_2,
+  };
   const specificLoopFactor = loopResult.factors.find(
-    (f) =>
-      f.impact === 'time' &&
-      (f.order === 'O(n * 2^n)' ||
-        f.order === 'O(n sqrt(n))' ||
-        f.order === 'O(sqrt(n))' ||
-        f.order === 'O((log n)²)' ||
-        f.order === 'O(log log n)')
+    (f) => f.impact === 'time' && RANK_BY_ORDER[f.order] === timeRank
   );
   if (specificLoopFactor && loopResult.timeRank === timeRank) {
     finalTimeComplexity = specificLoopFactor.order;
@@ -378,13 +415,20 @@ export function analyzeComplexity(code: string): ComplexityResult {
       finalSpaceComplexity = recSpace as ComplexityString;
     }
   } else {
-    const specificSpaceFactor =
-      factors.find((f) => f.impact === 'space' && f.order === 'O(n * n!)') ||
-      factors.find((f) => f.impact === 'space' && f.order === 'O(n * 2^n)') ||
-      factors.find((f) => f.impact === 'space' && f.order === 'O(n²)');
+    if (
+      finalTimeComplexity === 'O(n * m)' &&
+      spaceRank === ComplexityRank.O_N_2
+    ) {
+      finalSpaceComplexity = 'O(n * m)';
+    } else {
+      const specificSpaceFactor =
+        factors.find((f) => f.impact === 'space' && f.order === 'O(n * n!)') ||
+        factors.find((f) => f.impact === 'space' && f.order === 'O(n * 2^n)') ||
+        factors.find((f) => f.impact === 'space' && f.order === 'O(n²)');
 
-    if (specificSpaceFactor && spaceRank >= ComplexityRank.O_N_2) {
-      finalSpaceComplexity = specificSpaceFactor.order;
+      if (specificSpaceFactor && spaceRank >= ComplexityRank.O_N_2) {
+        finalSpaceComplexity = specificSpaceFactor.order;
+      }
     }
   }
 

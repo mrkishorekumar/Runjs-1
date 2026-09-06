@@ -111,6 +111,7 @@ function ProblemSolving() {
   const {
     isAnalyzing: isAnalyzingComplexity,
     result: complexityResult,
+    analyzedCode: complexityAnalyzedCode,
     isModalOpen: isComplexityModalOpen,
     analyze: handleAnalyzeComplexity,
     closeModal: closeComplexityModal,
@@ -651,7 +652,7 @@ function ProblemSolving() {
         isOpen={isComplexityModalOpen}
         onClose={closeComplexityModal}
         result={complexityResult}
-        codeSnippet={code}
+        codeSnippet={complexityAnalyzedCode}
       />
     </div>
   );

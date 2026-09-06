@@ -134,6 +134,7 @@ function ProblemHeader({
           onClick={onAnalyzeComplexity}
           isAnalyzing={isAnalyzingComplexity}
           size="sm"
+          hideLabelBelowSm
         />
 
         {/* Submit Button (Runs All Hidden Cases) */}

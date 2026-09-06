@@ -51,6 +51,7 @@ function JSsaved() {
   const {
     isAnalyzing: isAnalyzingComplexity,
     result: complexityResult,
+    analyzedCode: complexityAnalyzedCode,
     isModalOpen: isComplexityModalOpen,
     analyze: handleAnalyzeComplexity,
     closeModal: closeComplexityModal,
@@ -228,6 +229,7 @@ function JSsaved() {
             <ComplexityButton
               onClick={handleAnalyzeComplexity}
               isAnalyzing={isAnalyzingComplexity}
+              disabled={!savedCode}
             />
 
             {/* Cross-Tool Interlink Menu */}
@@ -413,7 +415,7 @@ function JSsaved() {
         isOpen={isComplexityModalOpen}
         onClose={closeComplexityModal}
         result={complexityResult}
-        codeSnippet={code?.code ?? ''}
+        codeSnippet={complexityAnalyzedCode}
       />
 
       <HelpModal ref={dialogRef} />

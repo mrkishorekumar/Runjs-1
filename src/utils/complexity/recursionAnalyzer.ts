@@ -4,6 +4,7 @@ import {
   isLoopNode,
   isConstantBound,
   inspectCallExpression,
+  referencesVarName,
 } from './astUtils';
 import { ComplexityFactor, ComplexityRank } from './types';
 
@@ -136,7 +137,14 @@ export function analyzeRecursion(ast: AnyNode): RecursionAnalysisResult {
       let spaceComplexity = 'O(n)';
       let explanation = '';
 
-      if (isPermutationGeneration(node, name)) {
+      if (hasMemoization(node)) {
+        // e.g. fibonacci_memoized
+        timeRank = ComplexityRank.O_N;
+        spaceRank = ComplexityRank.O_N;
+        timeComplexity = 'O(n)';
+        spaceComplexity = 'O(n)';
+        explanation = `Function '${name}' uses memoization to cache subproblem results; each state is evaluated once in O(n) time with O(n) auxiliary space.`;
+      } else if (isPermutationGeneration(node, name)) {
         // e.g. permute(arr)
         timeRank = ComplexityRank.O_N_FACT;
         spaceRank = ComplexityRank.O_N_FACT;
@@ -157,13 +165,6 @@ export function analyzeRecursion(ast: AnyNode): RecursionAnalysisResult {
         timeComplexity = 'O(n * 2^n)';
         spaceComplexity = 'O(n * 2^n)';
         explanation = `Function '${name}' generates 2ⁿ subsets recursively and copies elements of size up to n, requiring O(n * 2^n) time and space.`;
-      } else if (hasMemoization(node)) {
-        // e.g. fibonacci_memoized
-        timeRank = ComplexityRank.O_N;
-        spaceRank = ComplexityRank.O_N;
-        timeComplexity = 'O(n)';
-        spaceComplexity = 'O(n)';
-        explanation = `Function '${name}' uses memoization to cache subproblem results; each state is evaluated once in O(n) time with O(n) auxiliary space.`;
       } else if (isTreeTraversal(callNodes)) {
         // e.g. dfs(node.left) and dfs(node.right)
         timeRank = ComplexityRank.O_N;
@@ -370,6 +371,69 @@ function checkIfCallSlicesInput(callNode: AnyNode): boolean {
   return false;
 }
 
+function getAncestorPath(root: AnyNode, target: AnyNode): AnyNode[] | null {
+  if (root === target) return [root];
+  for (const val of Object.values(root)) {
+    if (!val || typeof val !== 'object') continue;
+    if (Array.isArray(val)) {
+      for (const item of val) {
+        if (item && typeof item === 'object') {
+          const path = getAncestorPath(item as AnyNode, target);
+          if (path) return [root, ...path];
+        }
+      }
+    } else {
+      const path = getAncestorPath(val as AnyNode, target);
+      if (path) return [root, ...path];
+    }
+  }
+  return null;
+}
+
+function canCallsInSameStmtExecute(
+  stmt: AnyNode,
+  c1: AnyNode,
+  c2: AnyNode
+): boolean {
+  const p1 = getAncestorPath(stmt, c1);
+  const p2 = getAncestorPath(stmt, c2);
+  if (!p1 || !p2) return true;
+
+  let lca: AnyNode = stmt;
+  let child1: AnyNode = p1[0];
+  let child2: AnyNode = p2[0];
+  const minLen = Math.min(p1.length, p2.length);
+  for (let k = 0; k < minLen; k++) {
+    if (p1[k] === p2[k]) {
+      lca = p1[k];
+    } else {
+      child1 = p1[k];
+      child2 = p2[k];
+      break;
+    }
+  }
+
+  // If closest common ancestor is ConditionalExpression and calls occupy different branches (consequent vs alternate)
+  if (lca.type === 'ConditionalExpression') {
+    const isBranch1 = child1 === lca.consequent || child1 === lca.alternate;
+    const isBranch2 = child2 === lca.consequent || child2 === lca.alternate;
+    if (isBranch1 && isBranch2 && child1 !== child2) {
+      return false;
+    }
+  }
+
+  // If closest common ancestor is LogicalExpression and calls occupy different operands (left vs right)
+  if (lca.type === 'LogicalExpression') {
+    const isOp1 = child1 === lca.left || child1 === lca.right;
+    const isOp2 = child2 === lca.left || child2 === lca.right;
+    if (isOp1 && isOp2 && child1 !== child2) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 /**
  * Checks if multiple recursive call sites can execute along a single execution path.
  */
@@ -410,12 +474,26 @@ function checkCanMultipleCallsExecute(
     if (stmt) enclosingStatements.push(stmt);
   }
 
-  // 1. If two calls share the exact same enclosing statement (e.g. return f(n-1) + f(n-2)), both execute!
-  const stmtCounts = new Map<AnyNode, number>();
-  for (const s of enclosingStatements) {
-    stmtCounts.set(s, (stmtCounts.get(s) || 0) + 1);
-    if (stmtCounts.get(s)! > 1) {
-      return true;
+  // 1. If two calls share the exact same enclosing statement, check if they can execute sequentially
+  const callsByStmt = new Map<AnyNode, AnyNode[]>();
+  for (let i = 0; i < callNodes.length; i++) {
+    const s = enclosingStatements[i];
+    if (s) {
+      const list = callsByStmt.get(s) || [];
+      list.push(callNodes[i]);
+      callsByStmt.set(s, list);
+    }
+  }
+
+  for (const [stmt, calls] of callsByStmt) {
+    if (calls.length > 1) {
+      for (let i = 0; i < calls.length; i++) {
+        for (let j = i + 1; j < calls.length; j++) {
+          if (canCallsInSameStmtExecute(stmt, calls[i], calls[j])) {
+            return true;
+          }
+        }
+      }
     }
   }
 
@@ -642,7 +720,7 @@ function isPermutationGeneration(node: AnyNode, fnName: string): boolean {
 }
 
 /**
- * Checks if recursive call occurs inside a linear loop without spreads (e.g. mystery(n)).
+ * Checks if recursive call occurs inside a linear loop without spreads and decrements the loop bound (e.g. mystery(n)).
  */
 function isFactorialRecursionInsideLoop(
   node: AnyNode,
@@ -651,12 +729,84 @@ function isFactorialRecursionInsideLoop(
   let found = false;
   const body = (node.body as AnyNode) || node;
 
+  const fnParams = new Set<string>();
+  const params = (node.params as AnyNode[]) || [];
+  for (const p of params) {
+    if (p.type === 'Identifier' && typeof p.name === 'string') {
+      fnParams.add(p.name);
+    } else if (
+      p.type === 'AssignmentPattern' &&
+      (p.left as AnyNode)?.type === 'Identifier'
+    ) {
+      fnParams.add((p.left as AnyNode).name as string);
+    }
+  }
+
+  const isDecrementsVar = (arg: AnyNode, varName: string): boolean => {
+    if (arg.type === 'BinaryExpression' && arg.operator === '-') {
+      return referencesVarName(arg.left as AnyNode, varName);
+    }
+    if (arg.type === 'UpdateExpression' && arg.operator === '--') {
+      return referencesVarName(arg.argument as AnyNode, varName);
+    }
+    if (arg.type === 'AssignmentExpression' && arg.operator === '-=') {
+      return referencesVarName(arg.left as AnyNode, varName);
+    }
+    return false;
+  };
+
   const visit = (curr: unknown) => {
     if (found || !curr || typeof curr !== 'object') return;
     const n = curr as AnyNode;
     if (isLoopNode(n)) {
-      let callCount = 0;
+      const boundVars = new Set<string>();
+      if (n.test && typeof n.test === 'object') {
+        const scanTest = (t: unknown) => {
+          if (!t || typeof t !== 'object') return;
+          const tn = t as AnyNode;
+          if (tn.type === 'Identifier' && typeof tn.name === 'string') {
+            boundVars.add(tn.name);
+          }
+          for (const v of Object.values(tn)) {
+            if (Array.isArray(v)) for (const item of v) scanTest(item);
+            else scanTest(v);
+          }
+        };
+        scanTest(n.test);
+      }
+
+      if (n.type === 'ForStatement' && n.init) {
+        const scanInit = (it: unknown) => {
+          if (!it || typeof it !== 'object') return;
+          const inNode = it as AnyNode;
+          if (
+            inNode.type === 'VariableDeclarator' &&
+            (inNode.id as AnyNode)?.type === 'Identifier'
+          ) {
+            boundVars.delete((inNode.id as AnyNode).name as string);
+          }
+          for (const v of Object.values(inNode)) {
+            if (Array.isArray(v)) for (const item of v) scanInit(item);
+            else scanInit(v);
+          }
+        };
+        scanInit(n.init);
+      }
+
+      const candidateBounds = new Set<string>();
+      for (const bv of boundVars) {
+        if (fnParams.has(bv)) candidateBounds.add(bv);
+      }
+      if (candidateBounds.size === 0) {
+        for (const bv of boundVars) candidateBounds.add(bv);
+      }
+      if (candidateBounds.size === 0) {
+        for (const fp of fnParams) candidateBounds.add(fp);
+      }
+
+      let callDecrementsBound = false;
       let hasSpread = false;
+
       const scan = (c: unknown) => {
         if (!c || typeof c !== 'object') return;
         const cn = c as AnyNode;
@@ -664,7 +814,15 @@ function isFactorialRecursionInsideLoop(
           cn.type === 'CallExpression' &&
           (cn.callee as AnyNode)?.name === fnName
         ) {
-          callCount++;
+          const args = (cn.arguments as AnyNode[]) || [];
+          for (const arg of args) {
+            for (const boundVar of candidateBounds) {
+              if (isDecrementsVar(arg, boundVar)) {
+                callDecrementsBound = true;
+                break;
+              }
+            }
+          }
         }
         if (cn.type === 'SpreadElement') {
           hasSpread = true;
@@ -674,8 +832,9 @@ function isFactorialRecursionInsideLoop(
           else scan(v);
         }
       };
+
       scan((n.body as AnyNode) || n);
-      if (callCount > 0 && !hasSpread) {
+      if (callDecrementsBound && !hasSpread) {
         found = true;
         return;
       }

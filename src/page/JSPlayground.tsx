@@ -76,6 +76,7 @@ function JSPlayground() {
   const {
     isAnalyzing: isAnalyzingComplexity,
     result: complexityResult,
+    analyzedCode: complexityAnalyzedCode,
     isModalOpen: isComplexityModalOpen,
     analyze: handleAnalyzeComplexity,
     closeModal: closeComplexityModal,
@@ -430,7 +431,7 @@ function JSPlayground() {
         isOpen={isComplexityModalOpen}
         onClose={closeComplexityModal}
         result={complexityResult}
-        codeSnippet={code}
+        codeSnippet={complexityAnalyzedCode}
       />
     </Fragment>
   );

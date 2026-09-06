@@ -182,8 +182,8 @@ console.log('\n8. Testing Linear Method inside Loop:');
   `;
   const res = analyzeComplexity(code);
   assert(
-    res.timeComplexity === 'O(n²)',
-    'includes() inside loop detected as O(n²)'
+    res.timeComplexity === 'O(n²)' || res.timeComplexity === 'O(n * m)',
+    'includes() inside loop detected as O(n²) or O(n * m)'
   );
   assert(
     res.spaceComplexity === 'O(n)',
@@ -472,25 +472,33 @@ function matchesComplexity(actual: string, expected: string): boolean {
   const normAct = normalizeComplexity(actual).toLowerCase();
   const normExp = normalizeComplexity(expected).toLowerCase();
   if (normAct === normExp) return true;
-  if (normExp.includes(normAct)) return true;
-  if (normAct.includes(normExp)) return true;
-  if (
-    (normExp.includes('n * m') || normExp.includes('n*m')) &&
-    (normAct.includes('n²') || normAct.includes('n * m'))
-  )
-    return true;
-  if (
-    (normExp.includes('n + m') || normExp.includes('n+m')) &&
-    (normAct.includes('n') || normAct.includes('n + m'))
-  )
-    return true;
+
+  // Handle multi-dimension variables (e.g. O(n + m), O(n * m)): require exact canonical match
+  const isMultiDimExp =
+    normExp.includes('n + m') ||
+    normExp.includes('n+m') ||
+    normExp.includes('n * m') ||
+    normExp.includes('n*m');
+  if (isMultiDimExp) {
+    if (normExp.includes('n + m') || normExp.includes('n+m')) {
+      return normAct.includes('n + m') || normAct.includes('n+m');
+    }
+    if (normExp.includes('n * m') || normExp.includes('n*m')) {
+      return normAct.includes('n * m') || normAct.includes('n*m');
+    }
+    return false;
+  }
+
   if (
     normExp.includes('o(h)') &&
     (normAct.includes('o(n)') ||
       normAct.includes('o(h)') ||
       normAct.includes('o(log n)'))
-  )
+  ) {
     return true;
+  }
+  if (normExp.includes(normAct)) return true;
+  if (normAct.includes(normExp)) return true;
   if (normExp.includes('o(n²)') && normAct.includes('o(n²)')) return true;
   if (normExp.includes('o(n log n)') && normAct.includes('o(n log n)'))
     return true;

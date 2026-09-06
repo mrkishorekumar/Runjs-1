@@ -5,16 +5,18 @@ import { ComplexityRank, ComplexityResult } from '../utils/complexity/types';
 export function useComplexityAnalyzer(getCode: () => string) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<ComplexityResult | null>(null);
+  const [analyzedCode, setAnalyzedCode] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const analyze = useCallback(() => {
     setIsAnalyzing(true);
+    const sourceSnapshot = getCode();
+    setAnalyzedCode(sourceSnapshot);
 
     // Defer analysis by a brief tick so UI immediately reflects the loading spinner
     setTimeout(() => {
       try {
-        const currentCode = getCode();
-        const analysisResult = analyzeComplexity(currentCode);
+        const analysisResult = analyzeComplexity(sourceSnapshot);
         setResult(analysisResult);
         setIsModalOpen(true);
       } catch (err: unknown) {
@@ -51,6 +53,7 @@ export function useComplexityAnalyzer(getCode: () => string) {
   return {
     isAnalyzing,
     result,
+    analyzedCode,
     isModalOpen,
     analyze,
     closeModal,
