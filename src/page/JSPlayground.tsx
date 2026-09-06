@@ -25,6 +25,9 @@ import { getBreadcrumbSchema, getWebApplicationSchema } from '../seo/seoConfig';
 import { usePwaInstall } from '../hook/usePwaInstall';
 import ToolInterlinkMenu from '../components/ToolInterlinkMenu';
 import ImportNotificationToast from '../components/ImportNotificationToast';
+import ComplexityButton from '../components/complexity/ComplexityButton';
+import ComplexityModal from '../components/complexity/ComplexityModal';
+import { useComplexityAnalyzer } from '../hook/useComplexityAnalyzer';
 import { consumeTransferredCode } from '../utils/crossToolTransfer';
 import {
   Play,
@@ -70,6 +73,13 @@ function JSPlayground() {
     'editor'
   );
   const [isRunning, setIsRunning] = useState(false);
+  const {
+    isAnalyzing: isAnalyzingComplexity,
+    result: complexityResult,
+    isModalOpen: isComplexityModalOpen,
+    analyze: handleAnalyzeComplexity,
+    closeModal: closeComplexityModal,
+  } = useComplexityAnalyzer(() => code);
   const consoleRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<ModalRef>(null);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -213,6 +223,12 @@ function JSPlayground() {
                 ⌘R
               </kbd>
             </button>
+
+            {/* Complexity Analyzer Button */}
+            <ComplexityButton
+              onClick={handleAnalyzeComplexity}
+              isAnalyzing={isAnalyzingComplexity}
+            />
 
             {/* Cross-Tool Interlink Menu */}
             <ToolInterlinkMenu currentTool="js" getCode={() => code} />
@@ -409,6 +425,13 @@ function JSPlayground() {
       />
 
       <HelpModal ref={dialogRef} />
+
+      <ComplexityModal
+        isOpen={isComplexityModalOpen}
+        onClose={closeComplexityModal}
+        result={complexityResult}
+        codeSnippet={code}
+      />
     </Fragment>
   );
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Problem } from '../../problem-engine/types';
 import { getGithubIssueUrl } from '../../utils/githubIssues';
 import ThemeSelector from '../ThemeSelector';
+import ComplexityButton from '../complexity/ComplexityButton';
 import {
   ChevronLeft,
   Play,
@@ -23,6 +24,8 @@ interface ProblemHeaderProps {
   onSubmit: () => void;
   onReset: () => void;
   onFormat: () => void;
+  onAnalyzeComplexity: () => void;
+  isAnalyzingComplexity: boolean;
   currentFontSize: string;
   onFontSizeChange: (
     operation: 'increaseFontSize' | 'decreaseFontSize'
@@ -38,6 +41,8 @@ function ProblemHeader({
   onSubmit,
   onReset,
   onFormat,
+  onAnalyzeComplexity,
+  isAnalyzingComplexity,
   currentFontSize,
   onFontSizeChange,
   isSolved,
@@ -123,6 +128,13 @@ function ProblemHeader({
             ⌘R
           </kbd>
         </button>
+
+        {/* Analyze Complexity Button */}
+        <ComplexityButton
+          onClick={onAnalyzeComplexity}
+          isAnalyzing={isAnalyzingComplexity}
+          size="sm"
+        />
 
         {/* Submit Button (Runs All Hidden Cases) */}
         <button

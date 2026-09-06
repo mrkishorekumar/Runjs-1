@@ -39,6 +39,8 @@ import ProblemDescription from '../components/problems/ProblemDescription';
 import TestCasePanel from '../components/problems/TestCasePanel';
 import TestResultsPanel from '../components/problems/TestResultsPanel';
 import ResetCodeModal from '../components/problems/ResetCodeModal';
+import ComplexityModal from '../components/complexity/ComplexityModal';
+import { useComplexityAnalyzer } from '../hook/useComplexityAnalyzer';
 import CodeEditorSkeleton from '../components/skeletons/CodeEditorSkeleton';
 import { lazyWithRetry } from '../utils/lazyWithRetry';
 
@@ -106,6 +108,13 @@ function ProblemSolving() {
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const {
+    isAnalyzing: isAnalyzingComplexity,
+    result: complexityResult,
+    isModalOpen: isComplexityModalOpen,
+    analyze: handleAnalyzeComplexity,
+    closeModal: closeComplexityModal,
+  } = useComplexityAnalyzer(() => code);
 
   const [consoleLogs, setConsoleLogs] = useState<
     { type: 'info' | 'log'; message: string }[]
@@ -375,6 +384,8 @@ function ProblemSolving() {
         onSubmit={handleSubmit}
         onReset={handleOpenResetModal}
         onFormat={handleFormatDocument}
+        onAnalyzeComplexity={handleAnalyzeComplexity}
+        isAnalyzingComplexity={isAnalyzingComplexity}
         currentFontSize={currentFontSize}
         onFontSizeChange={handleFontSize}
         isSolved={userState?.isSolved}
@@ -633,6 +644,14 @@ function ProblemSolving() {
         onClose={() => setIsResetModalOpen(false)}
         onConfirm={handleConfirmReset}
         problemTitle={problem.title}
+      />
+
+      {/* Complexity Analyzer Result Modal */}
+      <ComplexityModal
+        isOpen={isComplexityModalOpen}
+        onClose={closeComplexityModal}
+        result={complexityResult}
+        codeSnippet={code}
       />
     </div>
   );

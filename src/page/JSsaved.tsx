@@ -23,6 +23,9 @@ import useTheme from '../hook/useTheme';
 import { saveJSTSFile } from '../utils/commonFunction';
 import SEO from '../seo/SEO';
 import ToolInterlinkMenu from '../components/ToolInterlinkMenu';
+import ComplexityButton from '../components/complexity/ComplexityButton';
+import ComplexityModal from '../components/complexity/ComplexityModal';
+import { useComplexityAnalyzer } from '../hook/useComplexityAnalyzer';
 import {
   Play,
   HelpCircle,
@@ -45,6 +48,13 @@ function JSsaved() {
     'editor'
   );
   const [isRunning, setIsRunning] = useState(false);
+  const {
+    isAnalyzing: isAnalyzingComplexity,
+    result: complexityResult,
+    isModalOpen: isComplexityModalOpen,
+    analyze: handleAnalyzeComplexity,
+    closeModal: closeComplexityModal,
+  } = useComplexityAnalyzer(() => code?.code ?? '');
   const consoleRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<ModalRef>(null);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -213,6 +223,12 @@ function JSsaved() {
                 ⌘R
               </kbd>
             </button>
+
+            {/* Complexity Analyzer Button */}
+            <ComplexityButton
+              onClick={handleAnalyzeComplexity}
+              isAnalyzing={isAnalyzingComplexity}
+            />
 
             {/* Cross-Tool Interlink Menu */}
             <ToolInterlinkMenu
@@ -392,6 +408,13 @@ function JSsaved() {
           )}
         </section>
       </main>
+
+      <ComplexityModal
+        isOpen={isComplexityModalOpen}
+        onClose={closeComplexityModal}
+        result={complexityResult}
+        codeSnippet={code?.code ?? ''}
+      />
 
       <HelpModal ref={dialogRef} />
     </Fragment>
