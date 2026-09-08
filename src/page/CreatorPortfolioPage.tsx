@@ -194,7 +194,7 @@ export default function CreatorPortfolioPage() {
         canonical="/kishorekumar"
         keywords={[
           'M R Kishore Kumar',
-          "M.R. KISHOREKUMAR",
+          'M.R. KISHOREKUMAR',
           'Kishore Kumar',
           'Creator of RunJS',
           'React Native Engineer',
@@ -206,8 +206,8 @@ export default function CreatorPortfolioPage() {
           'mrkishorekumar',
           'MRKISHOREKUMAR',
           'm r kishore kumar',
-          "kishorekumar",
-          "kishore"
+          'kishorekumar',
+          'kishore',
         ]}
         structuredData={[
           getBreadcrumbSchema([
