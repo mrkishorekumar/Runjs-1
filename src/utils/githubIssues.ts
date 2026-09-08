@@ -74,4 +74,3 @@ ${formattedCode}
 
   return `${repoUrl}/issues/new?title=${issueTitle}&body=${issueBody}&labels=complexity-analyzer,bug`;
 }
-
