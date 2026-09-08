@@ -6,6 +6,7 @@ import {
   getAllLessonSlugs,
   TOTAL_EXERCISE_COUNT,
 } from '../data/curriculum';
+import { getLessonBySlug } from '../data/lessonRegistry';
 import { useLearnProgress } from '../hooks/useLearnProgress';
 import {
   BookOpen,
@@ -298,21 +299,21 @@ function LearnHome() {
                     };
 
                     return (
-                      <Link
+                      <div
                         key={topic.slug}
-                        to={linkTo}
-                        className={`group p-4 rounded-xl border bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] transition-all duration-150 shadow-xs hover:shadow-md ${
+                        className={`p-4 rounded-xl border bg-[var(--bg-surface)] transition-all duration-150 shadow-xs hover:shadow-md ${
                           allDone
                             ? 'border-emerald-500/30'
                             : 'border-[var(--border-default)]'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2.5">
-                          <div
-                            className={`flex items-center justify-center w-8 h-8 rounded-lg border ${colorClasses[topic.accentColor] || colorClasses.amber}`}
+                          <Link
+                            to={linkTo}
+                            className={`flex items-center justify-center w-8 h-8 rounded-lg border ${colorClasses[topic.accentColor] || colorClasses.amber} hover:scale-105 transition-transform`}
                           >
                             <IconComponent className="w-4 h-4" />
-                          </div>
+                          </Link>
                           {allDone ? (
                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                           ) : topicCompleted > 0 ? (
@@ -324,16 +325,43 @@ function LearnHome() {
                           )}
                         </div>
 
-                        <h4 className="text-xs font-bold text-[var(--text-primary)] group-hover:text-amber-500 transition-colors">
-                          {topic.title}
-                        </h4>
-                        <p className="text-[11px] text-[var(--text-muted)] mt-1 leading-relaxed line-clamp-2">
-                          {topic.description}
-                        </p>
-                        <p className="text-[10px] text-[var(--text-muted)] mt-2">
-                          {topicTotal} lessons
-                        </p>
-                      </Link>
+                        <Link
+                          to={linkTo}
+                          className="block group-hover:text-amber-500 transition-colors"
+                        >
+                          <h4 className="text-xs font-bold text-[var(--text-primary)] hover:text-amber-500 transition-colors">
+                            {topic.title}
+                          </h4>
+                          <p className="text-[11px] text-[var(--text-muted)] mt-1 leading-relaxed line-clamp-2">
+                            {topic.description}
+                          </p>
+                        </Link>
+
+                        <div className="mt-3 pt-2.5 border-t border-[var(--border-subtle)] space-y-1">
+                          {topic.lessonSlugs.map((s) => {
+                            const l = getLessonBySlug(s);
+                            const lessonTitle = l
+                              ? l.title
+                              : s
+                                  .split('-')
+                                  .map(
+                                    (w) =>
+                                      w.charAt(0).toUpperCase() + w.slice(1)
+                                  )
+                                  .join(' ');
+                            return (
+                              <Link
+                                key={s}
+                                to={`/learn/${s}`}
+                                className="flex items-center gap-1.5 text-[11px] text-[var(--text-secondary)] hover:text-amber-500 transition-colors truncate py-0.5"
+                              >
+                                <span className="w-1 h-1 rounded-full bg-amber-500/50 shrink-0" />
+                                <span className="truncate">{lessonTitle}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>

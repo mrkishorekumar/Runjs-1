@@ -94,12 +94,55 @@ assert(!sitemapXml.includes('<loc>https://runjs.in/dashboard</loc>') && !sitemap
 assert(!sitemapXml.includes('<loc>https://runjs.in/bin</loc>') && !sitemapXml.includes('/bin<'), 'Excludes private /bin');
 assert(!sitemapXml.includes('<loc>https://runjs.in/404</loc>') && !sitemapXml.includes('/404<'), 'Excludes /404');
 
-
 console.log('\n--- 4. Validating Social Assets ---');
 const ogImagePath = path.join(rootDir, 'public/og-image.png');
 assert(fs.existsSync(ogImagePath), 'public/og-image.png exists');
 const ogStat = fs.statSync(ogImagePath);
 assert(ogStat.size > 1000, `og-image.png has valid file size (${ogStat.size} bytes)`);
+
+console.log('\n--- 5. Validating Prerendered Static HTML Files in dist/ ---');
+const distDir = path.join(rootDir, 'dist');
+
+if (fs.existsSync(path.join(distDir, 'index.html'))) {
+  const distIndexHtml = fs.readFileSync(path.join(distDir, 'index.html'), 'utf-8');
+  assert(distIndexHtml.includes('data-prerendered="true"'), 'dist/index.html has data-prerendered tag');
+  assert(distIndexHtml.includes('<h1'), 'dist/index.html contains prerendered <h1 heading');
+  assert(distIndexHtml.includes('<link rel="canonical" href="https://runjs.in/" />'), 'dist/index.html canonical matches root /');
+
+  // Validate problem prerender
+  const twoSumHtmlPath = path.join(distDir, 'problems/two-sum/index.html');
+  if (fs.existsSync(twoSumHtmlPath)) {
+    const twoSumHtml = fs.readFileSync(twoSumHtmlPath, 'utf-8');
+    assert(twoSumHtml.includes('<h1'), 'dist/problems/two-sum has prerendered <h1 heading');
+    assert(twoSumHtml.includes('Two Sum'), 'dist/problems/two-sum contains problem title text');
+    assert(twoSumHtml.includes('<link rel="canonical" href="https://runjs.in/problems/two-sum" />'), 'dist/problems/two-sum canonical matches clean URL without trailing slash');
+    assert(twoSumHtml.includes('SoftwareSourceCode'), 'dist/problems/two-sum contains SoftwareSourceCode JSON-LD schema');
+  } else {
+    assert(false, 'dist/problems/two-sum/index.html exists');
+  }
+
+  // Validate lesson prerender
+  const introHtmlPath = path.join(distDir, 'learn/intro/index.html');
+  if (fs.existsSync(introHtmlPath)) {
+    const introHtml = fs.readFileSync(introHtmlPath, 'utf-8');
+    assert(introHtml.includes('<h1'), 'dist/learn/intro has prerendered <h1 heading');
+    assert(introHtml.includes('<link rel="canonical" href="https://runjs.in/learn/intro" />'), 'dist/learn/intro canonical matches clean URL without trailing slash');
+    assert(introHtml.includes('TechArticle'), 'dist/learn/intro contains TechArticle JSON-LD schema');
+  } else {
+    assert(false, 'dist/learn/intro/index.html exists');
+  }
+
+  // Validate 404 page
+  const fourOhFourPath = path.join(distDir, '404.html');
+  if (fs.existsSync(fourOhFourPath)) {
+    const fourOhFourHtml = fs.readFileSync(fourOhFourPath, 'utf-8');
+    assert(fourOhFourHtml.includes('noindex'), 'dist/404.html contains noindex meta tag');
+  } else {
+    assert(false, 'dist/404.html exists');
+  }
+} else {
+  console.log('  ⓘ dist/ not built yet. Run `pnpm run build` to validate prerendered static HTML files.');
+}
 
 console.log(`\n========================================`);
 console.log(`SEO Verification Summary: ${passedTests}/${totalTests} Tests Passed`);
