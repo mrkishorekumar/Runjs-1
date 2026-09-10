@@ -77,7 +77,7 @@ function ThemeSelector({
         aria-haspopup="true"
         aria-expanded={isOpen}
         title={`Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)} (${resolvedTheme})`}
-        className={`flex items-center justify-center gap-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus:ring-1 focus:ring-[var(--border-focus)] ${
+        className={`flex items-center justify-center gap-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer ${
           compact ? 'p-1.5' : 'px-2 py-1 text-xs font-medium'
         }`}
       >
@@ -100,7 +100,7 @@ function ThemeSelector({
                 setTheme(opt.value);
                 setIsOpen(false);
               }}
-              className={`flex w-full items-center justify-between rounded px-2 py-1 text-xs font-medium transition-colors cursor-pointer ${
+              className={`flex w-full items-center justify-between rounded px-2 py-1 text-xs font-medium transition-colors cursor-pointer focus:outline-none focus-visible:bg-[var(--bg-surface-hover)] focus-visible:ring-1 focus-visible:ring-amber-500/60 ${
                 theme === opt.value
                   ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]'

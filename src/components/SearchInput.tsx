@@ -37,7 +37,7 @@ function SearchInput({
             type="button"
             aria-label="Clear search"
             onClick={() => onInputChange('')}
-            className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer focus:outline-none focus-visible:text-amber-500"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -54,7 +54,7 @@ function SearchInput({
               isFavouriteSelected ? 'Show all playgrounds' : 'Show starred only'
             }
             onClick={() => setIsFavouriteSelected((prev) => !prev)}
-            className={`h-8 flex items-center gap-1.5 px-2.5 text-xs font-medium rounded-md border transition-colors cursor-pointer ${
+            className={`h-8 flex items-center gap-1.5 px-2.5 text-xs font-medium rounded-md border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
               isFavouriteSelected
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -77,7 +77,7 @@ function SearchInput({
         <Link
           to="/bin"
           title="Recently deleted items"
-          className="h-8 flex items-center gap-1.5 px-2.5 text-xs font-medium rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+          className="h-8 flex items-center gap-1.5 px-2.5 text-xs font-medium rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
         >
           <Trash2 className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Bin</span>
@@ -87,7 +87,7 @@ function SearchInput({
         <button
           type="button"
           onClick={() => dialogRef?.current?.open()}
-          className="h-8 flex items-center gap-1.5 px-3 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-black transition-colors cursor-pointer"
+          className="h-8 flex items-center gap-1.5 px-3 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-black transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
         >
           <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
           <span>New Playground</span>

@@ -76,7 +76,7 @@ function LanguageCard({ option, isSelected, onSelect }: LanguageCardProps) {
     <button
       type="button"
       onClick={() => onSelect(option.id)}
-      className={`flex flex-col items-start p-2.5 rounded-md border text-left transition-colors cursor-pointer relative ${
+      className={`flex flex-col items-start p-2.5 rounded-md border text-left transition-colors cursor-pointer relative focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
         isSelected
           ? `${option.activeBorderClass} ${option.activeBgClass} text-[var(--text-primary)] ring-1 ${option.activeRingClass}`
           : 'border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)]'
@@ -286,7 +286,7 @@ const CreatePlayground = ({
             type="button"
             onClick={handleClose}
             aria-label="Close dialog"
-            className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
+            className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
           >
             <X className="w-4 h-4" />
           </button>
@@ -387,7 +387,7 @@ const CreatePlayground = ({
                     <button
                       type="button"
                       onClick={() => setReactFlavor('js')}
-                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60 focus-visible:ring-offset-1 ${
                         reactFlavor === 'js'
                           ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400 font-mono font-medium ring-1 ring-cyan-500/30'
                           : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] font-mono'
@@ -403,7 +403,7 @@ const CreatePlayground = ({
                     <button
                       type="button"
                       onClick={() => setReactFlavor('ts')}
-                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60 focus-visible:ring-offset-1 ${
                         reactFlavor === 'ts'
                           ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400 font-mono font-medium ring-1 ring-cyan-500/30'
                           : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] font-mono'
@@ -427,13 +427,13 @@ const CreatePlayground = ({
             <button
               type="button"
               onClick={handleClose}
-              className="px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              className="px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-3 py-1.5 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-black transition-colors cursor-pointer"
+              className="px-3 py-1.5 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-black transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               {edit ? 'Save Changes' : 'Create Playground'}
             </button>

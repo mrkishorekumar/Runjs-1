@@ -50,7 +50,8 @@ function Bin() {
             <Link
               to="/dashboard"
               title="Back to Dashboard"
-              className="p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              aria-label="Back to Dashboard"
+              className="p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>

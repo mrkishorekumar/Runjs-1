@@ -10,7 +10,7 @@ function Badge({ count, tag, setSearchTerm, searchTerm }: TaggedResult) {
       type="button"
       onClick={() => setSearchTerm((prev) => (prev === tag ? '' : tag))}
       aria-pressed={isSelected}
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded border transition-colors cursor-pointer ${
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
         isSelected
           ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
           : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'

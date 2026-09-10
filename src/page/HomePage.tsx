@@ -74,7 +74,7 @@ function HomePage() {
             {/* Primary Hero CTA Button */}
             <Link
               to="/learn"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-9 px-5 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-9 px-5 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <GraduationCap className="w-4 h-4 shrink-0" />
               <span>Learn JavaScript 0 → Hero</span>
@@ -84,7 +84,7 @@ function HomePage() {
             <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
               <Link
                 to="/problems"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
               >
                 <Zap className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>challenges</span>
@@ -92,7 +92,7 @@ function HomePage() {
 
               <Link
                 to="/interview"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
               >
                 <FileQuestion className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>interview_prep</span>
@@ -101,7 +101,7 @@ function HomePage() {
 
             <Link
               to="/js"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-4 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 h-9 px-4 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium transition-colors font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <Play className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
               <span>open_playground</span>
@@ -113,7 +113,7 @@ function HomePage() {
             {/* Event Loop Visualizer Card */}
             <Link
               to="/visualizer"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-2.5">
@@ -141,7 +141,7 @@ function HomePage() {
             {/* Execution Context Visualizer Card */}
             <Link
               to="/execution-context"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-blue-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-blue-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-2.5">
@@ -174,7 +174,7 @@ function HomePage() {
             {/* Learn JS Card */}
             <Link
               to="/learn"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -198,7 +198,7 @@ function HomePage() {
             {/* Coding Problems Card */}
             <Link
               to="/problems"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -222,7 +222,7 @@ function HomePage() {
             {/* Technical Interview Q&A Card */}
             <Link
               to="/interview"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -246,7 +246,7 @@ function HomePage() {
             {/* JavaScript Output Questions Card */}
             <Link
               to="/output-questions"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-emerald-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-emerald-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -270,7 +270,7 @@ function HomePage() {
             {/* JavaScript Sandbox Card */}
             <Link
               to="/js"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -294,7 +294,7 @@ function HomePage() {
             {/* TypeScript Sandbox Card */}
             <Link
               to="/ts"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-blue-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-blue-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -318,7 +318,7 @@ function HomePage() {
             {/* React Sandpack Card */}
             <Link
               to="/react"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-cyan-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-cyan-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -342,7 +342,7 @@ function HomePage() {
             {/* HTML/CSS/JS Card */}
             <Link
               to="/html"
-              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-orange-500/50 transition-colors flex flex-col justify-between"
+              className="group p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-orange-500/50 transition-colors flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60 focus-visible:ring-offset-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -437,7 +437,7 @@ function HomePage() {
 
             <Link
               to="/interview"
-              className="p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors block group"
+              className="p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-amber-500/50 transition-colors block group focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <div className="w-7 h-7 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 flex items-center justify-center mb-2.5">
                 <FileQuestion className="w-3.5 h-3.5" />

@@ -113,7 +113,7 @@ function Dashboard() {
           </div>
 
           {/* Metrics Telemetry Bar */}
-          <div className="flex items-center gap-3 text-xs font-mono text-[var(--text-secondary)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-1.5 rounded-md">
+          <div className="flex items-center gap-3 text-xs font-mono text-[var(--text-secondary)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-1.5 rounded-md overflow-x-auto [scrollbar-width:none] shrink-0 max-w-full">
             <span className="flex items-center gap-1.5">
               <FolderCode className="w-3.5 h-3.5 text-amber-500" />
               <span className="text-[var(--text-muted)]">total:</span>

@@ -39,36 +39,36 @@ function Footer({ className = '', hasMarginTop }: FooterProps) {
         <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-3.5 gap-y-1 text-[var(--text-muted)]">
           <Link
             to="/privacy"
-            className="hover:text-[var(--text-primary)] transition-colors"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             Privacy
           </Link>
           <Link
             to="/terms"
-            className="hover:text-[var(--text-primary)] transition-colors"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             Terms
           </Link>
           <Link
             to="/kishorekumar"
-            className="hover:text-[var(--text-primary)] transition-colors"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             Creator
           </Link>
           <Link
             to="/about"
-            className="hover:text-[var(--text-primary)] transition-colors"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             About & Credits
           </Link>
-          <Link
-            to="https://www.linkedin.com/company/runjs/"
+          <a
+            href="https://www.linkedin.com/company/runjs/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             LinkedIn
-          </Link>
+          </a>
           <span>© {new Date().getFullYear()}</span>
         </div>
       </div>

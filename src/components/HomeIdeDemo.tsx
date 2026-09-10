@@ -249,7 +249,7 @@ function HomeIdeDemo() {
             type="button"
             onClick={startAnimation}
             title="Replay animation"
-            className="flex items-center gap-1 h-6 px-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-[11px] font-mono transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1 h-6 px-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-[11px] font-mono transition-colors cursor-pointer shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60"
           >
             <RotateCcw className="w-3 h-3" />
             <span className="hidden sm:inline">replay</span>
@@ -360,7 +360,7 @@ function HomeIdeDemo() {
             <button
               type="button"
               onClick={startAnimation}
-              className="text-amber-500 hover:text-amber-400 font-mono font-medium flex items-center gap-1 cursor-pointer shrink-0"
+              className="text-amber-500 hover:text-amber-400 font-mono font-medium flex items-center gap-1 cursor-pointer shrink-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-1"
             >
               <Play className="w-2.5 h-2.5 fill-current" />
               <span>run_code</span>

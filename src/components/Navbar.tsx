@@ -274,7 +274,7 @@ function Navbar() {
               onClick={() => toggleDropdown('playgrounds')}
               aria-expanded={openDropdown === 'playgrounds'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                 isPlaygroundActive || openDropdown === 'playgrounds'
                   ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -355,7 +355,7 @@ function Navbar() {
               <Link
                 key={item.link}
                 to={item.link}
-                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                   isActive
                     ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -382,7 +382,7 @@ function Navbar() {
               onClick={() => toggleDropdown('interview')}
               aria-expanded={openDropdown === 'interview'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                 isInterviewActive || openDropdown === 'interview'
                   ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -464,7 +464,7 @@ function Navbar() {
                 onMouseEnter={() => prefetchRoute(item.link)}
                 onFocus={() => prefetchRoute(item.link)}
                 onTouchStart={() => prefetchRoute(item.link)}
-                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                   isActive
                     ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -486,7 +486,7 @@ function Navbar() {
               onClick={() => toggleDropdown('more')}
               aria-expanded={openDropdown === 'more'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                 isMoreActive || openDropdown === 'more'
                   ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -577,7 +577,7 @@ function Navbar() {
           {!isPlaygroundActive && (
             <Link
               to="/js"
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <Play className="w-3 h-3 fill-black" />
               <span>Open Editor</span>
@@ -590,7 +590,7 @@ function Navbar() {
               type="button"
               onClick={openInstallModal}
               title="Install RunJS as Desktop App"
-              className="hidden sm:inline-flex items-center gap-1.5 px-2 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <Download className="w-3.5 h-3.5 text-amber-500 shrink-0" />
               <span>Install</span>

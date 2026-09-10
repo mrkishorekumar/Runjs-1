@@ -85,7 +85,7 @@ function ProblemFilters({
                 onStatusChange('all');
               }
             }}
-            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
               !isFiltered
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -101,7 +101,7 @@ function ProblemFilters({
               onDifficultyChange('easy');
               onStatusChange('all');
             }}
-            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-1 ${
               difficulty === 'easy' && status === 'all'
                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-emerald-500 hover:bg-[var(--bg-surface-hover)]'
@@ -117,7 +117,7 @@ function ProblemFilters({
               onDifficultyChange('medium');
               onStatusChange('all');
             }}
-            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
               difficulty === 'medium' && status === 'all'
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-amber-500 hover:bg-[var(--bg-surface-hover)]'
@@ -133,7 +133,7 @@ function ProblemFilters({
               onDifficultyChange('hard');
               onStatusChange('all');
             }}
-            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60 focus-visible:ring-offset-1 ${
               difficulty === 'hard' && status === 'all'
                 ? 'bg-rose-500/10 border-rose-500/30 text-rose-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-rose-500 hover:bg-[var(--bg-surface-hover)]'
@@ -148,7 +148,7 @@ function ProblemFilters({
             onClick={() =>
               onStatusChange(status === 'solved' ? 'all' : 'solved')
             }
-            className={`h-8 flex items-center gap-1.5 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 flex items-center gap-1.5 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-1 ${
               status === 'solved'
                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -164,7 +164,7 @@ function ProblemFilters({
             onClick={() =>
               onStatusChange(status === 'starred' ? 'all' : 'starred')
             }
-            className={`h-8 flex items-center gap-1.5 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer ${
+            className={`h-8 flex items-center gap-1.5 px-2.5 rounded-md text-xs font-mono font-medium whitespace-nowrap border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
               status === 'starred'
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
                 : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-amber-500 hover:bg-[var(--bg-surface-hover)]'
@@ -185,7 +185,7 @@ function ProblemFilters({
         <button
           type="button"
           onClick={() => onTopicChange('all')}
-          className={`px-2 py-0.5 rounded text-xs font-mono shrink-0 border transition-colors cursor-pointer ${
+          className={`px-2 py-0.5 rounded text-xs font-mono shrink-0 border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
             selectedTopic === 'all'
               ? 'bg-amber-500/10 border-amber-500/30 text-amber-500 font-semibold'
               : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -201,7 +201,7 @@ function ProblemFilters({
               key={topic}
               type="button"
               onClick={() => onTopicChange(isSelected ? 'all' : topic)}
-              className={`px-2 py-0.5 rounded text-xs font-mono shrink-0 border transition-colors cursor-pointer ${
+              className={`px-2 py-0.5 rounded text-xs font-mono shrink-0 border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
                 isSelected
                   ? 'bg-amber-500/10 border-amber-500/30 text-amber-500 font-semibold'
                   : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -216,7 +216,7 @@ function ProblemFilters({
           <button
             type="button"
             onClick={onResetFilters}
-            className="flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 shrink-0 ml-auto transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 shrink-0 ml-auto transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60 focus-visible:ring-offset-1"
           >
             <RotateCcw className="w-3 h-3" />
             <span>reset</span>

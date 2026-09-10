@@ -133,7 +133,7 @@ function ProblemStatsBanner({
           {nextUnsolved && (
             <Link
               to={`/problems/${nextUnsolved.slug}`}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <Play className="w-3 h-3 fill-black" />
               <span>Continue Solving</span>
@@ -144,7 +144,7 @@ function ProblemStatsBanner({
             <button
               type="button"
               onClick={onPickRandom}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <Shuffle className="w-3 h-3" />
               <span>Pick Random</span>
