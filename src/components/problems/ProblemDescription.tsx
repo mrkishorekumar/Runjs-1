@@ -164,36 +164,36 @@ function ProblemDescription({
             {/* Examples */}
             {problem.examples && problem.examples.length > 0 && (
               <div className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                  Examples
+                <h3 className="text-xs font-mono font-medium text-[var(--text-secondary)]">
+                  examples
                 </h3>
 
                 {problem.examples.map((example, i) => (
                   <div
                     key={i}
-                    className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-3.5 sm:p-4 space-y-3 font-mono text-xs shadow-2xs"
+                    className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] p-3.5 sm:p-4 space-y-3 font-mono text-xs"
                   >
-                    <div className="text-xs font-bold text-[var(--text-primary)] font-sans">
-                      Example {i + 1}
+                    <div className="text-xs font-medium text-[var(--text-primary)] font-mono">
+                      example_{i + 1}
                     </div>
 
-                    <div className="space-y-2.5 text-xs">
+                    <div className="space-y-2 text-xs">
                       {/* Input */}
                       <div className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
-                        <span className="text-[var(--text-muted)] font-semibold sm:w-24 shrink-0 font-mono text-[11px] pt-1">
-                          Input:
+                        <span className="text-[var(--text-muted)] font-mono text-[11px] sm:w-20 shrink-0 pt-1">
+                          input:
                         </span>
-                        <div className="text-amber-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
+                        <div className="text-amber-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
                           {example.input}
                         </div>
                       </div>
 
                       {/* Output */}
                       <div className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
-                        <span className="text-[var(--text-muted)] font-semibold sm:w-24 shrink-0 font-mono text-[11px] pt-1">
-                          Output:
+                        <span className="text-[var(--text-muted)] font-mono text-[11px] sm:w-20 shrink-0 pt-1">
+                          output:
                         </span>
-                        <div className="text-emerald-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
+                        <div className="text-emerald-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
                           {example.output}
                         </div>
                       </div>
@@ -201,8 +201,8 @@ function ProblemDescription({
                       {/* Explanation */}
                       {example.explanation && (
                         <div className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3 pt-0.5 font-sans text-xs text-[var(--text-secondary)]">
-                          <span className="text-[var(--text-muted)] font-semibold sm:w-24 shrink-0 font-mono text-[11px] pt-0.5">
-                            Explanation:
+                          <span className="text-[var(--text-muted)] font-mono text-[11px] sm:w-20 shrink-0 pt-0.5">
+                            details:
                           </span>
                           <div className="flex-1 text-[var(--text-secondary)] leading-relaxed pl-1 sm:pl-0">
                             {parseInlineFormatting(example.explanation)}
@@ -218,8 +218,8 @@ function ProblemDescription({
             {/* Constraints */}
             {problem.constraints && problem.constraints.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                  Constraints
+                <h3 className="text-xs font-mono font-medium text-[var(--text-secondary)]">
+                  constraints
                 </h3>
                 <ul className="list-disc pl-5 space-y-1 text-xs text-[var(--text-secondary)] font-mono">
                   {problem.constraints.map((c, i) => (
@@ -238,10 +238,10 @@ function ProblemDescription({
                 href={getGithubIssueUrl(problem)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-amber-500 font-medium transition-colors cursor-pointer shrink-0"
+                className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-amber-500 font-mono text-xs transition-colors cursor-pointer shrink-0"
               >
                 <Bug className="w-3.5 h-3.5 text-amber-500" />
-                <span>Raise Issue on GitHub</span>
+                <span>raise_issue</span>
               </a>
             </div>
           </div>
@@ -267,18 +267,18 @@ function ProblemDescription({
                 return (
                   <div
                     key={i}
-                    className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] overflow-hidden shadow-2xs"
+                    className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] overflow-hidden"
                   >
                     <button
                       type="button"
                       onClick={() => toggleHint(i)}
-                      className="w-full flex items-center justify-between px-4 py-3 text-left font-semibold text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+                      className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-mono text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-amber-500/10 text-amber-500 text-[11px] font-bold flex items-center justify-center">
+                        <span className="w-5 h-5 rounded bg-amber-500/10 text-amber-500 text-[11px] font-mono font-semibold flex items-center justify-center">
                           {i + 1}
                         </span>
-                        <span>Hint {i + 1}</span>
+                        <span>hint_{i + 1}</span>
                       </div>
                       {isRevealed ? (
                         <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
@@ -288,7 +288,7 @@ function ProblemDescription({
                     </button>
 
                     {isRevealed && (
-                      <div className="px-4 pb-4 pt-2 text-xs text-[var(--text-secondary)] border-t border-[var(--border-subtle)] bg-[var(--bg-app)]/50 leading-relaxed">
+                      <div className="px-3.5 pb-3.5 pt-2 text-xs text-[var(--text-secondary)] border-t border-[var(--border-subtle)] bg-[var(--bg-app)]/50 leading-relaxed">
                         <ProblemMarkdown content={hint} />
                       </div>
                     )}
@@ -305,7 +305,7 @@ function ProblemDescription({
             <div className="flex items-center justify-between pb-2 border-b border-[var(--border-default)]">
               <div className="flex items-center gap-2">
                 <BookCheck className="w-4 h-4 text-emerald-500" />
-                <h3 className="text-sm font-bold text-[var(--text-primary)]">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                   Reference Solution & Analysis
                 </h3>
               </div>
@@ -313,7 +313,7 @@ function ProblemDescription({
               <button
                 type="button"
                 onClick={handleCopySolution}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] transition-colors"
+                className="flex items-center gap-1 h-7 px-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] transition-colors font-mono"
               >
                 {copiedSolution ? (
                   <>
@@ -323,7 +323,7 @@ function ProblemDescription({
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    <span>Copy Code</span>
+                    <span>copy_code</span>
                   </>
                 )}
               </button>
@@ -331,22 +331,22 @@ function ProblemDescription({
 
             {/* Complexity Cards */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]">
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-secondary)] mb-1">
+              <div className="p-3 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-secondary)] mb-1">
                   <Clock className="w-3.5 h-3.5 text-amber-500" />
                   <span>Time Complexity</span>
                 </div>
-                <div className="font-mono text-xs font-bold text-[var(--text-primary)]">
+                <div className="font-mono text-xs font-semibold text-[var(--text-primary)]">
                   {problem.solution.complexity.time}
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]">
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-secondary)] mb-1">
+              <div className="p-3 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-secondary)] mb-1">
                   <HardDrive className="w-3.5 h-3.5 text-blue-500" />
                   <span>Space Complexity</span>
                 </div>
-                <div className="font-mono text-xs font-bold text-[var(--text-primary)]">
+                <div className="font-mono text-xs font-semibold text-[var(--text-primary)]">
                   {problem.solution.complexity.space}
                 </div>
               </div>
@@ -354,16 +354,16 @@ function ProblemDescription({
 
             {/* Explanation */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                Approach Explanation
+              <h4 className="text-xs font-mono font-medium text-[var(--text-secondary)]">
+                approach
               </h4>
               <ProblemMarkdown content={problem.solution.explanation} />
             </div>
 
             {/* Solution Code Block in Monaco Editor */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                Implementation
+              <h4 className="text-xs font-mono font-medium text-[var(--text-secondary)]">
+                implementation
               </h4>
 
               <CodeSnippet

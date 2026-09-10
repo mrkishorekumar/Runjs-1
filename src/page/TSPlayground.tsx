@@ -35,6 +35,7 @@ import ImportNotificationToast from '../components/ImportNotificationToast';
 import { consumeTransferredCode } from '../utils/crossToolTransfer';
 import {
   Play,
+  Loader2,
   HelpCircle,
   Download,
   AlignLeft,
@@ -218,31 +219,32 @@ function TSPlayground() {
 
       <main className="h-screen w-full flex flex-col bg-[var(--bg-app)] overflow-hidden">
         {/* Top IDE Navigation */}
-        <nav className="h-12 w-full flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
+        <nav className="h-10 w-full flex items-center justify-between px-2.5 sm:px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
           {/* Left: Brand & File Title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <Link
               to="/dashboard"
               title="Back to Dashboard"
-              className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="flex items-center gap-1 p-1 rounded hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-500 text-white font-bold text-xs shadow-xs">
+              <div className="flex items-center justify-center w-5 h-5 rounded border border-blue-500/40 bg-blue-500/10 text-blue-500 font-mono font-bold text-[10px]">
                 TS
               </div>
             </Link>
 
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="text-xs font-semibold text-[var(--text-primary)]">
+            <div className="hidden sm:flex items-center gap-1.5 font-mono text-xs">
+              <span className="font-semibold text-[var(--text-primary)]">
                 script.ts
               </span>
-              <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                TypeScript
+              <span className="text-[var(--border-default)]">/</span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                esbuild wasm
               </span>
             </div>
           </div>
 
-          {/* Center: Actions (Run, Format, Font, Download) */}
+          {/* Center: Actions (Run, Interlink, Format, Font, Download) */}
           <div className="flex items-center gap-1.5">
             {/* Run Button */}
             <button
@@ -250,13 +252,15 @@ function TSPlayground() {
               onClick={handleRunClick}
               disabled={isRunning}
               title="Run code (Ctrl/Cmd + R)"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500/50 cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
             >
-              <Play
-                className={`w-3.5 h-3.5 fill-white ${isRunning ? 'animate-spin' : ''}`}
-              />
+              {isRunning ? (
+                <Loader2 className="w-3 h-3 animate-spin text-white shrink-0" />
+              ) : (
+                <Play className="w-3 h-3 fill-white shrink-0" />
+              )}
               <span>Run</span>
-              <kbd className="hidden md:inline-block ml-1 px-1 py-0.2 text-[9px] font-mono bg-white/20 text-white rounded">
+              <kbd className="hidden md:inline-block ml-0.5 px-1 py-0.2 text-[9px] font-mono bg-white/20 text-white rounded">
                 ⌘R
               </kbd>
             </button>
@@ -276,22 +280,22 @@ function TSPlayground() {
               }}
               title="Format Document (Shift + Alt + F)"
               aria-label="Format Document"
-              className="hidden sm:flex items-center gap-1 p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="hidden sm:flex items-center p-1 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
-              <AlignLeft className="w-4 h-4" />
+              <AlignLeft className="w-3.5 h-3.5" />
             </button>
 
             {/* Font Size Adjusters */}
-            <div className="hidden md:flex items-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-0.5">
+            <div className="hidden md:flex items-center rounded border border-[var(--border-default)] bg-[var(--bg-surface-muted)] p-0.5">
               <button
                 type="button"
                 onClick={() => handleFontSize('decreaseFontSize')}
                 title="Decrease font size"
                 className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
               >
-                <ZoomOut className="w-3.5 h-3.5" />
+                <ZoomOut className="w-3 h-3" />
               </button>
-              <span className="px-1.5 text-[11px] font-mono text-[var(--text-muted)]">
+              <span className="px-1.5 text-[10px] font-mono text-[var(--text-muted)]">
                 {currentFontSize}px
               </span>
               <button
@@ -300,7 +304,7 @@ function TSPlayground() {
                 title="Increase font size"
                 className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
+                <ZoomIn className="w-3 h-3" />
               </button>
             </div>
 
@@ -310,9 +314,9 @@ function TSPlayground() {
               onClick={handleDownload}
               title="Download File (Ctrl/Cmd + S)"
               aria-label="Download File"
-              className="hidden sm:flex items-center p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="hidden sm:flex items-center p-1 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-3.5 h-3.5" />
             </button>
           </div>
 

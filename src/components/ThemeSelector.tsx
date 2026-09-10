@@ -77,19 +77,19 @@ function ThemeSelector({
         aria-haspopup="true"
         aria-expanded={isOpen}
         title={`Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)} (${resolvedTheme})`}
-        className={`flex items-center justify-center gap-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]/40 ${
-          compact ? 'p-1.5' : 'px-2.5 py-1.5 text-xs font-medium'
+        className={`flex items-center justify-center gap-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer ${
+          compact ? 'p-1.5' : 'px-2 py-1 text-xs font-medium'
         }`}
       >
         {getCurrentIcon()}
         {!compact && (
-          <span className="capitalize hidden sm:inline">{theme}</span>
+          <span className="capitalize hidden sm:inline text-xs">{theme}</span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-1.5 w-36 origin-top-right rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1 shadow-lg backdrop-blur-md transition-all animate-in fade-in zoom-in-95 duration-150">
-          <div className="text-[11px] font-semibold text-[var(--text-muted)] px-2 py-1 uppercase tracking-wider">
+        <div className="absolute right-0 z-50 mt-1 w-32 origin-top-right rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1 shadow-md animate-in fade-in zoom-in-95 duration-100">
+          <div className="text-[10px] font-mono font-semibold text-[var(--text-muted)] px-2 py-1 uppercase tracking-wider border-b border-[var(--border-subtle)] mb-0.5">
             Theme
           </div>
           {themeOptions.map((opt) => (
@@ -100,7 +100,7 @@ function ThemeSelector({
                 setTheme(opt.value);
                 setIsOpen(false);
               }}
-              className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+              className={`flex w-full items-center justify-between rounded px-2 py-1 text-xs font-medium transition-colors cursor-pointer focus:outline-none focus-visible:bg-[var(--bg-surface-hover)] focus-visible:ring-1 focus-visible:ring-amber-500/60 ${
                 theme === opt.value
                   ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]'
@@ -111,7 +111,7 @@ function ThemeSelector({
                 <span>{opt.label}</span>
               </div>
               {theme === opt.value && (
-                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                <Check className="w-3.5 h-3.5 text-amber-500" />
               )}
             </button>
           ))}

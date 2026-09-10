@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { Link, useLocation } from 'react-router';
-import { Code2 } from 'lucide-react';
 
 interface FooterProps {
   className?: string;
@@ -15,55 +14,61 @@ function Footer({ className = '', hasMarginTop }: FooterProps) {
 
   return (
     <footer
-      className={`w-full border-t border-[var(--border-default)] bg-[var(--bg-surface)] py-6 transition-colors duration-150 ${
-        applyMarginTop ? 'mt-12' : 'mt-0'
+      className={`w-full border-t border-[var(--border-default)] bg-[var(--bg-surface)] py-3.5 transition-colors duration-150 text-[11px] ${
+        applyMarginTop ? 'mt-8' : 'mt-0'
       } ${className}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-secondary)]">
-        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-amber-500 shrink-0" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[var(--text-secondary)]">
+        <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded border border-amber-500/40 bg-amber-500/10 flex items-center justify-center text-amber-500 font-mono text-[9px] font-bold">
+              JS
+            </div>
             <span className="font-semibold text-[var(--text-primary)]">
               RunJS
             </span>
           </div>
-          <span className="hidden sm:inline">•</span>
-          <span>In-browser JavaScript, TypeScript & React Playground</span>
+          <span className="hidden sm:inline text-[var(--border-default)]">
+            |
+          </span>
+          <span className="text-[var(--text-muted)]">
+            Client-side JavaScript, TypeScript & React Playground
+          </span>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2">
+        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-3.5 gap-y-1 text-[var(--text-muted)]">
           <Link
             to="/privacy"
-            className="hover:text-[var(--text-primary)] transition-colors hover:underline"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
-            Privacy Policy
+            Privacy
           </Link>
           <Link
             to="/terms"
-            className="hover:text-[var(--text-primary)] transition-colors hover:underline"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
-            Terms & Conditions
+            Terms
           </Link>
           <Link
             to="/kishorekumar"
-            className="hover:text-[var(--text-primary)] transition-colors hover:underline"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             Creator
           </Link>
           <Link
             to="/about"
-            className="hover:text-[var(--text-primary)] transition-colors hover:underline"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             About & Credits
           </Link>
-          <Link
-            to="https://www.linkedin.com/company/runjs/"
+          <a
+            href="https://www.linkedin.com/company/runjs/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors hover:underline"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
           >
             LinkedIn
-          </Link>
+          </a>
           <span>© {new Date().getFullYear()}</span>
         </div>
       </div>

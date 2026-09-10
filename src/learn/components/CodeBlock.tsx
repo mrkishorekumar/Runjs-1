@@ -114,13 +114,13 @@ function CodeBlock({ example }: CodeBlockProps) {
   }, [rawCode]);
 
   return (
-    <div className="my-4 rounded-xl border border-[var(--border-default)] overflow-hidden bg-[var(--bg-surface)] shadow-2xs max-w-full">
+    <div className="my-4 rounded-lg border border-[var(--border-default)] overflow-hidden bg-[var(--bg-surface)] max-w-full">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[var(--bg-surface-muted)] border-b border-[var(--border-subtle)] text-xs select-none">
+      <div className="h-9 flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] text-xs select-none">
         <div className="flex items-center gap-2">
           <Code2 className="w-3.5 h-3.5 text-amber-500" />
-          <span className="font-semibold text-[var(--text-primary)]">
-            {example.title || 'Code Example'}
+          <span className="font-medium text-[var(--text-primary)] font-mono text-xs">
+            {example.title || 'code_example'}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -128,27 +128,27 @@ function CodeBlock({ example }: CodeBlockProps) {
             type="button"
             onClick={handleRun}
             disabled={isRunning}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 active:bg-emerald-500/30 transition-colors disabled:opacity-50 cursor-pointer"
+            className="flex items-center gap-1 h-6 px-2 rounded-md text-[11px] font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 active:bg-emerald-500/30 transition-colors disabled:opacity-50 cursor-pointer"
             title="Run this code in browser"
           >
             <Play className="w-3 h-3 fill-current" />
-            <span>Run</span>
+            <span>run</span>
           </button>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
+            className="flex items-center gap-1 h-6 px-2 rounded-md text-[11px] font-mono font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
             title="Copy code"
           >
             {copied ? (
               <>
                 <Check className="w-3 h-3 text-emerald-500" />
-                <span className="text-emerald-500 font-medium">Copied</span>
+                <span className="text-emerald-500">copied</span>
               </>
             ) : (
               <>
                 <Copy className="w-3 h-3" />
-                <span>Copy</span>
+                <span>copy</span>
               </>
             )}
           </button>
@@ -212,10 +212,10 @@ function CodeBlock({ example }: CodeBlockProps) {
 
       {/* Expected output or live output */}
       {(output || example.output) && (
-        <div className="px-4 py-2.5 border-t border-[var(--border-subtle)] bg-[var(--bg-surface-muted)]">
+        <div className="px-3 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-surface-muted)]">
           <div className="flex items-center gap-1.5 mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              {output ? '▸ Console Output' : '▸ Expected Output'}
+            <span className="text-[10px] font-mono text-[var(--text-muted)]">
+              {output ? '▸ console_output' : '▸ expected_output'}
             </span>
           </div>
           <pre className="text-xs font-mono text-emerald-600 dark:text-emerald-400 whitespace-pre-wrap">
@@ -226,9 +226,9 @@ function CodeBlock({ example }: CodeBlockProps) {
 
       {/* Explanation callout */}
       {example.explanation && (
-        <div className="px-4 py-2.5 border-t border-[var(--border-subtle)] bg-[var(--bg-app)]">
+        <div className="px-3 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-app)]">
           <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-            💡 {example.explanation}
+            {example.explanation}
           </p>
         </div>
       )}

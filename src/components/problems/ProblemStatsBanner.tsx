@@ -4,7 +4,7 @@ import {
   getProblemStats,
   getAllProblemStates,
 } from '../../problem-engine/storage';
-import { Sparkles, Trophy, Star, Shuffle, CheckCircle2 } from 'lucide-react';
+import { Trophy, Star, Shuffle, CheckCircle2, Play } from 'lucide-react';
 import { Link } from 'react-router';
 
 interface ProblemStatsBannerProps {
@@ -37,97 +37,91 @@ function ProblemStatsBanner({
     problems.find((p) => !allStates[p.slug]?.isSolved) || problems[0];
 
   return (
-    <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-xs transition-all mb-6">
-      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6">
-        {/* Left: Overall Completion Circle & Info */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-          <div className="relative flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 shrink-0">
-            <div className="text-center">
-              <div className="text-lg sm:text-2xl font-black text-amber-500 leading-none">
-                {stats.solved}
-              </div>
-              <div className="text-[10px] sm:text-[11px] font-medium text-[var(--text-secondary)] mt-1">
-                / {stats.total} Solved
-              </div>
-            </div>
+    <div className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] p-3.5 shadow-xs transition-colors mb-4">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        {/* Left: Overall Completion & Info */}
+        <div className="flex items-center gap-3.5">
+          <div className="flex flex-col items-center justify-center w-14 h-14 rounded-md border border-[var(--border-default)] bg-[var(--bg-app)] shrink-0 font-mono">
+            <span className="text-lg font-bold text-amber-500 leading-none">
+              {stats.solved}
+            </span>
+            <span className="text-[10px] text-[var(--text-muted)] mt-1">
+              /{stats.total}
+            </span>
           </div>
 
           <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
-                Your JavaScript Progress
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-[var(--text-primary)]">
+                Challenge Progress
               </h2>
               {stats.solved > 0 && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
                   <CheckCircle2 className="w-3 h-3" />
-                  {stats.percentage}% Done
+                  {stats.percentage}%
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1 max-w-md">
-              Master JavaScript fundamentals, algorithms, closures, and async
-              patterns with instant in-browser test feedback.
-            </p>
 
-            <div className="flex items-center gap-3 mt-2 text-xs text-[var(--text-muted)]">
+            <div className="flex items-center gap-3 mt-1 text-xs font-mono text-[var(--text-muted)]">
               <span className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                {stats.starredCount} Favorited
+                <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                <span>{stats.starredCount} starred</span>
               </span>
               <span>•</span>
               <span className="flex items-center gap-1">
-                <Trophy className="w-3.5 h-3.5 text-amber-500" />
-                {stats.total - stats.solved} Remaining
+                <Trophy className="w-3 h-3 text-[var(--text-muted)]" />
+                <span>{stats.total - stats.solved} remaining</span>
               </span>
             </div>
           </div>
         </div>
 
         {/* Middle: Difficulty Breakdown Progress Bars */}
-        <div className="flex-1 max-w-md grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+        <div className="flex-1 max-w-md grid grid-cols-3 gap-2">
           {/* Easy */}
-          <div className="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)]">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-emerald-500">Easy</span>
-              <span className="font-mono text-[11px] text-[var(--text-secondary)]">
+          <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
+            <div className="flex items-center justify-between text-[11px] mb-1">
+              <span className="font-mono font-medium text-emerald-500">Easy</span>
+              <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.easySolved}/{stats.easyTotal}
               </span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-[var(--border-default)] overflow-hidden">
+            <div className="w-full h-1 rounded-full bg-[var(--border-default)] overflow-hidden">
               <div
-                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                className="h-full bg-emerald-500 rounded-full transition-all duration-300"
                 style={{ width: `${easyPercent}%` }}
               />
             </div>
           </div>
 
           {/* Medium */}
-          <div className="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)]">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-amber-500">Medium</span>
-              <span className="font-mono text-[11px] text-[var(--text-secondary)]">
+          <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
+            <div className="flex items-center justify-between text-[11px] mb-1">
+              <span className="font-mono font-medium text-amber-500">Medium</span>
+              <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.mediumSolved}/{stats.mediumTotal}
               </span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-[var(--border-default)] overflow-hidden">
+            <div className="w-full h-1 rounded-full bg-[var(--border-default)] overflow-hidden">
               <div
-                className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                className="h-full bg-amber-500 rounded-full transition-all duration-300"
                 style={{ width: `${mediumPercent}%` }}
               />
             </div>
           </div>
 
           {/* Hard */}
-          <div className="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)]">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-rose-500">Hard</span>
-              <span className="font-mono text-[11px] text-[var(--text-secondary)]">
+          <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
+            <div className="flex items-center justify-between text-[11px] mb-1">
+              <span className="font-mono font-medium text-rose-500">Hard</span>
+              <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.hardSolved}/{stats.hardTotal}
               </span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-[var(--border-default)] overflow-hidden">
+            <div className="w-full h-1 rounded-full bg-[var(--border-default)] overflow-hidden">
               <div
-                className="h-full bg-rose-500 rounded-full transition-all duration-500"
+                className="h-full bg-rose-500 rounded-full transition-all duration-300"
                 style={{ width: `${hardPercent}%` }}
               />
             </div>
@@ -135,13 +129,13 @@ function ProblemStatsBanner({
         </div>
 
         {/* Right: Quick Action Buttons */}
-        <div className="flex flex-col w-full sm:w-auto items-stretch justify-center gap-2 shrink-0">
+        <div className="flex sm:flex-row lg:flex-col items-stretch gap-1.5 shrink-0">
           {nextUnsolved && (
             <Link
               to={`/problems/${nextUnsolved.slug}`}
-              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold shadow-xs transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Play className="w-3 h-3 fill-black" />
               <span>Continue Solving</span>
             </Link>
           )}
@@ -150,9 +144,9 @@ function ProblemStatsBanner({
             <button
               type="button"
               onClick={onPickRandom}
-              className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
-              <Shuffle className="w-3.5 h-3.5" />
+              <Shuffle className="w-3 h-3" />
               <span>Pick Random</span>
             </button>
           )}

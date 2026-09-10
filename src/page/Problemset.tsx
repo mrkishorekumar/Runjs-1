@@ -13,7 +13,7 @@ import {
 } from '../problem-engine/storage';
 import SEO from '../seo/SEO';
 import { getBreadcrumbSchema, getCanonicalUrl } from '../seo/seoConfig';
-import { Code2, Sparkles } from 'lucide-react';
+import { Code2 } from 'lucide-react';
 
 function Problemset() {
   const navigate = useNavigate();
@@ -160,18 +160,13 @@ function Problemset() {
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="pb-6 border-b border-[var(--border-default)]">
-          <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Problemset & Challenges</span>
-          </div>
-
+        <div className="pb-4 border-b border-[var(--border-default)]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+              <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
                 JavaScript Coding Challenges
               </h1>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1.5 leading-relaxed max-w-2xl">
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5 max-w-2xl">
                 Practice foundational algorithms, data structures, closures,
                 promises, debounce, and polyfills with instant in-browser test
                 execution.
@@ -179,9 +174,9 @@ function Problemset() {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-secondary)]">
                 <Code2 className="w-3.5 h-3.5 text-amber-500" />
-                <span>{PROBLEMS.length} Curated Challenges</span>
+                <span>{PROBLEMS.length} challenges</span>
               </span>
             </div>
           </div>

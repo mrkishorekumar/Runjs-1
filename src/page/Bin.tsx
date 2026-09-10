@@ -45,30 +45,31 @@ function Bin() {
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--border-default)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-default)]">
           <div className="flex items-center gap-3">
             <Link
               to="/dashboard"
               title="Back to Dashboard"
-              className="p-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              aria-label="Back to Dashboard"
+              className="p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <Trash2 className="w-5 h-5 text-red-500" />
-                <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+                <Trash2 className="w-4 h-4 text-red-500" />
+                <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
                   Recently Deleted
                 </h1>
               </div>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
                 Items in the trash can be restored or permanently removed.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)]">
-            <span>Deleted items:</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-secondary)]">
+            <span>deleted:</span>
             <span className="font-semibold text-[var(--text-primary)]">
               {userSavedCode.length}
             </span>
@@ -77,8 +78,8 @@ function Bin() {
 
         {/* Warning Banner */}
         {userSavedCode.length > 0 && (
-          <div className="my-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-xs text-amber-700 dark:text-amber-300 flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="my-4 p-3 rounded-md border border-amber-500/30 bg-amber-500/10 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <p>
               Items in the trash are preserved locally in IndexedDB until you
               choose to permanently delete them.

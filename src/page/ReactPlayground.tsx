@@ -239,22 +239,22 @@ function ReactWorkspace() {
   return (
     <main className="h-screen w-full flex flex-col bg-[var(--bg-app)] overflow-hidden">
       {/* Top IDE Header */}
-      <nav className="h-12 w-full flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
+      <nav className="h-10 w-full flex items-center justify-between px-2.5 sm:px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
         {/* Left: Brand, Project Title & Template Switcher */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             to="/dashboard"
             title="Back to Dashboard"
-            className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="flex items-center gap-1 p-1 rounded hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            <div className="flex items-center justify-center w-6 h-6 rounded-md bg-cyan-500 text-black font-bold text-xs shadow-xs">
-              <Atom className="w-4 h-4" />
+            <div className="flex items-center justify-center w-5 h-5 rounded border border-cyan-500/40 bg-cyan-500/10 text-cyan-500 font-mono font-bold text-[10px]">
+              <Atom className="w-3.5 h-3.5" />
             </div>
           </Link>
 
           {/* Project Title with Inline Rename */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 font-mono text-xs">
             {isEditingTitle ? (
               <div className="flex items-center gap-1">
                 <input
@@ -272,7 +272,7 @@ function ReactWorkspace() {
                 <button
                   type="button"
                   onClick={handleTitleSubmit}
-                  className="p-1 rounded text-emerald-500 hover:bg-[var(--bg-surface-hover)]"
+                  className="p-0.5 rounded text-emerald-500 hover:bg-[var(--bg-surface-hover)]"
                 >
                   <Check className="w-3.5 h-3.5" />
                 </button>
@@ -283,15 +283,16 @@ function ReactWorkspace() {
                 title="Click to rename"
                 className="group flex items-center gap-1 cursor-pointer"
               >
-                <span className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-cyan-500 transition-colors">
+                <span className="font-semibold text-[var(--text-primary)] group-hover:text-cyan-500 transition-colors">
                   {projectName}
                 </span>
                 <Edit2 className="w-3 h-3 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
 
-            <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-semibold rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">
-              React + Vite
+            <span className="text-[var(--border-default)]">/</span>
+            <span className="hidden sm:inline-block text-[10px] text-[var(--text-muted)]">
+              Vite HMR
             </span>
           </div>
 
@@ -301,7 +302,7 @@ function ReactWorkspace() {
               type="button"
               onClick={() => setIsResetModalOpen(true)}
               title="Reset Workspace to Clean Template"
-              className="flex items-center gap-1 px-2 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-muted)] text-[11px] text-[var(--text-muted)] hover:text-rose-500 hover:border-rose-500/30 transition-colors cursor-pointer"
+              className="flex items-center gap-1 px-1.5 py-0.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface-muted)] text-[10px] text-[var(--text-muted)] hover:text-rose-500 hover:border-rose-500/30 transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Reset</span>
@@ -317,11 +318,11 @@ function ReactWorkspace() {
             onClick={saveProject}
             disabled={isSaving}
             title="Save Project (⌘S)"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-black text-xs font-semibold shadow-xs transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 text-white text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
           >
-            <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
+            <Save className={`w-3 h-3 ${isSaving ? 'animate-spin' : ''}`} />
             <span>{isSaving ? 'Saving...' : 'Save'}</span>
-            <kbd className="hidden lg:inline-block ml-1 px-1 py-0.2 text-[9px] font-mono bg-black/15 text-black rounded">
+            <kbd className="hidden lg:inline-block ml-0.5 px-1 py-0.2 text-[9px] font-mono bg-white/20 text-white rounded">
               ⌘S
             </kbd>
           </button>
@@ -331,22 +332,22 @@ function ReactWorkspace() {
             type="button"
             onClick={handleFormat}
             title="Format Document (Shift+Alt+F)"
-            className="p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="p-1 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
-            <AlignLeft className="w-4 h-4" />
+            <AlignLeft className="w-3.5 h-3.5" />
           </button>
 
           {/* Font Size Adjusters */}
-          <div className="flex items-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-0.5">
+          <div className="flex items-center rounded border border-[var(--border-default)] bg-[var(--bg-surface-muted)] p-0.5">
             <button
               type="button"
               onClick={() => handleFontSize('decrease')}
               title="Decrease font size"
               className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
             >
-              <ZoomOut className="w-3.5 h-3.5" />
+              <ZoomOut className="w-3 h-3" />
             </button>
-            <span className="px-1.5 text-[11px] font-mono text-[var(--text-muted)]">
+            <span className="px-1.5 text-[10px] font-mono text-[var(--text-muted)]">
               {fontSize}px
             </span>
             <button
@@ -355,7 +356,7 @@ function ReactWorkspace() {
               title="Increase font size"
               className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
             >
-              <ZoomIn className="w-3.5 h-3.5" />
+              <ZoomIn className="w-3 h-3" />
             </button>
           </div>
 
@@ -368,14 +369,14 @@ function ReactWorkspace() {
               onClick={toggleExplorer}
               title="Toggle File Explorer (⌘B)"
               aria-label="Toggle File Explorer"
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md border text-xs font-medium transition-all ${
+              className={`flex items-center gap-1 px-2 py-1 rounded border text-xs font-medium transition-colors ${
                 isExplorerOpen
-                  ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-semibold'
+                  ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-500 font-semibold'
                   : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
-              <FolderTree className="w-3.5 h-3.5" />
-              <span className="hidden xl:inline text-[11px]">Files</span>
+              <FolderTree className="w-3 h-3" />
+              <span className="hidden xl:inline text-[10px]">Files</span>
             </button>
 
             <button
@@ -383,14 +384,14 @@ function ReactWorkspace() {
               onClick={toggleTerminal}
               title="Toggle Terminal (⌘`)"
               aria-label="Toggle Terminal"
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md border text-xs font-medium transition-all ${
+              className={`flex items-center gap-1 px-2 py-1 rounded border text-xs font-medium transition-colors ${
                 isTerminalOpen
-                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold'
+                  ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-500 font-semibold'
                   : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
-              <TerminalIcon className="w-3.5 h-3.5" />
-              <span className="hidden xl:inline text-[11px]">Terminal</span>
+              <TerminalIcon className="w-3 h-3" />
+              <span className="hidden xl:inline text-[10px]">Terminal</span>
             </button>
 
             <button
@@ -398,14 +399,14 @@ function ReactWorkspace() {
               onClick={toggleConsole}
               title="Toggle Luna Console"
               aria-label="Toggle Console"
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md border text-xs font-medium transition-all ${
+              className={`flex items-center gap-1 px-2 py-1 rounded border text-xs font-medium transition-colors ${
                 isConsoleOpen
-                  ? 'border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold'
+                  ? 'border-amber-500/40 bg-amber-500/10 text-amber-500 font-semibold'
                   : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span className="hidden xl:inline text-[11px]">Console</span>
+              <MessageSquare className="w-3 h-3" />
+              <span className="hidden xl:inline text-[10px]">Console</span>
             </button>
           </div>
         </div>

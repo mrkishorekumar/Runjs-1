@@ -53,7 +53,7 @@ import {
   Code2,
   CheckCircle2,
   Terminal as TerminalIcon,
-  Sparkles,
+  Play,
 } from 'lucide-react';
 
 function ProblemSolving() {
@@ -479,9 +479,9 @@ function ProblemSolving() {
               >
                 {/* Editor Container */}
                 <div className="h-full flex flex-col bg-[var(--bg-app)] overflow-hidden">
-                  <div className="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none">
+                  <div className="h-8 flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none">
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-medium border border-[var(--border-subtle)]">
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-mono text-xs border border-[var(--border-subtle)]">
                         <Code2 className="w-3.5 h-3.5 text-amber-500" />
                         <span>solution.js</span>
                       </div>
@@ -509,44 +509,44 @@ function ProblemSolving() {
                 {/* Bottom Test Runner & Console Pane */}
                 <div className="h-full flex flex-col bg-[var(--bg-app)] overflow-hidden border-t border-[var(--border-default)]">
                   {/* Bottom Tab Strip */}
-                  <div className="flex items-center justify-between px-3 py-1 bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none shrink-0">
+                  <div className="h-8 flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none shrink-0">
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
                         onClick={() => setBottomTab('cases')}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                        className={`flex items-center gap-1.5 h-6 px-2.5 rounded-md text-xs font-mono transition-colors cursor-pointer ${
                           bottomTab === 'cases'
-                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)]'
+                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)]'
                             : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                         }`}
                       >
-                        <span>Test Cases</span>
+                        <span>test_cases</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setBottomTab('results')}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                        className={`flex items-center gap-1.5 h-6 px-2.5 rounded-md text-xs font-mono transition-colors cursor-pointer ${
                           bottomTab === 'results'
-                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)]'
+                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)]'
                             : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                         }`}
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <span>Test Results</span>
+                        <Play className="w-3 h-3 text-amber-500 fill-amber-500" />
+                        <span>test_results</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setBottomTab('console')}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                        className={`flex items-center gap-1.5 h-6 px-2.5 rounded-md text-xs font-mono transition-colors cursor-pointer ${
                           bottomTab === 'console'
-                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)]'
+                            ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)]'
                             : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                         }`}
                       >
-                        <TerminalIcon className="w-3.5 h-3.5 text-emerald-500" />
-                        <span>Console</span>
+                        <TerminalIcon className="w-3 h-3 text-emerald-500" />
+                        <span>console</span>
                       </button>
                     </div>
                   </div>
