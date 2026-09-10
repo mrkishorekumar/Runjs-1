@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --color-CustomDarkGrey: var(--bg-app);
   --color-custom-dark-grey: var(--bg-app);
   --color-WindowBorder: var(--border-default);
@@ -123,6 +124,7 @@
   }
 
   body {
+    font-family: inherit;
     background-color: var(--bg-app);
     color: var(--text-primary);
     min-height: 100vh;
