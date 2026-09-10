@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "type": "module",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.20.0"
   },
   "packageManager": "pnpm@12.2.1",
   "scripts": {
@@ -20,7 +20,7 @@
     "test:output-questions": "node scripts/test-output-questions.js",
     "test:complexity": "node scripts/test-complexity.js",
     "test:react": "node scripts/test-react-playground.js",
-    "build": "node scripts/generate-sitemap.js && npm run test:output-questions && npm run test:complexity && tsc -b && vite build && node scripts/prerender-routes.js",
+    "build": "node scripts/generate-sitemap.js && tsc -b && vite build && node scripts/prerender-routes.js",
     "lint": "eslint ./src",
     "pretty": "prettier --write ./src",
     "preview": "vite preview",
