@@ -236,23 +236,23 @@ function Navbar() {
   return (
     <header
       ref={navRef}
-      className="sticky top-0 z-40 w-full border-b border-[var(--border-default)] bg-[var(--bg-surface)]/90 backdrop-blur-md transition-colors duration-150"
+      className="sticky top-0 z-40 w-full border-b border-[var(--border-default)] bg-[var(--bg-surface)]/95 backdrop-blur-md transition-colors duration-150"
     >
-      <div className="max-w-7xl mx-auto flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto flex h-12 items-center justify-between px-3 sm:px-5 lg:px-6">
         {/* Left Side: Brand Logo */}
         <div className="flex items-center justify-start shrink-0">
           <Link
             to="/"
-            className="flex items-center gap-2.5 group rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-surface)]"
+            className="flex items-center gap-2 group rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]/50"
           >
-            <div className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-black shadow-xs group-hover:scale-105 transition-transform duration-150">
-              <Code2 className="w-4 h-4 stroke-[2.5]" />
+            <div className="flex items-center justify-center w-7 h-7 rounded-md bg-[var(--bg-surface-elevated)] border border-amber-500/40 text-amber-500 group-hover:border-amber-500 transition-colors">
+              <Code2 className="w-4 h-4 stroke-[2.2]" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold tracking-tight text-[var(--text-primary)]">
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm font-bold tracking-tight text-[var(--text-primary)]">
                 Run<span className="text-amber-500">JS</span>
               </span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
+              <span className="hidden sm:inline-block px-1 py-0.2 text-[9px] font-mono uppercase tracking-wider rounded border border-[var(--border-default)] bg-[var(--bg-surface-muted)] text-[var(--text-muted)]">
                 v2.0
               </span>
             </div>
@@ -261,7 +261,7 @@ function Navbar() {
 
         {/* Center: Desktop Nav Items */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-1 xl:gap-1.5"
+          className="hidden lg:flex items-center justify-center gap-1"
           aria-label="Main navigation"
         >
           {/* 1. Playgrounds Dropdown */}
@@ -275,15 +275,15 @@ function Navbar() {
               onClick={() => toggleDropdown('playgrounds')}
               aria-expanded={openDropdown === 'playgrounds'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
                 isPlaygroundActive || openDropdown === 'playgrounds'
-                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold shadow-xs'
+                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
               <span>Playgrounds</span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-150 ${
                   openDropdown === 'playgrounds'
                     ? 'rotate-180 text-amber-500'
                     : ''
@@ -294,16 +294,16 @@ function Navbar() {
             {/* Playgrounds Menu Panel */}
             {openDropdown === 'playgrounds' && (
               <div
-                className="absolute left-0 top-full pt-1.5 w-80 z-50 animate-in fade-in zoom-in-95 duration-150"
+                className="absolute left-0 top-full pt-1.5 w-76 z-50 animate-in fade-in zoom-in-95 duration-120"
                 onMouseEnter={() => handleMouseEnter('playgrounds')}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-2 shadow-xl ring-1 ring-black/5">
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                    Code Environments
+                <div className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1.5 shadow-lg">
+                  <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+                    Playgrounds & Visualizers
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     {playgroundLinks.map((item) => {
                       const isActive =
                         location.pathname === item.link ||
@@ -313,9 +313,9 @@ function Navbar() {
                           key={item.link}
                           to={item.link}
                           onClick={() => setOpenDropdown(null)}
-                          className={`flex items-start gap-3 p-2.5 rounded-xl transition-all ${
+                          className={`flex items-start gap-2.5 p-2 rounded-md transition-colors ${
                             isActive
-                              ? 'bg-amber-500/10 border border-amber-500/20 text-[var(--text-primary)]'
+                              ? 'bg-amber-500/10 border border-amber-500/25 text-[var(--text-primary)]'
                               : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                           }`}
                         >
@@ -326,12 +326,12 @@ function Navbar() {
                                 {item.title}
                               </span>
                               {item.badge && (
-                                <span className="px-1.5 py-0.2 text-[9px] font-bold uppercase rounded bg-[var(--bg-surface-active)] text-[var(--text-muted)] border border-[var(--border-default)]">
+                                <span className="px-1.5 py-0.2 text-[9px] font-mono rounded bg-[var(--bg-surface-active)] text-[var(--text-muted)] border border-[var(--border-default)]">
                                   {item.badge}
                                 </span>
                               )}
                             </div>
-                            <p className="text-[11px] text-[var(--text-secondary)] leading-snug mt-0.5 line-clamp-1">
+                            <p className="text-[11px] text-[var(--text-muted)] leading-snug mt-0.5 line-clamp-1">
                               {item.description}
                             </p>
                           </div>
@@ -356,15 +356,15 @@ function Navbar() {
               <Link
                 key={item.link}
                 to={item.link}
-                className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 ${
                   isActive
-                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold shadow-xs'
+                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                 }`}
               >
                 <span>{item.title}</span>
                 {item.badge && (
-                  <span className="px-1.5 py-0.2 text-[9px] font-bold uppercase rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  <span className="px-1.5 py-0.2 text-[9px] font-mono rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
                     {item.badge}
                   </span>
                 )}
@@ -383,15 +383,15 @@ function Navbar() {
               onClick={() => toggleDropdown('interview')}
               aria-expanded={openDropdown === 'interview'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
                 isInterviewActive || openDropdown === 'interview'
-                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold shadow-xs'
+                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
               <span>Interview</span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-150 ${
                   openDropdown === 'interview'
                     ? 'rotate-180 text-amber-500'
                     : ''
@@ -402,16 +402,16 @@ function Navbar() {
             {/* Interview Menu Panel */}
             {openDropdown === 'interview' && (
               <div
-                className="absolute left-0 top-full pt-1.5 w-80 z-50 animate-in fade-in zoom-in-95 duration-150"
+                className="absolute left-0 top-full pt-1.5 w-76 z-50 animate-in fade-in zoom-in-95 duration-120"
                 onMouseEnter={() => handleMouseEnter('interview')}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-2 shadow-xl ring-1 ring-black/5">
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                    Interview Preparation
+                <div className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1.5 shadow-lg">
+                  <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+                    Interview Practice
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     {interviewLinks.map((item) => {
                       const isActive =
                         location.pathname === item.link ||
@@ -421,9 +421,9 @@ function Navbar() {
                           key={item.link}
                           to={item.link}
                           onClick={() => setOpenDropdown(null)}
-                          className={`flex items-start gap-3 p-2.5 rounded-xl transition-all ${
+                          className={`flex items-start gap-2.5 p-2 rounded-md transition-colors ${
                             isActive
-                              ? 'bg-amber-500/10 border border-amber-500/20 text-[var(--text-primary)]'
+                              ? 'bg-amber-500/10 border border-amber-500/25 text-[var(--text-primary)]'
                               : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                           }`}
                         >
@@ -434,12 +434,12 @@ function Navbar() {
                                 {item.title}
                               </span>
                               {item.badge && (
-                                <span className="px-1.5 py-0.2 text-[9px] font-bold uppercase rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                <span className="px-1.5 py-0.2 text-[9px] font-mono rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
                                   {item.badge}
                                 </span>
                               )}
                             </div>
-                            <p className="text-[11px] text-[var(--text-secondary)] leading-snug mt-0.5 line-clamp-1">
+                            <p className="text-[11px] text-[var(--text-muted)] leading-snug mt-0.5 line-clamp-1">
                               {item.description}
                             </p>
                           </div>
@@ -465,9 +465,9 @@ function Navbar() {
                 onMouseEnter={() => prefetchRoute(item.link)}
                 onFocus={() => prefetchRoute(item.link)}
                 onTouchStart={() => prefetchRoute(item.link)}
-                className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 ${
                   isActive
-                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold shadow-xs'
+                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                 }`}
               >
@@ -487,15 +487,15 @@ function Navbar() {
               onClick={() => toggleDropdown('more')}
               aria-expanded={openDropdown === 'more'}
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 cursor-pointer ${
                 isMoreActive || openDropdown === 'more'
-                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold shadow-xs'
+                  ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
               }`}
             >
               <span>More</span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-150 ${
                   openDropdown === 'more' ? 'rotate-180 text-amber-500' : ''
                 }`}
               />
@@ -504,16 +504,16 @@ function Navbar() {
             {/* More Menu Panel */}
             {openDropdown === 'more' && (
               <div
-                className="absolute left-0 top-full pt-1.5 w-64 z-50 animate-in fade-in zoom-in-95 duration-150"
+                className="absolute left-0 top-full pt-1.5 w-64 z-50 animate-in fade-in zoom-in-95 duration-120"
                 onMouseEnter={() => handleMouseEnter('more')}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-2 shadow-xl ring-1 ring-black/5">
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                    Resources & Utilities
+                <div className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1.5 shadow-lg">
+                  <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+                    Utilities & Links
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     {moreNavLinks.map((item) => {
                       const isActive =
                         !item.isExternal && location.pathname === item.link;
@@ -526,7 +526,7 @@ function Navbar() {
                             target="_blank"
                             rel="noreferrer noopener"
                             onClick={() => setOpenDropdown(null)}
-                            className="flex items-center gap-2.5 p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-all"
+                            className="flex items-center gap-2 p-1.5 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
                           >
                             {renderMoreIcon(item.iconName)}
                             <div className="flex-1 min-w-0">
@@ -534,7 +534,7 @@ function Navbar() {
                                 <span>{item.title}</span>
                                 <ExternalLink className="w-3 h-3 text-[var(--text-muted)]" />
                               </div>
-                              <p className="text-[11px] text-[var(--text-secondary)] line-clamp-1">
+                              <p className="text-[11px] text-[var(--text-muted)] line-clamp-1">
                                 {item.description}
                               </p>
                             </div>
@@ -547,7 +547,7 @@ function Navbar() {
                           key={item.link}
                           to={item.link}
                           onClick={() => setOpenDropdown(null)}
-                          className={`flex items-center gap-2.5 p-2 rounded-xl transition-all ${
+                          className={`flex items-center gap-2 p-1.5 rounded-md transition-colors ${
                             isActive
                               ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] font-semibold'
                               : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -558,7 +558,7 @@ function Navbar() {
                             <span className="text-xs font-semibold text-[var(--text-primary)] block">
                               {item.title}
                             </span>
-                            <p className="text-[11px] text-[var(--text-secondary)] line-clamp-1">
+                            <p className="text-[11px] text-[var(--text-muted)] line-clamp-1">
                               {item.description}
                             </p>
                           </div>
@@ -573,15 +573,15 @@ function Navbar() {
         </nav>
 
         {/* Right Side: Quick Action + Theme Selector + Mobile Menu Trigger */}
-        <div className="flex items-center justify-end gap-2 shrink-0">
+        <div className="flex items-center justify-end gap-1.5 shrink-0">
           {/* Start Coding CTA (hidden on active playground pages) */}
           {!isPlaygroundActive && (
             <Link
               to="/js"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold shadow-xs transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
+              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold transition-colors"
             >
-              <Play className="w-3.5 h-3.5 fill-black" />
-              <span>Start Coding</span>
+              <Play className="w-3 h-3 fill-black" />
+              <span>Open Editor</span>
             </Link>
           )}
 
@@ -591,10 +591,10 @@ function Navbar() {
               type="button"
               onClick={openInstallModal}
               title="Install RunJS as Desktop App"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-semibold shadow-2xs transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-2 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-              <span>Install App</span>
+              <span>Install</span>
             </button>
           )}
 

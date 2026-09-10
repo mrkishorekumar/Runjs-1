@@ -110,9 +110,9 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
 
         {/* Part Dropdown Popover */}
         {openMenu === 'part' && (
-          <div className="absolute top-full left-0 mt-1.5 w-72 max-h-80 overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-2xl z-50">
-            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
-              Select Curriculum Part
+          <div className="absolute top-full left-0 mt-1.5 w-72 max-h-80 overflow-y-auto rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-lg z-50">
+            <div className="px-2 py-1 text-[10px] font-mono text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+              select_curriculum_part
             </div>
             {curriculum.map((p) => {
               const isCurrent = p.slug === part.slug;
@@ -124,7 +124,7 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
                   key={p.slug}
                   type="button"
                   onClick={() => handleSelect(targetSlug)}
-                  className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left text-xs transition-colors cursor-pointer ${
+                  className={`w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded-md text-left text-xs transition-colors cursor-pointer ${
                     isCurrent
                       ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -173,9 +173,9 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
 
         {/* Topic Dropdown Popover */}
         {openMenu === 'topic' && (
-          <div className="absolute top-full left-0 mt-1.5 w-64 max-h-80 overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-2xl z-50">
-            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
-              Topics in {part.title}
+          <div className="absolute top-full left-0 mt-1.5 w-64 max-h-80 overflow-y-auto rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-lg z-50">
+            <div className="px-2 py-1 text-[10px] font-mono text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+              topics_in_{part.slug}
             </div>
             {part.topics.map((t) => {
               const isCurrent = t.slug === topic.slug;
@@ -187,7 +187,7 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
                   key={t.slug}
                   type="button"
                   onClick={() => handleSelect(targetSlug)}
-                  className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left text-xs transition-colors cursor-pointer ${
+                  className={`w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded-md text-left text-xs transition-colors cursor-pointer ${
                     isCurrent
                       ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -235,9 +235,9 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
 
         {/* Lesson Dropdown Popover */}
         {openMenu === 'lesson' && (
-          <div className="absolute top-full right-0 sm:left-0 sm:right-auto mt-1.5 w-64 max-h-80 overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-2xl z-50">
-            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
-              Lessons in {topic.title}
+          <div className="absolute top-full right-0 sm:left-0 sm:right-auto mt-1.5 w-64 max-h-80 overflow-y-auto rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-lg z-50">
+            <div className="px-2 py-1 text-[10px] font-mono text-[var(--text-muted)] border-b border-[var(--border-subtle)] mb-1">
+              lessons_in_{topic.slug}
             </div>
             {topic.lessonSlugs.map((slug) => {
               const isCurrent = slug === currentSlug;
@@ -254,7 +254,7 @@ function DynamicBreadcrumb({ currentSlug }: DynamicBreadcrumbProps) {
                   key={slug}
                   type="button"
                   onClick={() => handleSelect(slug)}
-                  className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left text-xs transition-colors cursor-pointer ${
+                  className={`w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded-md text-left text-xs transition-colors cursor-pointer ${
                     isCurrent
                       ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'

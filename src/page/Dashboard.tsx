@@ -102,54 +102,47 @@ function Dashboard() {
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--border-default)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-default)]">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+            <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
               Workspace & Playgrounds
             </h1>
-            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
-              Manage your local projects, code snippets, and interview
-              solutions.
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              Manage your local projects, code snippets, and interview solutions.
             </p>
           </div>
 
-          {/* Quick Stats Chips */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs">
+          {/* Metrics Telemetry Bar */}
+          <div className="flex items-center gap-3 text-xs font-mono text-[var(--text-secondary)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-1.5 rounded-md">
+            <span className="flex items-center gap-1.5">
               <FolderCode className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-[var(--text-secondary)]">Total:</span>
-              <span className="font-semibold text-[var(--text-primary)]">
-                {totalCount}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs">
+              <span className="text-[var(--text-muted)]">total:</span>
+              <span className="font-semibold text-[var(--text-primary)]">{totalCount}</span>
+            </span>
+            <span className="text-[var(--border-default)]">|</span>
+            <span className="flex items-center gap-1.5">
               <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-              <span className="text-[var(--text-secondary)]">Starred:</span>
-              <span className="font-semibold text-[var(--text-primary)]">
-                {starredCount}
+              <span className="text-[var(--text-muted)]">starred:</span>
+              <span className="font-semibold text-[var(--text-primary)]">{starredCount}</span>
+            </span>
+            <span className="text-[var(--border-default)]">|</span>
+            <span className="flex items-center gap-2">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+                <span className="text-[var(--text-muted)]">react:</span>
+                <span className="font-semibold text-[var(--text-primary)]">{reactCount}</span>
               </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs">
-              <span className="w-2 h-2 rounded-full bg-cyan-500" />
-              <span className="text-[var(--text-secondary)]">React:</span>
-              <span className="font-semibold text-[var(--text-primary)]">
-                {reactCount}
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                <span className="text-[var(--text-muted)]">js:</span>
+                <span className="font-semibold text-[var(--text-primary)]">{jsCount}</span>
               </span>
-              <span className="text-[var(--text-muted)] mx-0.5">/</span>
-              <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span className="text-[var(--text-secondary)]">JS:</span>
-              <span className="font-semibold text-[var(--text-primary)]">
-                {jsCount}
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span className="text-[var(--text-muted)]">ts:</span>
+                <span className="font-semibold text-[var(--text-primary)]">{tsCount}</span>
               </span>
-              <span className="text-[var(--text-muted)] mx-0.5">/</span>
-              <span className="w-2 h-2 rounded-full bg-blue-500" />
-              <span className="text-[var(--text-secondary)]">TS:</span>
-              <span className="font-semibold text-[var(--text-primary)]">
-                {tsCount}
-              </span>
-            </div>
+            </span>
           </div>
         </div>
 

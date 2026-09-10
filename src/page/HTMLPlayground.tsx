@@ -561,17 +561,17 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
     <div
       className={`h-full flex flex-col overflow-hidden bg-[var(--bg-app)] ${borderClass}`}
     >
-      <div className="h-8 px-3 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
-        <div className="flex items-center gap-1.5 font-semibold text-[var(--text-primary)]">
+      <div className="h-7 px-2.5 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
+        <div className="flex items-center gap-1.5 text-[var(--text-primary)]">
           <FileCode className="w-3.5 h-3.5 text-orange-500" />
-          <span>HTML</span>
+          <span className="font-mono text-[11px] font-medium">index.html</span>
           {maximizedEditor === 'html' && (
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
-              Full View
+            <span className="px-1 py-0.2 rounded text-[9px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              maximized
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={() => handleCopyCode('html', html)}
@@ -602,7 +602,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
             title={
               maximizedEditor === 'html'
                 ? 'Restore Split View'
-                : 'Full View (Maximize)'
+                : 'Maximize Editor'
             }
             className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
           >
@@ -641,17 +641,17 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
     <div
       className={`h-full flex flex-col overflow-hidden bg-[var(--bg-app)] ${borderClass}`}
     >
-      <div className="h-8 px-3 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
-        <div className="flex items-center gap-1.5 font-semibold text-[var(--text-primary)]">
+      <div className="h-7 px-2.5 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
+        <div className="flex items-center gap-1.5 text-[var(--text-primary)]">
           <Palette className="w-3.5 h-3.5 text-blue-500" />
-          <span>CSS</span>
+          <span className="font-mono text-[11px] font-medium">style.css</span>
           {maximizedEditor === 'css' && (
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
-              Full View
+            <span className="px-1 py-0.2 rounded text-[9px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              maximized
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={() => handleCopyCode('css', css)}
@@ -682,7 +682,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
             title={
               maximizedEditor === 'css'
                 ? 'Restore Split View'
-                : 'Full View (Maximize)'
+                : 'Maximize Editor'
             }
             className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
           >
@@ -721,17 +721,17 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
     <div
       className={`h-full flex flex-col overflow-hidden bg-[var(--bg-app)] ${borderClass}`}
     >
-      <div className="h-8 px-3 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
-        <div className="flex items-center gap-1.5 font-semibold text-[var(--text-primary)]">
+      <div className="h-7 px-2.5 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] text-xs select-none shrink-0">
+        <div className="flex items-center gap-1.5 text-[var(--text-primary)]">
           <Code2 className="w-3.5 h-3.5 text-amber-500" />
-          <span>JavaScript</span>
+          <span className="font-mono text-[11px] font-medium">script.js</span>
           {maximizedEditor === 'js' && (
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
-              Full View
+            <span className="px-1 py-0.2 rounded text-[9px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              maximized
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={() => handleCopyCode('js', javascript)}
@@ -762,7 +762,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
             title={
               maximizedEditor === 'js'
                 ? 'Restore Split View'
-                : 'Full View (Maximize)'
+                : 'Maximize Editor'
             }
             className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
           >
@@ -799,9 +799,9 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
 
   const renderCollapsedVerticalBar = (tab: EditorTab) => {
     const config = {
-      html: { name: 'HTML', icon: FileCode, color: 'text-orange-500' },
-      css: { name: 'CSS', icon: Palette, color: 'text-blue-500' },
-      js: { name: 'JavaScript', icon: Code2, color: 'text-amber-500' },
+      html: { name: 'index.html', icon: FileCode, color: 'text-orange-500' },
+      css: { name: 'style.css', icon: Palette, color: 'text-blue-500' },
+      js: { name: 'script.js', icon: Code2, color: 'text-amber-500' },
     }[tab];
     const Icon = config.icon;
 
@@ -809,15 +809,13 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
       <div
         key={`collapsed-vert-${tab}`}
         onClick={() => toggleCollapseEditor(tab)}
-        className="h-8 w-full shrink-0 px-3 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none text-xs cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-colors"
-        title={`Click to expand ${config.name}`}
+        className="h-7 w-full shrink-0 px-2.5 flex items-center justify-between bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none text-xs cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-colors"
+        title={`Expand ${config.name}`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--text-muted)]">
           <Icon className={`w-3.5 h-3.5 ${config.color}`} />
-          <span className="font-semibold text-[var(--text-secondary)]">
-            {config.name}
-          </span>
-          <span className="text-[10px] text-[var(--text-muted)]">(Closed)</span>
+          <span>{config.name}</span>
+          <span className="text-[10px] text-[var(--text-muted)]">(hidden)</span>
         </div>
         <button
           type="button"
@@ -825,11 +823,11 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
             e.stopPropagation();
             toggleCollapseEditor(tab);
           }}
-          className="flex items-center gap-1 text-[11px] font-medium text-amber-500 hover:text-amber-400 py-0.5 px-1.5 rounded bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
+          className="flex items-center gap-1 text-[10px] font-mono text-amber-500 hover:text-amber-400 py-0.5 px-1 rounded bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
           title={`Expand ${config.name}`}
         >
           <Plus className="w-3 h-3" />
-          <span>Expand</span>
+          <span>show</span>
         </button>
       </div>
     );
@@ -837,9 +835,9 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
 
   const renderCollapsedHorizontalBar = (tab: EditorTab) => {
     const config = {
-      html: { name: 'HTML', icon: FileCode, color: 'text-orange-500' },
-      css: { name: 'CSS', icon: Palette, color: 'text-blue-500' },
-      js: { name: 'JS', icon: Code2, color: 'text-amber-500' },
+      html: { name: 'index.html', icon: FileCode, color: 'text-orange-500' },
+      css: { name: 'style.css', icon: Palette, color: 'text-blue-500' },
+      js: { name: 'script.js', icon: Code2, color: 'text-amber-500' },
     }[tab];
     const Icon = config.icon;
 
@@ -847,11 +845,11 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
       <div
         key={`collapsed-horiz-${tab}`}
         onClick={() => toggleCollapseEditor(tab)}
-        className="w-9 h-full shrink-0 flex flex-col items-center justify-between py-2 bg-[var(--bg-surface)] border-r border-[var(--border-default)] select-none cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-colors"
-        title={`Click to expand ${config.name}`}
+        className="w-7 h-full shrink-0 flex flex-col items-center justify-between py-2 bg-[var(--bg-surface)] border-r border-[var(--border-default)] select-none cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-colors"
+        title={`Expand ${config.name}`}
       >
         <Icon className={`w-3.5 h-3.5 ${config.color}`} />
-        <span className="text-[11px] font-semibold text-[var(--text-secondary)] tracking-wider [writing-mode:vertical-rl] rotate-180">
+        <span className="text-[10px] font-mono text-[var(--text-muted)] tracking-wide [writing-mode:vertical-rl] rotate-180">
           {config.name}
         </span>
         <button
@@ -1052,29 +1050,29 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
         canonical={id ? `/html/${id}` : '/html'}
       />
       <main className="h-screen w-full flex flex-col bg-[var(--bg-app)] overflow-hidden">
-        {/* Top Navbar */}
-        <nav className="h-12 w-full flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
+        {/* Top Toolbar */}
+        <nav className="h-10 w-full flex items-center justify-between px-3 bg-[var(--bg-surface)] border-b border-[var(--border-default)] z-30 shrink-0 select-none">
           {/* Left: Brand & Title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <Link
               to={id ? '/dashboard' : '/'}
               title={id ? 'Back to Dashboard' : 'Back to Home'}
-              className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="flex items-center gap-1.5 px-2 py-1 rounded text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              <div className="flex items-center justify-center w-6 h-6 rounded-md bg-gradient-to-br from-orange-500 to-amber-600 text-white font-bold text-xs shadow-xs">
-                &lt;/&gt;
-              </div>
+              <span className="font-mono font-bold text-orange-500 text-xs">
+                HTML
+              </span>
             </Link>
 
             <div className="hidden sm:flex items-center gap-2">
-              <span className="text-xs font-semibold text-[var(--text-primary)]">
+              <span className="text-xs font-medium text-[var(--text-primary)] truncate max-w-[200px]">
                 {savedProject?.fileName
                   ? `${savedProject.fileName}`
                   : 'HTML/CSS/JS Playground'}
               </span>
-              <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
-                {id ? 'Project' : 'Scratchpad'}
+              <span className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                {id ? 'project' : 'scratchpad'}
               </span>
             </div>
           </div>
@@ -1087,10 +1085,10 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               onClick={handleRun}
               disabled={isCompiling}
               title="Run code (Ctrl/Cmd + R)"
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold shadow-xs transition-all duration-150 active:scale-[0.98] cursor-pointer disabled:opacity-50 ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold cursor-pointer disabled:opacity-50 transition-colors ${
                 isDirty && !autoRun
-                  ? 'bg-amber-500 text-black ring-2 ring-amber-400 animate-pulse'
-                  : 'bg-amber-500 hover:bg-amber-600 text-black'
+                  ? 'bg-amber-500 text-black ring-1 ring-amber-400'
+                  : 'bg-amber-500 hover:bg-amber-400 text-black'
               }`}
             >
               <Play
@@ -1113,7 +1111,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
                   ? 'Auto Run is ON (click to switch to Manual Run)'
                   : 'Auto Run is OFF (click to switch to Auto Run)'
               }
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-2 py-1 rounded border text-xs font-medium transition-colors cursor-pointer ${
                 autoRun
                   ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
                   : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'
@@ -1129,7 +1127,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               <span className="hidden sm:inline">Auto Run</span>
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
-                  autoRun ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'
+                  autoRun ? 'bg-emerald-500' : 'bg-slate-400'
                 }`}
               />
             </button>
@@ -1139,7 +1137,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               type="button"
               onClick={() => setIsResetModalOpen(true)}
               title="Reset project to default template"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-2 py-1 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Reset</span>
@@ -1150,7 +1148,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               type="button"
               onClick={handleFormatAll}
               title="Format All Code (Shift + Alt + F)"
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors cursor-pointer"
             >
               {isFormatting ? (
                 <Check className="w-3.5 h-3.5 text-emerald-500" />
@@ -1162,13 +1160,13 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               </span>
             </button>
 
-            {/* Change View / Layout Switcher (CodePen Style) */}
+            {/* Change View / Layout Switcher */}
             <div className="relative" ref={layoutMenuRef}>
               <button
                 type="button"
                 onClick={() => setIsLayoutMenuOpen((prev) => !prev)}
                 title="Change View (Layout)"
-                className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs font-medium transition-colors cursor-pointer ${
+                className={`hidden sm:flex items-center gap-1.5 px-2 py-1 rounded border text-xs font-medium transition-colors cursor-pointer ${
                   isLayoutMenuOpen
                     ? 'border-amber-500/50 bg-[var(--bg-surface-active)] text-[var(--text-primary)] ring-1 ring-amber-500/30'
                     : 'border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -1181,7 +1179,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
                 ) : (
                   <PanelRight className="w-3.5 h-3.5 text-amber-500" />
                 )}
-                <span>Change View</span>
+                <span>View</span>
                 <ChevronDown
                   className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-150 ${
                     isLayoutMenuOpen ? 'rotate-180' : ''
@@ -1191,24 +1189,24 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
 
               {/* Layout Dropdown Popover */}
               {isLayoutMenuOpen && (
-                <div className="absolute left-0 mt-1.5 w-60 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] p-2 shadow-xl z-50 animate-in fade-in zoom-in-95">
-                  <div className="px-2 py-1 text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                <div className="absolute left-0 mt-1.5 w-56 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] p-1.5 shadow-xl z-50">
+                  <div className="px-2 py-1 text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
                     Editor Layout
                   </div>
-                  <div className="mt-1 flex flex-col gap-1">
+                  <div className="mt-1 flex flex-col gap-0.5">
                     {(
                       [
-                        {
-                          id: 'left',
-                          label: 'Left View',
-                          desc: 'Editors on left, preview on right',
-                          icon: PanelLeft,
-                        },
                         {
                           id: 'top',
                           label: 'Top View',
                           desc: 'Editors on top, preview on bottom',
                           icon: PanelTop,
+                        },
+                        {
+                          id: 'left',
+                          label: 'Left View',
+                          desc: 'Editors on left, preview on right',
+                          icon: PanelLeft,
                         },
                         {
                           id: 'right',
@@ -1225,31 +1223,31 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
                           key={item.id}
                           type="button"
                           onClick={() => handleLayoutChange(item.id)}
-                          className={`flex items-start gap-2.5 p-2 rounded-md text-left transition-colors cursor-pointer ${
+                          className={`flex items-start gap-2 p-1.5 rounded text-left transition-colors cursor-pointer ${
                             isSelected
                               ? 'bg-amber-500/10 text-[var(--text-primary)] border border-amber-500/30'
                               : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-transparent'
                           }`}
                         >
                           <div
-                            className={`p-1.5 rounded-md mt-0.5 ${
+                            className={`p-1 rounded mt-0.5 ${
                               isSelected
                                 ? 'bg-amber-500 text-black'
                                 : 'bg-[var(--bg-surface-muted)] text-[var(--text-muted)]'
                             }`}
                           >
-                            <Icon className="w-4 h-4" />
+                            <Icon className="w-3.5 h-3.5" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold">
+                              <span className="text-xs font-medium">
                                 {item.label}
                               </span>
                               {isSelected && (
                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                               )}
                             </div>
-                            <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-tight">
+                            <p className="text-[10px] text-[var(--text-muted)] leading-tight">
                               {item.desc}
                             </p>
                           </div>
@@ -1262,11 +1260,11 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
             </div>
 
             {/* Font Size Adjusters */}
-            <div className="hidden md:flex items-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] p-0.5">
+            <div className="hidden md:flex items-center rounded border border-[var(--border-default)] bg-[var(--bg-surface)] p-0.5">
               <button
                 type="button"
                 onClick={() => handleFontSize('decreaseFontSize')}
-                title="Decrease font size (Ctrl/Cmd + -)"
+                title="Decrease font size"
                 className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
@@ -1277,7 +1275,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               <button
                 type="button"
                 onClick={() => handleFontSize('increaseFontSize')}
-                title="Increase font size (Ctrl/Cmd + +)"
+                title="Increase font size"
                 className="p-1 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
@@ -1289,25 +1287,23 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               type="button"
               onClick={handleDownloadZip}
               title="Download Project ZIP (HTML, CSS, JS)"
-              className="hidden sm:flex items-center p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="hidden sm:flex items-center p-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Right: Theme, Help, Mobile Tabs */}
-          <div className="flex items-center gap-2">
-            {/* Theme Selector */}
+          {/* Right: Theme, Help */}
+          <div className="flex items-center gap-1.5">
             <ThemeSelector compact={true} />
 
-            {/* Help / Shortcuts */}
             <button
               type="button"
               onClick={() => helpDialogRef.current?.open()}
               title="Keyboard Shortcuts"
-              className="flex items-center gap-1 p-1.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="flex items-center p-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             >
-              <HelpCircle className="w-4 h-4" />
+              <HelpCircle className="w-3.5 h-3.5" />
             </button>
           </div>
         </nav>

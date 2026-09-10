@@ -59,7 +59,7 @@ function TestCasePanel({
   return (
     <div className="h-full w-full flex flex-col bg-[var(--bg-app)] overflow-hidden text-xs">
       {/* Test Case Selection Tabs */}
-      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none shrink-0 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-1 px-3 py-1.5 bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none shrink-0 overflow-x-auto scrollbar-none">
         {allCases.map((tc, idx) => {
           const isSelected = idx === selectedCaseIndex && !isAdding;
           const isCustom = idx >= testCases.length;
@@ -72,13 +72,13 @@ function TestCasePanel({
                   setIsAdding(false);
                   onSelectCaseIndex(idx);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`h-7 px-2.5 rounded-md text-xs font-mono whitespace-nowrap transition-colors ${
                   isSelected
-                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] shadow-2xs border border-[var(--border-subtle)]'
+                    ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                 }`}
               >
-                {tc.name || `Case ${idx + 1}`}
+                {tc.name || `case_${idx + 1}`}
               </button>
 
               {isCustom && (
@@ -91,7 +91,7 @@ function TestCasePanel({
                     onRemoveCustomTestCase(idx - testCases.length);
                     onSelectCaseIndex(0);
                   }}
-                  className="p-1 text-[var(--text-muted)] hover:text-rose-500 rounded transition-colors"
+                  className="p-1 ml-0.5 text-[var(--text-muted)] hover:text-rose-400 rounded transition-colors"
                 >
                   <Trash2 className="w-3 h-3" />
                 </button>
@@ -103,14 +103,14 @@ function TestCasePanel({
         <button
           type="button"
           onClick={() => setIsAdding(true)}
-          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-dashed transition-colors ${
+          className={`flex items-center gap-1 h-7 px-2 rounded-md text-xs font-mono border border-dashed transition-colors ${
             isAdding
-              ? 'border-amber-500 text-amber-500 bg-amber-500/10'
+              ? 'border-amber-500/60 text-amber-400 bg-amber-500/10 font-semibold'
               : 'border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)]'
           }`}
         >
           <Plus className="w-3 h-3" />
-          <span>Custom</span>
+          <span>+custom</span>
         </button>
       </div>
 
@@ -120,60 +120,60 @@ function TestCasePanel({
           /* Custom Test Case Creator */
           <div className="space-y-3 font-sans">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-[var(--text-primary)]">
+              <h4 className="text-xs font-semibold text-[var(--text-primary)] font-mono">
                 Add Custom Test Case
               </h4>
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono"
               >
                 Cancel
               </button>
             </div>
 
             {parseError && (
-              <div className="p-2.5 rounded-lg bg-rose-500/10 text-rose-500 border border-rose-500/20 text-xs">
+              <div className="p-2 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 text-xs font-mono">
                 {parseError}
               </div>
             )}
 
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 htmlFor="custom-case-args"
-                className="text-[11px] font-semibold text-[var(--text-secondary)]"
+                className="text-[11px] font-mono text-[var(--text-secondary)]"
               >
-                Arguments Array (JSON format e.g. [[1,2,3], 5])
+                Arguments Array (JSON e.g. [[1,2,3], 5])
               </label>
               <textarea
                 id="custom-case-args"
                 value={customInputText}
                 onChange={(e) => setCustomInputText(e.target.value)}
                 rows={4}
-                className="w-full p-2.5 font-mono text-xs rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:ring-1 focus:ring-amber-500 focus:outline-none"
+                className="w-full p-2 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:outline-none"
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 htmlFor="custom-case-expected"
-                className="text-[11px] font-semibold text-[var(--text-secondary)]"
+                className="text-[11px] font-mono text-[var(--text-secondary)]"
               >
-                Expected Return Value (JSON format)
+                Expected Return Value (JSON)
               </label>
               <input
                 id="custom-case-expected"
                 type="text"
                 value={customExpectedText}
                 onChange={(e) => setCustomExpectedText(e.target.value)}
-                className="w-full p-2 font-mono text-xs rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:ring-1 focus:ring-amber-500 focus:outline-none"
+                className="w-full h-8 px-2.5 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:outline-none"
               />
             </div>
 
             <button
               type="button"
               onClick={handleSaveCustom}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black text-xs font-semibold shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Save & Select Case</span>
@@ -184,7 +184,7 @@ function TestCasePanel({
           <div className="space-y-3">
             {/* Input Arguments */}
             <div className="space-y-1.5">
-              <div className="text-[11px] font-bold text-[var(--text-muted)] font-sans uppercase tracking-wider">
+              <div className="text-[11px] font-mono text-[var(--text-muted)]">
                 Input Arguments
               </div>
               <div className="space-y-1.5">
@@ -192,16 +192,16 @@ function TestCasePanel({
                   currentCase.input.map((arg, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] whitespace-pre-wrap break-all"
+                      className="p-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] whitespace-pre-wrap break-all font-mono"
                     >
-                      <div className="text-[10px] text-[var(--text-muted)] font-sans mb-1">
-                        Arg {idx + 1}:
+                      <div className="text-[10px] text-[var(--text-muted)] font-mono mb-1">
+                        arg[{idx}]:
                       </div>
                       <code>{formatValueForDisplay(arg)}</code>
                     </div>
                   ))
                 ) : (
-                  <div className="p-2.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] whitespace-pre-wrap break-all">
+                  <div className="p-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] whitespace-pre-wrap break-all font-mono">
                     <code>{formatValueForDisplay(currentCase.input)}</code>
                   </div>
                 )}
@@ -210,10 +210,10 @@ function TestCasePanel({
 
             {/* Expected Output */}
             <div className="space-y-1.5">
-              <div className="text-[11px] font-bold text-[var(--text-muted)] font-sans uppercase tracking-wider">
+              <div className="text-[11px] font-mono text-[var(--text-muted)]">
                 Expected Output
               </div>
-              <div className="p-2.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-600 dark:text-emerald-400 whitespace-pre-wrap break-all">
+              <div className="p-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-600 dark:text-emerald-400 whitespace-pre-wrap break-all font-mono">
                 <code>{formatValueForDisplay(currentCase.expected)}</code>
               </div>
             </div>

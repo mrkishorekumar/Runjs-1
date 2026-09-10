@@ -52,9 +52,9 @@ function TopicTree({
       {curriculum.map((part) => (
         <div key={part.slug} className="mb-3">
           {/* Part Header */}
-          <div className="px-2 py-1.5 mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              Part {part.partNumber} — {part.title}
+          <div className="px-2 py-1 mb-1">
+            <span className="text-[10px] font-mono text-[var(--text-muted)]">
+              part_{part.partNumber} // {part.title}
             </span>
           </div>
 
@@ -85,7 +85,7 @@ function TopicTree({
                   >
                     {topic.title}
                   </span>
-                  <span className="text-[10px] text-[var(--text-muted)] tabular-nums">
+                  <span className="text-[10px] font-mono text-[var(--text-muted)] tabular-nums">
                     {completedCount}/{totalCount}
                   </span>
                 </button>
@@ -189,11 +189,11 @@ function LearnSidebar({ isOpen, onClose }: LearnSidebarProps) {
       )}
 
       {/* Desktop Sticky Sidebar (in-flow, visible only on lg screens) */}
-      <aside className="hidden lg:flex flex-col w-56 xl:w-60 shrink-0 border-r border-[var(--border-default)] sticky top-14 h-[calc(100vh-56px)] self-start bg-[var(--bg-surface)]">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
+      <aside className="hidden lg:flex flex-col w-56 xl:w-60 shrink-0 border-r border-[var(--border-default)] sticky top-12 h-[calc(100vh-48px)] self-start bg-[var(--bg-surface)]">
+        <div className="h-10 flex items-center gap-2 px-4 border-b border-[var(--border-subtle)] shrink-0">
           <BookOpen className="w-4 h-4 text-amber-500" />
-          <span className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider">
-            Curriculum
+          <span className="text-xs font-mono font-medium text-[var(--text-primary)]">
+            curriculum
           </span>
         </div>
         <div className="flex-1 overflow-y-auto">
@@ -210,11 +210,11 @@ export function SidebarToggle({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+      className="inline-flex items-center gap-2 h-8 px-3 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
       aria-label="Toggle curriculum sidebar"
     >
-      <Menu className="w-4 h-4" />
-      <span>Curriculum Outline</span>
+      <Menu className="w-3.5 h-3.5" />
+      <span>curriculum_outline</span>
     </button>
   );
 }

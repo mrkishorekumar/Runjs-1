@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IModalProps, UserCodeBase } from '../utils/interface';
 import { addCode, updateCode } from '../db/operations';
 import { useNavigate } from 'react-router';
-import { X, Sparkles, Tag as TagIcon, Check } from 'lucide-react';
+import { X, Tag as TagIcon, Check } from 'lucide-react';
 
 import {
   VITE_REACT_TEMPLATE,
@@ -76,21 +76,21 @@ function LanguageCard({ option, isSelected, onSelect }: LanguageCardProps) {
     <button
       type="button"
       onClick={() => onSelect(option.id)}
-      className={`flex flex-col items-start p-3 rounded-lg border text-left transition-all duration-150 relative ${
+      className={`flex flex-col items-start p-2.5 rounded-md border text-left transition-colors cursor-pointer relative ${
         isSelected
-          ? `${option.activeBorderClass} ${option.activeBgClass} text-[var(--text-primary)] shadow-xs ring-1 ${option.activeRingClass}`
+          ? `${option.activeBorderClass} ${option.activeBgClass} text-[var(--text-primary)] ring-1 ${option.activeRingClass}`
           : 'border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)]'
       }`}
     >
-      <div className="flex items-center justify-between w-full mb-1">
-        <span className={`font-semibold text-xs ${option.textColorClass}`}>
+      <div className="flex items-center justify-between w-full mb-0.5">
+        <span className={`font-mono font-medium text-xs ${option.textColorClass}`}>
           {option.label}
         </span>
         {isSelected && (
           <Check className={`w-3.5 h-3.5 ${option.textColorClass}`} />
         )}
       </div>
-      <span className="text-[11px] text-[var(--text-muted)]">
+      <span className="text-[10px] text-[var(--text-muted)] leading-tight">
         {option.description}
       </span>
     </button>
@@ -257,28 +257,28 @@ const CreatePlayground = ({
   return (
     <dialog
       ref={dialogRef}
-      className="rounded-xl w-[calc(100%-2rem)] max-w-md p-0 shadow-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-default)] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/60 backdrop:backdrop-blur-xs text-[var(--text-primary)]"
+      className="rounded-lg w-[calc(100%-2rem)] max-w-md p-0 shadow-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-default)] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/60 backdrop:backdrop-blur-xs text-[var(--text-primary)]"
       onClick={(e) => {
         if (e.target === dialogRef.current) {
           handleClose();
         }
       }}
     >
-      <div className="p-4 sm:p-6">
+      <div className="p-4 sm:p-5">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-[var(--border-subtle)]">
+        <div className="flex items-center justify-between pb-3.5 border-b border-[var(--border-subtle)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
-              <Sparkles className="w-4 h-4" />
+            <div className="flex items-center justify-center w-7 h-7 rounded border border-amber-500/30 bg-amber-500/10 text-amber-500 font-mono text-xs font-bold">
+              &gt;_
             </div>
             <div>
-              <h2 className="text-base font-semibold text-[var(--text-primary)]">
+              <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                 {edit ? 'Rename Playground' : 'New Playground'}
               </h2>
-              <p className="text-xs text-[var(--text-secondary)]">
+              <p className="text-[11px] text-[var(--text-secondary)]">
                 {edit
                   ? 'Update playground name and tag'
-                  : 'Create a live JavaScript or TypeScript playground'}
+                  : 'Configure project runtime and metadata'}
               </p>
             </div>
           </div>
@@ -286,19 +286,19 @@ const CreatePlayground = ({
             type="button"
             onClick={handleClose}
             aria-label="Close dialog"
-            className="p-1 rounded-md text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+            className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={createNewPlayGroundFunction} className="mt-5 space-y-4">
+        <form onSubmit={createNewPlayGroundFunction} className="mt-4 space-y-3.5">
           {/* File Name Field */}
           <div>
             <label
               htmlFor="playground-name"
-              className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5"
+              className="block text-xs font-mono text-[var(--text-secondary)] mb-1"
             >
               Playground Name
             </label>
@@ -307,7 +307,7 @@ const CreatePlayground = ({
               autoFocus
               maxLength={50}
               placeholder="e.g. array-methods, async-fetch"
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]/30 focus:border-[var(--border-focus)] transition-all"
+              className="w-full h-8 px-2.5 text-xs font-mono rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-colors"
               value={fileName}
               onChange={(e) => setFileName(e.target.value)}
               type="text"
@@ -319,20 +319,20 @@ const CreatePlayground = ({
           <div className="relative">
             <label
               htmlFor="playground-tag"
-              className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5"
+              className="block text-xs font-mono text-[var(--text-secondary)] mb-1"
             >
               Tag / Category{' '}
-              <span className="text-[var(--text-muted)]">(optional)</span>
+              <span className="text-[var(--text-muted)] text-[11px]">(optional)</span>
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--text-muted)]">
+              <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-[var(--text-muted)]">
                 <TagIcon className="w-3.5 h-3.5" />
               </div>
               <input
                 id="playground-tag"
                 maxLength={50}
                 placeholder="e.g. algorithms, interview, react"
-                className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]/30 focus:border-[var(--border-focus)] transition-all"
+                className="w-full h-8 pl-8 pr-2.5 text-xs font-mono rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-colors"
                 value={tagName}
                 onChange={(e) => {
                   setTag(e.target.value.toLowerCase());
@@ -344,12 +344,12 @@ const CreatePlayground = ({
 
             {/* Tag Suggestions Dropdown */}
             {filteredSuggestions.length > 0 && (
-              <ul className="absolute z-20 w-full mt-1 max-h-36 overflow-y-auto rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1 shadow-lg backdrop-blur-md">
+              <ul className="absolute z-20 w-full mt-1 max-h-36 overflow-y-auto rounded-md border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] p-1 shadow-lg">
                 {filteredSuggestions.map((suggestion, index) => (
                   <li
                     key={index}
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className="flex items-center gap-2 px-3 py-1.5 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] rounded-md cursor-pointer transition-colors"
+                    className="flex items-center gap-2 px-2.5 py-1 text-xs font-mono text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] rounded cursor-pointer transition-colors"
                   >
                     <TagIcon className="w-3 h-3 text-amber-500 opacity-70" />
                     <span>{suggestion}</span>
@@ -361,12 +361,12 @@ const CreatePlayground = ({
 
           {/* Language Selector Cards (Only in create mode) */}
           {!edit && (
-            <div className="space-y-3">
+            <div className="space-y-3 pt-1">
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
-                  Language
+                <label className="block text-xs font-mono text-[var(--text-secondary)] mb-1.5">
+                  Runtime / Platform
                 </label>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2">
                   {LANGUAGE_OPTIONS.map((option) => (
                     <LanguageCard
                       key={option.id}
@@ -380,17 +380,17 @@ const CreatePlayground = ({
 
               {lang === 'react' && (
                 <div>
-                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">
+                  <label className="block text-xs font-mono text-[var(--text-secondary)] mb-1.5">
                     Template Variant
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => setReactFlavor('js')}
-                      className={`px-3 py-2 text-xs rounded-lg border text-left transition-all ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer ${
                         reactFlavor === 'js'
-                          ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 font-semibold ring-1 ring-cyan-500'
-                          : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'
+                          ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400 font-mono font-medium ring-1 ring-cyan-500/30'
+                          : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] font-mono'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -403,10 +403,10 @@ const CreatePlayground = ({
                     <button
                       type="button"
                       onClick={() => setReactFlavor('ts')}
-                      className={`px-3 py-2 text-xs rounded-lg border text-left transition-all ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md border text-left transition-colors cursor-pointer ${
                         reactFlavor === 'ts'
-                          ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 font-semibold ring-1 ring-cyan-500'
-                          : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)]'
+                          ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400 font-mono font-medium ring-1 ring-cyan-500/30'
+                          : 'border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-hover)] font-mono'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -427,13 +427,13 @@ const CreatePlayground = ({
             <button
               type="button"
               onClick={handleClose}
-              className="px-3.5 py-2 text-xs font-medium rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black shadow-sm transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
+              className="px-3 py-1.5 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-black transition-colors cursor-pointer"
             >
               {edit ? 'Save Changes' : 'Create Playground'}
             </button>

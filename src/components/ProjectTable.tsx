@@ -158,49 +158,38 @@ function ProjectTable({
       case 'react': {
         const flavor = project ? getReactFlavor(project) : 'jsx';
         return (
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 w-fit shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-              React + Vite
-            </span>
-            <span
-              className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider shrink-0 ${
-                flavor === 'tsx'
-                  ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30'
-                  : 'bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30'
-              }`}
-            >
-              {flavor.toUpperCase()}
-            </span>
-          </div>
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-cyan-500/10 text-cyan-500 border border-cyan-500/20 w-fit shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+            react ({flavor})
+          </span>
         );
       }
       case 'js':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-            JavaScript
+            javascript
           </span>
         );
       case 'ts':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-blue-500/10 text-blue-500 border border-blue-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-            TypeScript
+            typescript
           </span>
         );
       case 'html':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-orange-500/10 text-orange-500 border border-orange-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-            HTML
+            html/css/js
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-gray-500/10 text-gray-600 dark:text-gray-400 border border-gray-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
-            {lang.toUpperCase()}
+            {lang.toLowerCase()}
           </span>
         );
     }
@@ -256,24 +245,24 @@ function ProjectTable({
 
   return (
     <Fragment>
-      <div className="overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)] my-6 shadow-xs transition-colors">
+      <div className="overflow-hidden rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] my-4 shadow-xs transition-colors">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-[var(--border-default)] text-left text-xs">
-            <thead className="bg-[var(--bg-surface-muted)] text-[var(--text-secondary)] uppercase tracking-wider font-semibold">
+            <thead className="bg-[var(--bg-surface-muted)] text-[var(--text-muted)] font-mono text-[10px] uppercase tracking-wider font-semibold">
               <tr>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-3.5 py-2.5">
                   Playground
                 </th>
-                <th scope="col" className="px-4 py-3 hidden sm:table-cell">
+                <th scope="col" className="px-3.5 py-2.5 hidden sm:table-cell">
                   Language
                 </th>
-                <th scope="col" className="px-4 py-3 hidden md:table-cell">
+                <th scope="col" className="px-3.5 py-2.5 hidden md:table-cell">
                   Tag
                 </th>
-                <th scope="col" className="px-4 py-3 hidden lg:table-cell">
+                <th scope="col" className="px-3.5 py-2.5 hidden lg:table-cell">
                   Modified
                 </th>
-                <th scope="col" className="px-4 py-3 text-right">
+                <th scope="col" className="px-3.5 py-2.5 text-right">
                   Actions
                 </th>
               </tr>
@@ -298,18 +287,18 @@ function ProjectTable({
                     className="hover:bg-[var(--bg-surface-hover)] transition-colors group"
                   >
                     {/* Playground Name / Link */}
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
+                    <td className="px-3.5 py-2.5">
+                      <div className="flex items-center gap-2.5">
                         {!bin && (
                           <button
                             type="button"
                             onClick={() => handleFavorite(val)}
                             title={val.star === 1 ? 'Unstar' : 'Star'}
                             aria-label="Star playground"
-                            className="text-[var(--text-muted)] hover:text-amber-500 transition-colors focus:outline-none"
+                            className="text-[var(--text-muted)] hover:text-amber-500 transition-colors focus:outline-none cursor-pointer"
                           >
                             <Star
-                              className={`w-4 h-4 ${
+                              className={`w-3.5 h-3.5 ${
                                 val.star === 1
                                   ? 'fill-amber-500 text-amber-500'
                                   : 'text-[var(--text-muted)]'
@@ -319,8 +308,8 @@ function ProjectTable({
                         )}
                         <div>
                           {bin ? (
-                            <div className="font-medium text-[var(--text-secondary)] flex items-center gap-1.5 cursor-not-allowed select-none">
-                              <span>{val.fileName}</span>
+                            <div className="font-mono text-xs text-[var(--text-secondary)] flex items-center gap-1 cursor-not-allowed select-none">
+                              <span className="font-medium">{val.fileName}</span>
                               <span className="text-[var(--text-muted)] text-[11px]">
                                 .
                                 {val.language === 'react'
@@ -331,9 +320,11 @@ function ProjectTable({
                           ) : (
                             <Link
                               to={targetUrl}
-                              className="font-medium text-[var(--text-primary)] hover:text-amber-500 hover:underline flex items-center gap-1.5"
+                              className="font-mono text-xs flex items-center gap-1 group/link"
                             >
-                              <span>{val.fileName}</span>
+                              <span className="font-medium text-[var(--text-primary)] group-hover/link:text-amber-500 transition-colors">
+                                {val.fileName}
+                              </span>
                               <span className="text-[var(--text-muted)] text-[11px]">
                                 .
                                 {val.language === 'react'
@@ -342,10 +333,10 @@ function ProjectTable({
                               </span>
                             </Link>
                           )}
-                          <div className="sm:hidden mt-0.5 flex items-center gap-2">
+                          <div className="sm:hidden mt-1 flex items-center gap-2">
                             {getLanguageBadge(val)}
                             {val.tag && (
-                              <span className="text-[10px] text-[var(--text-muted)]">
+                              <span className="text-[10px] font-mono text-[var(--text-muted)]">
                                 #{val.tag}
                               </span>
                             )}
@@ -355,40 +346,40 @@ function ProjectTable({
                     </td>
 
                     {/* Language */}
-                    <td className="px-4 py-3 hidden sm:table-cell">
+                    <td className="px-3.5 py-2.5 hidden sm:table-cell">
                       {getLanguageBadge(val)}
                     </td>
 
                     {/* Tag */}
-                    <td className="px-4 py-3 hidden md:table-cell">
+                    <td className="px-3.5 py-2.5 hidden md:table-cell">
                       {val.tag ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)] bg-[var(--bg-surface-hover)] px-2 py-0.5 rounded border border-[var(--border-subtle)]">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[var(--text-secondary)] bg-[var(--bg-surface-hover)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">
                           <TagIcon className="w-3 h-3 opacity-60" />
                           <span>{val.tag}</span>
                         </span>
                       ) : val.language === 'react' ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)] bg-[var(--bg-surface-hover)] px-2 py-0.5 rounded border border-[var(--border-subtle)]">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[var(--text-secondary)] bg-[var(--bg-surface-hover)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">
                           <TagIcon className="w-3 h-3 opacity-60" />
                           <span>{getReactFlavor(val)}</span>
                         </span>
                       ) : (
-                        <span className="text-[var(--text-muted)] italic text-[11px]">
-                          None
+                        <span className="text-[var(--text-muted)] font-mono text-[11px]">
+                          —
                         </span>
                       )}
                     </td>
 
                     {/* Last Modified */}
-                    <td className="px-4 py-3 hidden lg:table-cell text-[var(--text-secondary)]">
-                      <div className="flex items-center gap-1.5 text-xs">
-                        <Clock className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    <td className="px-3.5 py-2.5 hidden lg:table-cell text-[var(--text-secondary)]">
+                      <div className="flex items-center gap-1.5 text-xs font-mono text-[var(--text-muted)]">
+                        <Clock className="w-3 h-3 text-[var(--text-muted)]" />
                         <span>{formattedDate}</span>
                       </div>
                     </td>
 
                     {/* Actions */}
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                    <td className="px-3.5 py-2.5 text-right">
+                      <div className="flex items-center justify-end gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
                         {!bin ? (
                           <Fragment>
                             {/* Live Preview for HTML */}
@@ -398,9 +389,9 @@ function ProjectTable({
                                 onClick={() => setPreviewProject(val)}
                                 title="Live Preview"
                                 aria-label="Live Preview"
-                                className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-orange-500 hover:bg-orange-500/10 transition-colors cursor-pointer"
+                                className="p-1 rounded text-[var(--text-muted)] hover:text-orange-500 hover:bg-orange-500/10 transition-colors cursor-pointer"
                               >
-                                <Eye className="w-4 h-4" />
+                                <Eye className="w-3.5 h-3.5" />
                               </button>
                             )}
 
@@ -421,9 +412,9 @@ function ProjectTable({
                                 }}
                                 title="Visualize in JS Visualizer"
                                 aria-label="Visualize in JS Visualizer"
-                                className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-purple-500 hover:bg-purple-500/10 transition-colors cursor-pointer"
+                                className="p-1 rounded text-[var(--text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-colors cursor-pointer"
                               >
-                                <RotateCw className="w-4 h-4" />
+                                <RotateCw className="w-3.5 h-3.5" />
                               </Link>
                             )}
 
@@ -431,9 +422,9 @@ function ProjectTable({
                             <Link
                               to={targetUrl}
                               title="Open Editor"
-                              className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors"
                             >
-                              <Play className="w-4 h-4 fill-current" />
+                              <Play className="w-3.5 h-3.5 fill-current" />
                             </Link>
 
                             {/* Download */}
@@ -442,9 +433,9 @@ function ProjectTable({
                               onClick={() => handleDownload(val)}
                               title="Download File"
                               aria-label="Download File"
-                              className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors cursor-pointer"
                             >
-                              <Download className="w-4 h-4" />
+                              <Download className="w-3.5 h-3.5" />
                             </button>
 
                             {/* Rename */}
@@ -456,9 +447,9 @@ function ProjectTable({
                               }}
                               title="Rename / Edit Tag"
                               aria-label="Rename"
-                              className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors cursor-pointer"
                             >
-                              <Edit3 className="w-4 h-4" />
+                              <Edit3 className="w-3.5 h-3.5" />
                             </button>
 
                             {/* Move to Bin */}
@@ -467,9 +458,9 @@ function ProjectTable({
                               onClick={() => handleDelete(val)}
                               title="Move to Bin"
                               aria-label="Move to Bin"
-                              className="p-1.5 rounded-md text-[var(--text-secondary)] hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </Fragment>
                         ) : (
