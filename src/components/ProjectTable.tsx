@@ -288,14 +288,14 @@ function ProjectTable({
                   >
                     {/* Playground Name / Link */}
                     <td className="px-3.5 py-2.5">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         {!bin && (
                           <button
                             type="button"
                             onClick={() => handleFavorite(val)}
                             title={val.star === 1 ? 'Unstar' : 'Star'}
                             aria-label="Star playground"
-                            className="text-[var(--text-muted)] hover:text-amber-500 transition-colors focus:outline-none cursor-pointer"
+                            className="text-[var(--text-muted)] hover:text-amber-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 rounded-sm cursor-pointer shrink-0"
                           >
                             <Star
                               className={`w-3.5 h-3.5 ${
@@ -306,11 +306,11 @@ function ProjectTable({
                             />
                           </button>
                         )}
-                        <div>
+                        <div className="min-w-0">
                           {bin ? (
-                            <div className="font-mono text-xs text-[var(--text-secondary)] flex items-center gap-1 cursor-not-allowed select-none">
-                              <span className="font-medium">{val.fileName}</span>
-                              <span className="text-[var(--text-muted)] text-[11px]">
+                            <div className="font-mono text-xs text-[var(--text-secondary)] flex items-center gap-1 cursor-not-allowed select-none min-w-0">
+                              <span className="font-medium truncate max-w-[180px] sm:max-w-xs">{val.fileName}</span>
+                              <span className="text-[var(--text-muted)] text-[11px] shrink-0">
                                 .
                                 {val.language === 'react'
                                   ? getReactFlavor(val)
@@ -320,12 +320,12 @@ function ProjectTable({
                           ) : (
                             <Link
                               to={targetUrl}
-                              className="font-mono text-xs flex items-center gap-1 group/link"
+                              className="font-mono text-xs flex items-center gap-1 group/link min-w-0"
                             >
-                              <span className="font-medium text-[var(--text-primary)] group-hover/link:text-amber-500 transition-colors">
+                              <span className="font-medium text-[var(--text-primary)] group-hover/link:text-amber-500 transition-colors truncate max-w-[180px] sm:max-w-xs md:max-w-sm">
                                 {val.fileName}
                               </span>
-                              <span className="text-[var(--text-muted)] text-[11px]">
+                              <span className="text-[var(--text-muted)] text-[11px] shrink-0">
                                 .
                                 {val.language === 'react'
                                   ? getReactFlavor(val)
@@ -336,7 +336,7 @@ function ProjectTable({
                           <div className="sm:hidden mt-1 flex items-center gap-2">
                             {getLanguageBadge(val)}
                             {val.tag && (
-                              <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                              <span className="text-[10px] font-mono text-[var(--text-muted)] truncate max-w-[120px]">
                                 #{val.tag}
                               </span>
                             )}
@@ -433,7 +433,7 @@ function ProjectTable({
                               onClick={() => handleDownload(val)}
                               title="Download File"
                               aria-label="Download File"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors cursor-pointer"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Download className="w-3.5 h-3.5" />
                             </button>
@@ -447,7 +447,7 @@ function ProjectTable({
                               }}
                               title="Rename / Edit Tag"
                               aria-label="Rename"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors cursor-pointer"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
                             </button>
@@ -458,7 +458,7 @@ function ProjectTable({
                               onClick={() => handleDelete(val)}
                               title="Move to Bin"
                               aria-label="Move to Bin"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+                              className="p-1 rounded text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -471,7 +471,7 @@ function ProjectTable({
                               onClick={() => handleDelete(val)}
                               title="Restore Playground"
                               aria-label="Restore"
-                              className="flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-[var(--bg-surface-hover)] text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors border border-[var(--border-default)]"
+                              className="flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-[var(--bg-surface-hover)] text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors border border-[var(--border-default)] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <RotateCcw className="w-3.5 h-3.5 text-emerald-500" />
                               <span>Restore</span>
@@ -483,7 +483,7 @@ function ProjectTable({
                               onClick={() => setDeleteTarget(val)}
                               title="Delete Forever"
                               aria-label="Delete Forever"
-                              className="flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors border border-red-500/20 cursor-pointer"
+                              className="flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors border border-red-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                               <span>Delete</span>

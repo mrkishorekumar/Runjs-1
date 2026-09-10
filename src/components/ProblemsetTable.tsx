@@ -150,7 +150,7 @@ function ProblemsetTable({
                         isStarred ? 'Remove from favorites' : 'Add to favorites'
                       }
                       onClick={() => onToggleStar(problem.slug)}
-                      className={`p-1 rounded transition-colors focus:outline-none cursor-pointer ${
+                      className={`p-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer ${
                         isStarred
                           ? 'text-amber-500 fill-amber-500'
                           : 'text-[var(--text-muted)] hover:text-amber-500'

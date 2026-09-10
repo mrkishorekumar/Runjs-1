@@ -150,7 +150,7 @@ function TestCasePanel({
                 value={customInputText}
                 onChange={(e) => setCustomInputText(e.target.value)}
                 rows={4}
-                className="w-full p-2 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:outline-none"
+                className="w-full p-2 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 focus:outline-none transition-colors"
               />
             </div>
 
@@ -166,7 +166,7 @@ function TestCasePanel({
                 type="text"
                 value={customExpectedText}
                 onChange={(e) => setCustomExpectedText(e.target.value)}
-                className="w-full h-8 px-2.5 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:outline-none"
+                className="w-full h-8 px-2.5 font-mono text-xs rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 focus:outline-none transition-colors"
               />
             </div>
 
