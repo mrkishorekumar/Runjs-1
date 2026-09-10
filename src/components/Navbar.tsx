@@ -18,7 +18,6 @@ import {
   Info,
   Trash2,
   ExternalLink,
-  Sparkles,
   Shield,
   FileText,
   FileQuestion,
@@ -623,9 +622,8 @@ function Navbar() {
           <div className="space-y-4">
             {/* Section 1: Playgrounds */}
             <div>
-              <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-amber-500" />
-                <span>Playgrounds</span>
+              <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                Playgrounds
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                 {playgroundLinks.map((item) => {

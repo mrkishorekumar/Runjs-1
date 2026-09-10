@@ -389,7 +389,7 @@ function ProjectTable({
                                 onClick={() => setPreviewProject(val)}
                                 title="Live Preview"
                                 aria-label="Live Preview"
-                                className="p-1 rounded text-[var(--text-muted)] hover:text-orange-500 hover:bg-orange-500/10 transition-colors cursor-pointer"
+                                className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-orange-500 hover:bg-orange-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
                               >
                                 <Eye className="w-3.5 h-3.5" />
                               </button>
@@ -412,7 +412,7 @@ function ProjectTable({
                                 }}
                                 title="Visualize in JS Visualizer"
                                 aria-label="Visualize in JS Visualizer"
-                                className="p-1 rounded text-[var(--text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-colors cursor-pointer"
+                                className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-colors cursor-pointer"
                               >
                                 <RotateCw className="w-3.5 h-3.5" />
                               </Link>
@@ -422,7 +422,8 @@ function ProjectTable({
                             <Link
                               to={targetUrl}
                               title="Open Editor"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors"
+                              aria-label="Open Editor"
+                              className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1"
                             >
                               <Play className="w-3.5 h-3.5 fill-current" />
                             </Link>
@@ -433,7 +434,7 @@ function ProjectTable({
                               onClick={() => handleDownload(val)}
                               title="Download File"
                               aria-label="Download File"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
+                              className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Download className="w-3.5 h-3.5" />
                             </button>
@@ -447,7 +448,7 @@ function ProjectTable({
                               }}
                               title="Rename / Edit Tag"
                               aria-label="Rename"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
+                              className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-active)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
                             </button>
@@ -458,7 +459,7 @@ function ProjectTable({
                               onClick={() => handleDelete(val)}
                               title="Move to Bin"
                               aria-label="Move to Bin"
-                              className="p-1 rounded text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-1 cursor-pointer"
+                              className="p-1.5 sm:p-1 rounded text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-1 cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>

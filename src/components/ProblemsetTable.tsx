@@ -150,7 +150,7 @@ function ProblemsetTable({
                         isStarred ? 'Remove from favorites' : 'Add to favorites'
                       }
                       onClick={() => onToggleStar(problem.slug)}
-                      className={`p-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer ${
+                      className={`p-1.5 sm:p-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 cursor-pointer ${
                         isStarred
                           ? 'text-amber-500 fill-amber-500'
                           : 'text-[var(--text-muted)] hover:text-amber-500'
@@ -221,7 +221,7 @@ function ProblemsetTable({
                   <td className="px-3.5 py-2.5 text-center">
                     <Link
                       to={`/problems/${problem.slug}`}
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-mono font-medium transition-colors ${
+                      className={`inline-flex items-center justify-center gap-1 px-2.5 py-1 sm:py-0.5 min-h-[28px] sm:min-h-0 rounded text-xs font-mono font-medium transition-colors ${
                         isSolved
                           ? 'bg-[var(--bg-app)] hover:bg-[var(--bg-surface-active)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)]'
                           : 'bg-amber-500/10 hover:bg-amber-500 text-amber-500 hover:text-black border border-amber-500/30'

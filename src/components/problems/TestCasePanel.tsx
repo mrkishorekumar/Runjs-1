@@ -72,7 +72,7 @@ function TestCasePanel({
                   setIsAdding(false);
                   onSelectCaseIndex(idx);
                 }}
-                className={`h-7 px-2.5 rounded-md text-xs font-mono whitespace-nowrap transition-colors ${
+                className={`h-7 px-2.5 rounded-md text-xs font-mono whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 ${
                   isSelected
                     ? 'bg-[var(--bg-surface-active)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-semibold'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
@@ -91,9 +91,9 @@ function TestCasePanel({
                     onRemoveCustomTestCase(idx - testCases.length);
                     onSelectCaseIndex(0);
                   }}
-                  className="p-1 ml-0.5 text-[var(--text-muted)] hover:text-rose-400 rounded transition-colors"
+                  className="p-1.5 sm:p-1 ml-0.5 text-[var(--text-muted)] hover:text-rose-400 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60"
                 >
-                  <Trash2 className="w-3 h-3" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
@@ -103,7 +103,7 @@ function TestCasePanel({
         <button
           type="button"
           onClick={() => setIsAdding(true)}
-          className={`flex items-center gap-1 h-7 px-2 rounded-md text-xs font-mono border border-dashed transition-colors ${
+          className={`flex items-center gap-1 h-7 px-2 rounded-md text-xs font-mono border border-dashed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 ${
             isAdding
               ? 'border-amber-500/60 text-amber-400 bg-amber-500/10 font-semibold'
               : 'border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)]'
@@ -173,7 +173,7 @@ function TestCasePanel({
             <button
               type="button"
               onClick={handleSaveCustom}
-              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-amber-500 hover:bg-amber-400 text-black text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 cursor-pointer"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Save & Select Case</span>
