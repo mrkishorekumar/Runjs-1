@@ -28,7 +28,7 @@ function TestResultsPanel({
   if (activeView === 'submit' && lastSubmission) {
     const isAccepted = lastSubmission.status === 'accepted';
     return (
-      <div className="h-full w-full flex flex-col bg-[var(--bg-app)] overflow-y-auto p-3.5 space-y-3 text-xs">
+      <div className="h-full w-full flex flex-col bg-[var(--bg-app)] overflow-y-auto p-3.5 space-y-3 text-xs animate-in fade-in duration-150">
         {/* Verdict Header */}
         <div
           className={`p-3 rounded-md border flex items-center justify-between gap-3 ${
@@ -170,7 +170,7 @@ function TestResultsPanel({
     const allPassed = totalPassed === lastRunResults.length;
 
     return (
-      <div className="h-full w-full flex flex-col bg-[var(--bg-app)] overflow-hidden text-xs">
+      <div className="h-full w-full flex flex-col bg-[var(--bg-app)] overflow-hidden text-xs animate-in fade-in duration-150">
         {/* Case Results Tabs */}
         <div className="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-surface)] border-b border-[var(--border-default)] select-none shrink-0">
           <div className="flex items-center gap-1 overflow-x-auto">

@@ -140,10 +140,15 @@
     color: inherit;
   }
 
+  dialog[open] {
+    animation: dialog-enter 140ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
   dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+    animation: backdrop-enter 140ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   /* Custom scrollbar for developer tool panels */
@@ -362,8 +367,29 @@
   }
 }
 
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes backdrop-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .animate-in {
   animation-duration: 120ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
 }
 
@@ -402,7 +428,9 @@
   .animate-in,
   .zoom-in-95,
   .slide-in-from-top-2,
-  .slide-in-from-bottom-2 {
+  .slide-in-from-bottom-2,
+  dialog[open],
+  dialog::backdrop {
     animation: none !important;
     transform: none !important;
   }

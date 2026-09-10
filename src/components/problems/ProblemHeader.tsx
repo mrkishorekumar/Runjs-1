@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   Play,
   CheckCircle2,
+  Loader2,
   RotateCcw,
   AlignLeft,
   ZoomIn,
@@ -117,11 +118,11 @@ function ProblemHeader({
           title="Run visible test cases (Ctrl/Cmd + R)"
           className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-[var(--border-default)] bg-[var(--bg-app)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-xs font-medium cursor-pointer disabled:opacity-50 transition-colors"
         >
-          <Play
-            className={`w-3 h-3 fill-current text-amber-500 ${
-              isRunning ? 'animate-spin' : ''
-            }`}
-          />
+          {isRunning ? (
+            <Loader2 className="w-3 h-3 animate-spin text-amber-500 shrink-0" />
+          ) : (
+            <Play className="w-3 h-3 fill-current text-amber-500 shrink-0" />
+          )}
           <span>Run</span>
           <kbd className="hidden xl:inline-block ml-1 px-1 py-0.2 text-[9px] font-mono bg-[var(--border-default)] text-[var(--text-secondary)] rounded">
             ⌘R
@@ -144,9 +145,11 @@ function ProblemHeader({
           title="Submit solution against all test cases"
           className="flex items-center gap-1.5 px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-semibold cursor-pointer disabled:opacity-50 transition-colors"
         >
-          <CheckCircle2
-            className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-spin' : ''}`}
-          />
+          {isSubmitting ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+          ) : (
+            <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+          )}
           <span>Submit</span>
         </button>
 

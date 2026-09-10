@@ -31,6 +31,7 @@ import { useComplexityAnalyzer } from '../hook/useComplexityAnalyzer';
 import { consumeTransferredCode } from '../utils/crossToolTransfer';
 import {
   Play,
+  Loader2,
   HelpCircle,
   Download,
   AlignLeft,
@@ -217,9 +218,11 @@ function JSPlayground() {
               title="Run code (Ctrl/Cmd + R)"
               className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
             >
-              <Play
-                className={`w-3 h-3 fill-black ${isRunning ? 'animate-spin' : ''}`}
-              />
+              {isRunning ? (
+                <Loader2 className="w-3 h-3 animate-spin text-black shrink-0" />
+              ) : (
+                <Play className="w-3 h-3 fill-black shrink-0" />
+              )}
               <span>Run</span>
               <kbd className="hidden md:inline-block ml-0.5 px-1 py-0.2 text-[9px] font-mono bg-black/15 text-black rounded">
                 ⌘R
