@@ -81,7 +81,7 @@ function TopicTree({
                     <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />
                   )}
                   <span
-                    className={`flex-1 ${allDone ? 'text-emerald-500' : 'text-[var(--text-primary)]'}`}
+                    className={`flex-1 ${allDone ? 'text-emerald-600 dark:text-emerald-400' : 'text-[var(--text-primary)]'}`}
                   >
                     {topic.title}
                   </span>

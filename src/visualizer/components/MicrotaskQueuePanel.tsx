@@ -18,7 +18,7 @@ function MicrotaskQueuePanel({
       {/* Header */}
       <div className="flex items-center justify-between px-3.5 py-2.5 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-default)] shrink-0 select-none">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-500/10 text-purple-500 border border-purple-500/20">
+          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
             <Sparkles className="w-3.5 h-3.5" />
           </div>
           <div className="flex items-center gap-1.5">

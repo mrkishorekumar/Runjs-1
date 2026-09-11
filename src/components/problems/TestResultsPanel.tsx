@@ -56,8 +56,8 @@ function TestResultsPanel({
               <h3
                 className={`text-sm font-bold font-mono ${
                   isAccepted
-                    ? 'text-emerald-500'
-                    : 'text-rose-500'
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-rose-600 dark:text-rose-400'
                 }`}
               >
                 {isAccepted
@@ -140,7 +140,7 @@ function TestResultsPanel({
                 <div className="text-[10px] text-[var(--text-muted)]">
                   Expected Output:
                 </div>
-                <div className="p-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-500 break-all">
+                <div className="p-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-600 dark:text-emerald-400 break-all">
                   <code>
                     {formatValueForDisplay(lastSubmission.failedCase.expected)}
                   </code>
@@ -151,7 +151,7 @@ function TestResultsPanel({
                 <div className="text-[10px] text-[var(--text-muted)]">
                   Actual Output:
                 </div>
-                <div className="p-2 rounded-md border border-rose-500/30 bg-rose-500/5 text-rose-500 break-all">
+                <div className="p-2 rounded-md border border-rose-500/30 bg-rose-500/5 text-rose-600 dark:text-rose-400 break-all">
                   <code>
                     {formatValueForDisplay(lastSubmission.failedCase.actual)}
                   </code>
@@ -201,8 +201,8 @@ function TestResultsPanel({
           <span
             className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
               allPassed
-                ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
-                : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
             }`}
           >
             {totalPassed}/{lastRunResults.length} passed
@@ -215,12 +215,12 @@ function TestResultsPanel({
           <div className="flex items-center justify-between pb-2 border-b border-[var(--border-default)]">
             <div className="flex items-center gap-1.5">
               {currentCase.passed ? (
-                <span className="inline-flex items-center gap-1 text-emerald-500 font-bold">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Passed
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-rose-500 font-bold">
+                <span className="inline-flex items-center gap-1 text-rose-600 dark:text-rose-400 font-bold">
                   <XCircle className="w-3.5 h-3.5" />
                   Failed
                 </span>
@@ -233,7 +233,7 @@ function TestResultsPanel({
           </div>
 
           {currentCase.error && (
-            <div className="p-2.5 rounded-md border border-rose-500/30 bg-rose-500/10 text-rose-500">
+            <div className="p-2.5 rounded-md border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400">
               <div className="font-bold text-xs mb-1">Runtime Error:</div>
               <code>{currentCase.error}</code>
             </div>
@@ -255,7 +255,7 @@ function TestResultsPanel({
               <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
                 Expected:
               </div>
-              <div className="p-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-500 break-all">
+              <div className="p-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-600 dark:text-emerald-400 break-all">
                 <code>{formatValueForDisplay(currentCase.expected)}</code>
               </div>
             </div>
@@ -267,8 +267,8 @@ function TestResultsPanel({
               <div
                 className={`p-2 rounded-md border break-all ${
                   currentCase.passed
-                    ? 'border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-500'
-                    : 'border-rose-500/30 bg-rose-500/5 text-rose-500'
+                    ? 'border-[var(--border-default)] bg-[var(--bg-surface)] text-emerald-600 dark:text-emerald-400'
+                    : 'border-rose-500/30 bg-rose-500/5 text-rose-600 dark:text-rose-400'
                 }`}
               >
                 <code>{formatValueForDisplay(currentCase.actual)}</code>
@@ -285,7 +285,7 @@ function TestResultsPanel({
               </div>
               <div className="p-2 rounded-md bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] text-[var(--text-secondary)] space-y-0.5">
                 {currentCase.logs.map((log, i) => (
-                  <div key={i} className="text-amber-500/90 font-mono">
+                  <div key={i} className="text-amber-600 dark:text-amber-400 font-mono">
                     &gt; {log}
                   </div>
                 ))}

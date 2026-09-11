@@ -56,7 +56,7 @@ function ProblemStatsBanner({
                 Challenge Progress
               </h2>
               {stats.solved > 0 && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   <CheckCircle2 className="w-3 h-3" />
                   {stats.percentage}%
                 </span>
@@ -82,7 +82,7 @@ function ProblemStatsBanner({
           {/* Easy */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-emerald-500">Easy</span>
+              <span className="font-mono font-medium text-emerald-600 dark:text-emerald-400">Easy</span>
               <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.easySolved}/{stats.easyTotal}
               </span>
@@ -98,7 +98,7 @@ function ProblemStatsBanner({
           {/* Medium */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-amber-500">Medium</span>
+              <span className="font-mono font-medium text-amber-600 dark:text-amber-400">Medium</span>
               <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.mediumSolved}/{stats.mediumTotal}
               </span>
@@ -114,7 +114,7 @@ function ProblemStatsBanner({
           {/* Hard */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-rose-500">Hard</span>
+              <span className="font-mono font-medium text-rose-600 dark:text-rose-400">Hard</span>
               <span className="font-mono text-[10px] text-[var(--text-muted)]">
                 {stats.hardSolved}/{stats.hardTotal}
               </span>

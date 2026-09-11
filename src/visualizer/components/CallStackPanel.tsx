@@ -17,7 +17,7 @@ function CallStackPanel({ stack, highlightedItemId }: CallStackPanelProps) {
       {/* Panel Header */}
       <div className="flex items-center justify-between px-3.5 py-2.5 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-default)] shrink-0 select-none">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-500/10 text-blue-500 border border-blue-500/20">
+          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
             <Layers className="w-3.5 h-3.5" />
           </div>
           <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">

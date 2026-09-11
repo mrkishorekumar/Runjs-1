@@ -2,29 +2,36 @@
 name: RunJS
 description: Fast, client-side, developer-first coding playground and learning environment
 colors:
-  primary: "#0f172a"
-  primary-hover: "#1e293b"
+  primary: "#171d26"
+  primary-hover: "#242c38"
   primary-dark: "#f0f6fc"
   primary-dark-hover: "#e6edf3"
-  neutral-bg: "#f8fafc"
-  neutral-bg-dark: "#0e1117"
+  neutral-bg: "#f6f8fa"
+  neutral-bg-dark: "#0b0f14"
   surface: "#ffffff"
-  surface-dark: "#161b22"
+  surface-dark: "#11161d"
   surface-elevated: "#ffffff"
-  surface-elevated-dark: "#1f242c"
-  border: "#e2e8f0"
-  border-dark: "#30363d"
-  border-focus: "#3b82f6"
-  border-focus-dark: "#388bfd"
-  text-primary: "#0f172a"
+  surface-elevated-dark: "#161c24"
+  border: "#d8dee4"
+  border-dark: "#252d3a"
+  border-focus: "#f59e0b"
+  border-focus-dark: "#f59e0b"
+  text-primary: "#171d26"
   text-primary-dark: "#f0f6fc"
-  text-secondary: "#475569"
-  text-secondary-dark: "#8b949e"
-  text-muted: "#94a3b8"
-  text-muted-dark: "#6e7681"
-  accent-js: "#facc15"
+  text-secondary: "#57606a"
+  text-secondary-dark: "#919bb0"
+  text-muted: "#8c959f"
+  text-muted-dark: "#647085"
+  accent-js: "#f59e0b"
   accent-ts: "#3b82f6"
+  accent-react: "#06b6d4"
+  accent-html: "#f97316"
   accent-amber: "#f59e0b"
+  status-success: "#10b981"
+  status-warning: "#f59e0b"
+  status-error: "#f43f5e"
+  status-info: "#3b82f6"
+  status-async: "#a855f7"
 typography:
   sans:
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
@@ -66,24 +73,41 @@ components:
 
 RunJS employs a clean, high-density, tool-first interface tailored for developers and learners. The visual tone is utilitarian, calm, and uncluttered, prioritizing editor workspace area, code legibility, responsive parity across desktop and mobile devices, and fast visual feedback. The UI implements full light and dark mode parity driven by semantic CSS custom properties.
 
-## Colors
+## Colors & Palette Strategy
 
-The palette is anchored around neutral monochrome slates with crisp borders and purposeful language/state accents.
+RunJS applies a purposeful, role-based color strategy where color encodes action, domain identity, execution phase, and operational status rather than decorative slop.
 
-- **Surface & Background**:
-  - Light mode: Canvas `--bg-app` (`#f8fafc`), Surface `--bg-surface` (`#ffffff`), Elevated `--bg-surface-elevated` (`#ffffff`), Hover `--bg-surface-hover` (`#f1f5f9`).
-  - Dark mode: Canvas `--bg-app` (`#0e1117`), Surface `--bg-surface` (`#161b22`), Elevated `--bg-surface-elevated` (`#1f242c`), Hover `--bg-surface-hover` (`#262c36`).
-- **Borders**:
-  - Subtle `--border-subtle` (`#f1f5f9` / `#21262d`), Default `--border-default` (`#e2e8f0` / `#30363d`), Hover `--border-hover` (`#cbd5e1` / `#484f58`).
-  - Focus Ring `--border-focus` (`#3b82f6` in light / `#388bfd` in dark).
-- **Text & Contrast**:
-  - Primary text `--text-primary` (`#0f172a` / `#f0f6fc`).
-  - Secondary text `--text-secondary` (`#475569` / `#8b949e`).
-  - Muted text `--text-muted` (`#94a3b8` / `#6e7681`).
-- **Brand & Domain Accents**:
-  - JavaScript Yellow (`#facc15` / `amber-500`).
-  - TypeScript Blue (`#3b82f6`).
-  - Active/Favorite states use amber tint overlays (`amber-500/15`).
+### 1. Surface & Canvas Neutral Hierarchy
+- **Canvas `--bg-app`**: `#f6f8fa` (light) / `#0b0f14` (dark) — Deep base canvas for code editors and application split-panes.
+- **Surface `--bg-surface`**: `#ffffff` (light) / `#11161d` (dark) — Primary toolbars, card surfaces, and data tables.
+- **Elevated Surface `--bg-surface-elevated`**: `#ffffff` (light) / `#161c24` (dark) — Modals, dropdown menus, and popovers.
+- **Interactive Hover `--bg-surface-hover`**: `#f1f4f8` (light) / `#1c232d` (dark).
+- **Active Selection `--bg-surface-active`**: `#e7ecf2` (light) / `#242c38` (dark).
+- **Muted Inset `--bg-surface-muted`**: `#f3f5f8` (light) / `#0e1218` (dark) — Table headers, sub-tabs, and terminal trays.
+
+### 2. Borders & Focus Rings
+- **Subtle `--border-subtle`**: `#ebf0f4` (light) / `#1a2029` (dark) — Inset dividers and internal cell rules.
+- **Default `--border-default`**: `#d8dee4` (light) / `#252d3a` (dark) — 1px container boundaries.
+- **Hover `--border-hover`**: `#b6bec6` (light) / `#374254` (dark).
+- **Focus Ring `--border-focus`**: Amber `#f59e0b` (`focus-visible:ring-2 focus-visible:ring-amber-500/60`).
+
+### 3. Text Hierarchy & WCAG AA Contrast Rule
+- **Primary Text `--text-primary`**: `#171d26` (light) / `#f0f6fc` (dark) — High-contrast body copy and code symbols.
+- **Secondary Text `--text-secondary`**: `#57606a` (light) / `#919bb0` (dark) — Supporting labels, hints, and explanations.
+- **Muted Text `--text-muted`**: `#8c959f` (light) / `#647085` (dark) — Monospace IDs, shortcuts, and metadata captions.
+- **Contrast Guarantee**: Raw 500-level hues (e.g. `text-amber-500`, `text-emerald-500`, `text-cyan-500`) have insufficient contrast (<4.5:1) against white surfaces. All functional labels and badge texts use paired shades: `text-{color}-600 dark:text-{color}-400`.
+
+### 4. Domain & Tool Identities
+- **JavaScript & RunJS Core**: Amber (`#f59e0b`, text: `text-amber-600 dark:text-amber-400`, surface: `bg-amber-500/10 border-amber-500/20`). Primary run action uses solid amber (`bg-amber-500 hover:bg-amber-400 text-black`).
+- **TypeScript**: Blue (`#3b82f6`, text: `text-blue-600 dark:text-blue-400`, surface: `bg-blue-500/10 border-blue-500/20`). Primary run action uses solid blue (`bg-blue-600 hover:bg-blue-500 text-white`).
+- **React + Vite**: Cyan (`#06b6d4`, text: `text-cyan-600 dark:text-cyan-400`, surface: `bg-cyan-500/10 border-cyan-500/20`).
+- **HTML / CSS / Web**: Orange (`#f97316`, text: `text-orange-600 dark:text-orange-400`, surface: `bg-orange-500/10 border-orange-500/20`).
+
+### 5. Semantic Status & Diagnostic Roles
+- **Success / Accepted / Easy / O(1)**: Emerald (`#10b981`, text: `text-emerald-600 dark:text-emerald-400`, surface: `bg-emerald-500/10 border-emerald-500/20`).
+- **Warning / Attempted / Medium / O(n)**: Amber (`#f59e0b`, text: `text-amber-600 dark:text-amber-400`, surface: `bg-amber-500/10 border-amber-500/20`).
+- **Error / Wrong Answer / Hard / O(n²)**: Rose (`#f43f5e`, text: `text-rose-600 dark:text-rose-400`, surface: `bg-rose-500/10 border-rose-500/20`).
+- **Async / Microtasks / Deep Dives / TLE**: Purple (`#a855f7`, text: `text-purple-600 dark:text-purple-400`, surface: `bg-purple-500/10 border-purple-500/20`).
 
 ## Typography
 

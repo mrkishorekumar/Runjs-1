@@ -183,7 +183,7 @@ function ProblemDescription({
                         <span className="text-[var(--text-muted)] font-mono text-[11px] sm:w-20 shrink-0 pt-1">
                           input:
                         </span>
-                        <div className="text-amber-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
+                        <div className="text-amber-600 dark:text-amber-400 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
                           {example.input}
                         </div>
                       </div>
@@ -193,7 +193,7 @@ function ProblemDescription({
                         <span className="text-[var(--text-muted)] font-mono text-[11px] sm:w-20 shrink-0 pt-1">
                           output:
                         </span>
-                        <div className="text-emerald-500 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
+                        <div className="text-emerald-600 dark:text-emerald-400 bg-[var(--bg-app)] px-3 py-1.5 rounded-md border border-[var(--border-subtle)] flex-1 break-all select-text font-mono">
                           {example.output}
                         </div>
                       </div>
@@ -275,7 +275,7 @@ function ProblemDescription({
                       className="w-full flex items-center justify-between px-3.5 py-2.5 text-left font-mono text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded bg-amber-500/10 text-amber-500 text-[11px] font-mono font-semibold flex items-center justify-center">
+                        <span className="w-5 h-5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-semibold flex items-center justify-center">
                           {i + 1}
                         </span>
                         <span>hint_{i + 1}</span>
@@ -378,7 +378,7 @@ function ProblemDescription({
                         problem.solution?.code &&
                         onLoadCodeIntoEditor(problem.solution.code)
                       }
-                      className="text-[11px] text-amber-500 hover:text-amber-400 hover:underline font-medium px-2 py-0.5 rounded transition-colors cursor-pointer"
+                      className="text-[11px] text-amber-600 dark:text-amber-400 hover:underline font-medium px-2 py-0.5 rounded transition-colors cursor-pointer"
                     >
                       Load Solution into Editor
                     </button>
