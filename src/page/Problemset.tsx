@@ -174,7 +174,7 @@ function Problemset() {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-secondary)]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-mono tabular-nums text-[var(--text-secondary)]">
                 <Code2 className="w-3.5 h-3.5 text-amber-500" />
                 <span>{PROBLEMS.length} challenges</span>
               </span>

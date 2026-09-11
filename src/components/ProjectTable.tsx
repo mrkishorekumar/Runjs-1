@@ -158,7 +158,7 @@ function ProjectTable({
       case 'react': {
         const flavor = project ? getReactFlavor(project) : 'jsx';
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-cyan-500/10 text-cyan-500 border border-cyan-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
             react ({flavor})
           </span>
@@ -166,28 +166,28 @@ function ProjectTable({
       }
       case 'js':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
             javascript
           </span>
         );
       case 'ts':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-blue-500/10 text-blue-500 border border-blue-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
             typescript
           </span>
         );
       case 'html':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-orange-500/10 text-orange-500 border border-orange-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
             html/css/js
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20 w-fit shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-gray-500/10 text-gray-600 dark:text-gray-400 border border-gray-500/20 w-fit shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
             {lang.toLowerCase()}
           </span>

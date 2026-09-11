@@ -22,19 +22,19 @@ function ProblemsetTable({
     switch (diff) {
       case 'easy':
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
             easy
           </span>
         );
       case 'medium':
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
             medium
           </span>
         );
       case 'hard':
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-500 border border-rose-500/20">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
             hard
           </span>
         );
@@ -170,7 +170,7 @@ function ProblemsetTable({
                       to={`/problems/${problem.slug}`}
                       className="group-hover:text-amber-500 font-medium transition-colors inline-flex items-center gap-2"
                     >
-                      <span className="font-mono text-[11px] text-[var(--text-muted)]">
+                      <span className="font-mono text-[11px] text-[var(--text-muted)] tabular-nums">
                         #{problem.id}
                       </span>
                       <span className="text-xs text-[var(--text-primary)] group-hover:text-amber-500 font-medium">
@@ -213,7 +213,7 @@ function ProblemsetTable({
                   </td>
 
                   {/* Acceptance Rate */}
-                  <td className="px-3.5 py-2.5 text-right hidden sm:table-cell font-mono text-[11px] text-[var(--text-muted)]">
+                  <td className="px-3.5 py-2.5 text-right hidden sm:table-cell font-mono text-[11px] text-[var(--text-muted)] tabular-nums">
                     {problem.acceptanceRate}
                   </td>
 
@@ -224,7 +224,7 @@ function ProblemsetTable({
                       className={`inline-flex items-center justify-center gap-1 px-2.5 py-1 sm:py-0.5 min-h-[28px] sm:min-h-0 rounded text-xs font-mono font-medium transition-colors ${
                         isSolved
                           ? 'bg-[var(--bg-app)] hover:bg-[var(--bg-surface-active)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-default)]'
-                          : 'bg-amber-500/10 hover:bg-amber-500 text-amber-500 hover:text-black border border-amber-500/30'
+                          : 'bg-amber-500/10 hover:bg-amber-500 text-amber-600 dark:text-amber-400 hover:text-black dark:hover:text-black border border-amber-500/30'
                       }`}
                     >
                       <span>{isSolved ? 'Review' : 'Solve'}</span>

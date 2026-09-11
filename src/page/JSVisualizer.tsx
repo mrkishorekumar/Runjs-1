@@ -10,7 +10,7 @@ import {
 import { Link, useLocation } from 'react-router';
 import Split from 'react-split';
 import {
-  Sparkles,
+  Play,
   ChevronLeft,
   ZoomIn,
   ZoomOut,
@@ -449,10 +449,10 @@ function JSVisualizer() {
             <Link
               to="/dashboard"
               title="Back to Dashboard"
-              className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="flex items-center gap-1.5 p-1.5 rounded-md hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60"
             >
               <ChevronLeft className="w-4 h-4" />
-              <div className="flex items-center justify-center w-6 h-6 rounded-md bg-gradient-to-br from-amber-400 to-amber-600 text-black font-bold text-xs shadow-xs">
+              <div className="flex items-center justify-center w-6 h-6 rounded bg-amber-500 text-black font-bold font-mono text-xs shadow-xs">
                 JS
               </div>
             </Link>
@@ -461,7 +461,7 @@ function JSVisualizer() {
               <span className="text-xs font-bold text-[var(--text-primary)]">
                 JavaScript Visualizer
               </span>
-              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 uppercase tracking-wider">
+              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 uppercase tracking-wider font-mono">
                 Event Loop
               </span>
             </div>
@@ -483,9 +483,9 @@ function JSVisualizer() {
                 if (!isDesktop) setActiveMobileTab('visualizer');
               }}
               title="Run & Visualize Code (Ctrl/Cmd + Enter)"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-black text-xs font-bold shadow-xs transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-black text-xs font-semibold shadow-xs transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-black" />
+              <Play className="w-3.5 h-3.5 fill-black shrink-0" />
               <span className="hidden sm:inline">Run & Visualize</span>
               <span className="sm:hidden">Run</span>
             </button>

@@ -89,7 +89,7 @@ function SubmissionHistory({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-3xl">
       <div className="flex items-center justify-between pb-2 border-b border-[var(--border-default)]">
         <div className="flex items-center gap-2">
           <History className="w-4 h-4 text-purple-500" />
@@ -97,7 +97,7 @@ function SubmissionHistory({
             Submission History
           </h3>
         </div>
-        <span className="text-xs text-[var(--text-muted)]">
+        <span className="text-xs font-mono tabular-nums text-[var(--text-muted)]">
           {submissions.length} Total Attempts
         </span>
       </div>
@@ -125,7 +125,7 @@ function SubmissionHistory({
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 font-mono text-[11px] text-[var(--text-secondary)]">
+                <div className="flex items-center gap-3 font-mono text-[11px] text-[var(--text-secondary)] tabular-nums">
                   <span>
                     Cases:{' '}
                     <strong className="text-[var(--text-primary)]">

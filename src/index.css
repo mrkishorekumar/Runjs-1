@@ -4,6 +4,9 @@
   --font-sans:
     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   --color-CustomDarkGrey: var(--bg-app);
   --color-custom-dark-grey: var(--bg-app);
   --color-WindowBorder: var(--border-default);
@@ -119,6 +122,10 @@
       'Helvetica Neue',
       sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     background-color: var(--bg-app);
     color: var(--text-primary);
     transition:
@@ -132,6 +139,24 @@
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      'Liberation Mono',
+      'Courier New',
+      monospace;
+    font-feature-settings: 'liga' 0, 'calt' 0;
   }
 
   /* Accessible browser surfaces: selection and caret */

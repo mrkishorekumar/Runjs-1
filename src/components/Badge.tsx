@@ -12,7 +12,7 @@ function Badge({ count, tag, setSearchTerm, searchTerm }: TaggedResult) {
       aria-pressed={isSelected}
       className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded border transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/60 focus-visible:ring-offset-1 ${
         isSelected
-          ? 'bg-amber-500/10 border-amber-500/30 text-amber-500'
+          ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium'
           : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
       }`}
     >
@@ -21,7 +21,7 @@ function Badge({ count, tag, setSearchTerm, searchTerm }: TaggedResult) {
       <span
         className={`px-1 py-0.2 rounded text-[10px] font-mono ${
           isSelected
-            ? 'bg-amber-500/20 text-amber-500 font-semibold'
+            ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-semibold'
             : 'bg-[var(--bg-surface-muted)] text-[var(--text-muted)]'
         }`}
       >

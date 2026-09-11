@@ -25,35 +25,35 @@ function EventLoopWheel({
 }: EventLoopWheelProps) {
   // Map phase to friendly title & status
   let phaseTitle = 'Event Loop Idle';
-  let phaseColor = 'text-amber-500';
+  let phaseColor = 'text-amber-600 dark:text-amber-400';
   let phaseBg = 'bg-amber-500/10 border-amber-500/20';
 
   switch (phase) {
     case 'stack_execution':
       phaseTitle = 'Executing Call Stack';
-      phaseColor = 'text-blue-500';
+      phaseColor = 'text-blue-600 dark:text-blue-400';
       phaseBg = 'bg-blue-500/10 border-blue-500/20';
       break;
     case 'check_microtasks':
     case 'drain_microtasks':
       phaseTitle = `Draining Microtasks (${microtasksCount} in queue)`;
-      phaseColor = 'text-purple-500';
+      phaseColor = 'text-purple-600 dark:text-purple-400';
       phaseBg = 'bg-purple-500/10 border-purple-500/20';
       break;
     case 'render_phase':
       phaseTitle = 'Render & Animation Frame';
-      phaseColor = 'text-emerald-500';
+      phaseColor = 'text-emerald-600 dark:text-emerald-400';
       phaseBg = 'bg-emerald-500/10 border-emerald-500/20';
       break;
     case 'check_tasks':
     case 'pick_task':
       phaseTitle = `Picking Task (${tasksCount} in queue)`;
-      phaseColor = 'text-amber-500';
+      phaseColor = 'text-amber-600 dark:text-amber-400';
       phaseBg = 'bg-amber-500/10 border-amber-500/20';
       break;
     case 'finished':
       phaseTitle = 'All Queues Drained';
-      phaseColor = 'text-emerald-500';
+      phaseColor = 'text-emerald-600 dark:text-emerald-400';
       phaseBg = 'bg-emerald-500/10 border-emerald-500/20';
       break;
     case 'idle':
