@@ -65,10 +65,7 @@ export interface TestResult {
 }
 
 export type VerdictStatus =
-  | 'accepted'
-  | 'wrong_answer'
-  | 'runtime_error'
-  | 'time_limit_exceeded';
+  'accepted' | 'wrong_answer' | 'runtime_error' | 'time_limit_exceeded';
 
 export interface SubmissionResult {
   id: string;

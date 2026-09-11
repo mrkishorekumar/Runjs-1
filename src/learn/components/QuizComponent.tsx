@@ -71,7 +71,9 @@ function QuizComponent({ questions, onComplete }: QuizComponentProps) {
         </h3>
         <p className="text-sm text-[var(--text-secondary)] mt-2">
           You got{' '}
-          <strong className="text-[var(--text-primary)] font-mono">{correctCount}</strong>{' '}
+          <strong className="text-[var(--text-primary)] font-mono">
+            {correctCount}
+          </strong>{' '}
           out of{' '}
           <strong className="text-[var(--text-primary)] font-mono">
             {questions.length}

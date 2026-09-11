@@ -245,12 +245,7 @@ export function getRelativeImportPath(
 export interface ExportedSymbol {
   name: string;
   kind:
-    | 'Function'
-    | 'Interface'
-    | 'TypeParameter'
-    | 'Variable'
-    | 'Class'
-    | 'Enum';
+    'Function' | 'Interface' | 'TypeParameter' | 'Variable' | 'Class' | 'Enum';
   detail?: string;
 }
 

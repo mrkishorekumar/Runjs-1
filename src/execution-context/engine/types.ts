@@ -3,13 +3,7 @@ export type ExecutionContextType = 'global' | 'function';
 export type ExecutionContextPhase = 'creation' | 'execution' | 'completed';
 
 export type MemoryVariableKind =
-  | 'var'
-  | 'let'
-  | 'const'
-  | 'function'
-  | 'param'
-  | 'this'
-  | 'arguments';
+  'var' | 'let' | 'const' | 'function' | 'param' | 'this' | 'arguments';
 
 export type MemoryVariableStatus =
   | 'uninitialized' // TDZ for let / const

@@ -148,15 +148,11 @@
   samp,
   pre {
     font-family:
-      ui-monospace,
-      SFMono-Regular,
-      Menlo,
-      Monaco,
-      Consolas,
-      'Liberation Mono',
-      'Courier New',
-      monospace;
-    font-feature-settings: 'liga' 0, 'calt' 0;
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
+    font-feature-settings:
+      'liga' 0,
+      'calt' 0;
   }
 
   /* Accessible browser surfaces: selection and caret */

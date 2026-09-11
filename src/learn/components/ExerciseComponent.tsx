@@ -227,7 +227,9 @@ function ExerciseComponent({
                 className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-mono transition-colors cursor-pointer"
               >
                 <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-                <span>hint ({hintsRevealed}/{exercise.hints.length})</span>
+                <span>
+                  hint ({hintsRevealed}/{exercise.hints.length})
+                </span>
               </button>
             )}
 

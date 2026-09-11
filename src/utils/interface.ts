@@ -143,12 +143,7 @@ export interface AnswerBlock {
 }
 
 export type InterviewCategory =
-  | 'All'
-  | 'JavaScript'
-  | 'React'
-  | 'TypeScript'
-  | 'Node.js'
-  | 'Architecture';
+  'All' | 'JavaScript' | 'React' | 'TypeScript' | 'Node.js' | 'Architecture';
 
 export type QuestionCategory = Exclude<InterviewCategory, 'All'>;
 

@@ -628,10 +628,11 @@ export class Simulator {
       onFulfilled?: unknown,
       onRejected?: unknown
     ) {
-      const nextPromise: SimulatedPromise =
-        new (SimulatedPromiseClass as unknown as {
+      const nextPromise: SimulatedPromise = new (
+        SimulatedPromiseClass as unknown as {
           new (): SimulatedPromise;
-        })();
+        }
+      )();
 
       const resolveNext = (resVal: unknown) => {
         nextPromise.status = 'resolved';
@@ -720,18 +721,22 @@ export class Simulator {
     };
 
     const resolveStatic = function (val: unknown) {
-      const p = new (SimulatedPromiseClass as unknown as {
-        new (): SimulatedPromise;
-      })();
+      const p = new (
+        SimulatedPromiseClass as unknown as {
+          new (): SimulatedPromise;
+        }
+      )();
       p.status = 'resolved';
       p.value = val;
       return p;
     };
 
     const rejectStatic = function (reason: unknown) {
-      const p = new (SimulatedPromiseClass as unknown as {
-        new (): SimulatedPromise;
-      })();
+      const p = new (
+        SimulatedPromiseClass as unknown as {
+          new (): SimulatedPromise;
+        }
+      )();
       p.status = 'rejected';
       p.reason = reason;
       return p;

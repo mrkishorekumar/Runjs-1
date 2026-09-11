@@ -21,8 +21,11 @@
     "test:output-questions": "node scripts/test-output-questions.js",
     "test:complexity": "node scripts/test-complexity.js",
     "test:react": "node scripts/test-react-playground.js",
+    "test": "node scripts/test-visualizer.js && node scripts/test-execution-context.js && node scripts/test-cross-tool-interlink.js && node scripts/test-reset-modal.js && node scripts/test-output-questions.js && node scripts/test-complexity.js && node scripts/test-react-playground.js",
+    "test:all": "pnpm run test && pnpm run verify:seo",
     "build": "node scripts/generate-sitemap.js && tsc -b && vite build && node scripts/prerender-routes.js",
     "lint": "eslint ./src",
+    "format:check": "prettier --check ./src",
     "pretty": "prettier --write ./src",
     "preview": "vite preview",
     "check": "npm run pretty && npm run lint",
@@ -30,7 +33,8 @@
     "pages:deploy": "pnpm run build && wrangler pages deploy ./dist",
     "worker:dev": "wrangler dev",
     "worker:deploy": "pnpm run build && wrangler deploy",
-    "deploy": "pnpm run worker:deploy"
+    "deploy": "pnpm run worker:deploy",
+    "prepare": "husky"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
@@ -66,6 +70,8 @@
     "eslint-plugin-react-hooks": "^6.1.1",
     "eslint-plugin-react-refresh": "^0.5.6",
     "globals": "^17.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.0",
     "prettier": "3.9.6",
     "rollup-plugin-visualizer": "^7.1.1",
     "tailwindcss": "^4.3.3",
@@ -73,5 +79,14 @@
     "typescript-eslint": "^8.70.0",
     "vite": "^8.2.2",
     "wrangler": "^4.130.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md,html}": [
+      "prettier --write"
+    ]
   }
 }

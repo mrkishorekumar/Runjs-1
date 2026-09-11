@@ -309,7 +309,9 @@ function ProjectTable({
                         <div className="min-w-0">
                           {bin ? (
                             <div className="font-mono text-xs text-[var(--text-secondary)] flex items-center gap-1 cursor-not-allowed select-none min-w-0">
-                              <span className="font-medium truncate max-w-[180px] sm:max-w-xs">{val.fileName}</span>
+                              <span className="font-medium truncate max-w-[180px] sm:max-w-xs">
+                                {val.fileName}
+                              </span>
                               <span className="text-[var(--text-muted)] text-[11px] shrink-0">
                                 .
                                 {val.language === 'react'
