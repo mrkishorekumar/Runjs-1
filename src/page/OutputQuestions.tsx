@@ -374,7 +374,7 @@ export default function OutputQuestions() {
                 >
                   <Brain className="w-3.5 h-3.5 text-amber-500" />
                   <span>Output Quiz</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/20">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/25 font-mono tabular-nums">
                     100
                   </span>
                 </button>
@@ -383,18 +383,10 @@ export default function OutputQuestions() {
 
             {/* Desktop secondary breadcrumb when in Quiz Mode */}
             {viewMode === 'quiz' && (
-              <div className="hidden sm:flex items-center gap-1.5 p-1 rounded-xl bg-[var(--bg-surface-muted)] border border-[var(--border-default)]">
-                <Link
-                  to="/interview"
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-                >
-                  <FileQuestion className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                  <span>Theory Q&A</span>
-                </Link>
-
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-xs border border-[var(--border-default)]">
-                  <Brain className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Output Quiz</span>
+              <div className="hidden md:flex items-center gap-2 text-xs font-medium text-[var(--text-muted)]">
+                <span>/</span>
+                <span className="text-[var(--text-primary)] font-semibold truncate max-w-[200px]">
+                  {currentQuestion.topic}
                 </span>
               </div>
             )}
@@ -427,7 +419,7 @@ export default function OutputQuestions() {
                     }`}
                   >
                     <span>{f.label}</span>
-                    <span className="text-[10px] opacity-70 hidden sm:inline">
+                    <span className="text-[10px] opacity-70 hidden sm:inline font-mono tabular-nums">
                       ({f.count})
                     </span>
                   </button>
@@ -437,7 +429,7 @@ export default function OutputQuestions() {
               {/* Score Pill */}
               <div className="flex items-center gap-1 px-2 sm:px-3 py-1 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface-muted)] text-xs font-semibold shrink-0">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span>
+                <span className="font-mono tabular-nums">
                   {stats.totalCorrect}/{stats.totalAnswered}
                 </span>
               </div>
@@ -450,7 +442,7 @@ export default function OutputQuestions() {
                 title="Open all 100 questions grid (Shortcut: Q)"
               >
                 <LayoutGrid className="w-3.5 h-3.5 text-amber-500" />
-                <span>
+                <span className="font-mono tabular-nums">
                   Q{currentQuestion.id} of {allQuestions.length}
                 </span>
               </button>
@@ -521,7 +513,7 @@ export default function OutputQuestions() {
                 <div className="flex items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-[var(--border-subtle)]">
                   <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-wrap">
                     {/* Question Number Badge */}
-                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs border border-amber-500/20 shadow-2xs shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs border border-amber-500/20 shadow-2xs shrink-0 font-mono tabular-nums">
                       #{currentQuestion.id}
                     </span>
 

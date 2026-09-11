@@ -84,7 +84,7 @@ function TestResultsPanel({
               <Zap className="w-3 h-3 text-amber-500" />
               <span>Runtime</span>
             </div>
-            <div className="font-mono text-xs font-bold text-[var(--text-primary)]">
+            <div className="font-mono text-xs font-bold text-[var(--text-primary)] tabular-nums">
               {lastSubmission.runtimeMs} ms
             </div>
           </div>
@@ -94,7 +94,7 @@ function TestResultsPanel({
               <HardDrive className="w-3 h-3 text-blue-500" />
               <span>Memory</span>
             </div>
-            <div className="font-mono text-xs font-bold text-[var(--text-primary)]">
+            <div className="font-mono text-xs font-bold text-[var(--text-primary)] tabular-nums">
               {lastSubmission.memoryMB} MB
             </div>
           </div>
@@ -104,7 +104,7 @@ function TestResultsPanel({
               <CheckCircle2 className="w-3 h-3 text-emerald-500" />
               <span>Passed</span>
             </div>
-            <div className="font-mono text-xs font-bold text-[var(--text-primary)]">
+            <div className="font-mono text-xs font-bold text-[var(--text-primary)] tabular-nums">
               {lastSubmission.passedCases} / {lastSubmission.totalCases}
             </div>
           </div>
@@ -199,7 +199,7 @@ function TestResultsPanel({
           </div>
 
           <span
-            className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
+            className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-medium tabular-nums ${
               allPassed
                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
                 : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
@@ -227,7 +227,7 @@ function TestResultsPanel({
               )}
             </div>
 
-            <span className="text-[11px] text-[var(--text-muted)]">
+            <span className="text-[11px] text-[var(--text-muted)] font-mono tabular-nums">
               runtime: {currentCase.runtimeMs}ms
             </span>
           </div>

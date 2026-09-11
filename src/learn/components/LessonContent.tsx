@@ -188,7 +188,7 @@ function LessonContent() {
           >
             {lesson.difficulty}
           </span>
-          <span className="flex items-center gap-1 text-[11px] font-mono text-[var(--text-muted)]">
+          <span className="flex items-center gap-1 text-[11px] font-mono text-[var(--text-muted)] tabular-nums">
             <Clock className="w-3 h-3" />
             {lesson.readingTime} min read
           </span>
@@ -203,7 +203,7 @@ function LessonContent() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
           {lesson.title}
         </h1>
-        <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+        <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed max-w-3xl">
           {lesson.description}
         </p>
 
@@ -231,7 +231,7 @@ function LessonContent() {
           {section.paragraphs.map((para, pIdx) => (
             <p
               key={pIdx}
-              className="text-sm text-[var(--text-secondary)] leading-relaxed mb-3"
+              className="text-sm text-[var(--text-secondary)] leading-relaxed mb-3 max-w-3xl"
             >
               {para}
             </p>
@@ -239,7 +239,7 @@ function LessonContent() {
 
           {/* Bullet Points */}
           {section.bulletPoints && section.bulletPoints.length > 0 && (
-            <ul className="space-y-2 my-3 ml-2">
+            <ul className="space-y-2 my-3 ml-2 max-w-3xl">
               {section.bulletPoints.map((point, bIdx) => (
                 <li
                   key={bIdx}
@@ -260,7 +260,7 @@ function LessonContent() {
           {/* Callout */}
           {section.callout && (
             <div
-              className={`flex items-start gap-3 p-3.5 my-4 rounded-lg border ${calloutStyles[section.callout.type].bg}`}
+              className={`flex items-start gap-3 p-3.5 my-4 rounded-lg border max-w-3xl ${calloutStyles[section.callout.type].bg}`}
             >
               {calloutStyles[section.callout.type].icon}
               <div>

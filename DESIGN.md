@@ -111,13 +111,33 @@ RunJS applies a purposeful, role-based color strategy where color encodes action
 
 ## Typography
 
-- **Interface Font**: Inter (`--font-sans`), system fallback (`-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `Roboto`).
-- **Code & Terminal Font**: System monospace (`ui-monospace`, `SFMono-Regular`, `Menlo`, `Monaco`, `Consolas`).
-- **Scale**:
-  - Caption / Micro: `10px` – `12px` (badges, counts, metadata pills, tab headers).
-  - Body / Controls: `13px` – `14px` (editor controls, form inputs, button labels, table rows).
-  - Headers / Titles: `16px` – `20px` (modal headers, view headlines, cards).
-  - Large Headings: `24px` – `32px` (landing hero, welcome screens).
+RunJS establishes a disciplined, scanable, developer-focused typographic system optimized for long reading sessions, rapid debugging, and code clarity.
+
+### 1. Font Families & Rendering Pipeline
+- **Interface Font**: Inter variable font (`--font-sans`), loaded via Google Fonts with variable optical sizing (`opsz 14..32`) and weight range (`100..900`). Fallback stack: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`.
+- **Interface Feature Settings**: `'cv02', 'cv03', 'cv04', 'cv11'` enabled on root `html` for clean geometric open-counter glyphs.
+- **Font Smoothing**: Enforced universally across `html` and `body`:
+  `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; font-optical-sizing: auto;`
+- **Code & Monospace Font**: `--font-mono` defined as `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace`.
+- **Monospace Ligature Control**: Code snippets and inline code blocks explicitly enforce `font-feature-settings: 'liga' 0, 'calt' 0;` to prevent symbol-collapsing ligatures (e.g. `!==` collapsing into a glyph) that can confuse learners copying code or debugging string literals.
+
+### 2. Typographic Scale & Functional Roles
+- **Display / Hero**: `text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight` — Homepage headline, landing view intros.
+- **H1 / View Title**: `text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]` — Page titles, view headers.
+- **H2 / Section Title**: `text-base sm:text-lg font-bold text-[var(--text-primary)]` — Problem headings, curriculum modules, modal headlines.
+- **H3 / Card Title**: `text-sm sm:text-base font-semibold text-[var(--text-primary)]` — Feature cards, problem cases, sub-sections.
+- **Body / Reading**: `text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed` — Lesson guides, descriptions, tutorial copy.
+- **Micro / Badge Labels**: `text-[10px] sm:text-[11px] font-mono font-medium tracking-wide uppercase text-[var(--text-muted)]` — Badges, topic pills, status indicators, tab items.
+- **Telemetry & Timers**: `font-mono text-xs tabular-nums text-[var(--text-primary)]` — Runtimes, memory allocation, execution timers, test result counts.
+- **Code & Terminals**: `font-mono text-xs text-[var(--text-primary)] leading-relaxed select-text` — Monaco editor buffers, Luna console streams, interactive terminal trays.
+
+### 3. Reading Measure & Rhythm Rules
+- **Line Length (Measure)**: Reading surfaces (`ProblemDescription`, `LessonContent`, `AboutPage`, `TermsConditionsPage`, `PrivacyPolicyPage`) constrain continuous text columns to 45–75 characters per line (`max-w-prose` / `max-w-3xl`) to eliminate eye tracking fatigue across ultra-wide monitors.
+- **Vertical Rhythm**: Headings apply tight leading (`leading-tight` or `leading-snug`) with dedicated top clearance (`mt-5 mb-2`), while body copy enforces comfortable line spacing (`leading-relaxed`).
+
+### 4. Tabular Figures (`tabular-nums`)
+- All dynamic numbers, timer counters, benchmark metrics (`runtimeMs`, `memoryMB`), challenge solve counters, difficulty breakdown fractions, and data table columns apply `tabular-nums` (`font-variant-numeric: tabular-nums`).
+- This guarantees fixed-width digit alignment, preventing horizontal layout shift (jitter) as values update in real time during code execution or filtering.
 
 ## Layout
 

@@ -170,7 +170,7 @@ function ProblemsetTable({
                       to={`/problems/${problem.slug}`}
                       className="group-hover:text-amber-500 font-medium transition-colors inline-flex items-center gap-2"
                     >
-                      <span className="font-mono text-[11px] text-[var(--text-muted)]">
+                      <span className="font-mono text-[11px] text-[var(--text-muted)] tabular-nums">
                         #{problem.id}
                       </span>
                       <span className="text-xs text-[var(--text-primary)] group-hover:text-amber-500 font-medium">
@@ -213,7 +213,7 @@ function ProblemsetTable({
                   </td>
 
                   {/* Acceptance Rate */}
-                  <td className="px-3.5 py-2.5 text-right hidden sm:table-cell font-mono text-[11px] text-[var(--text-muted)]">
+                  <td className="px-3.5 py-2.5 text-right hidden sm:table-cell font-mono text-[11px] text-[var(--text-muted)] tabular-nums">
                     {problem.acceptanceRate}
                   </td>
 

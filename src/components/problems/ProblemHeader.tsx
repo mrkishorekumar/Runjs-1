@@ -86,7 +86,7 @@ function ProblemHeader({
         <div className="h-3.5 w-px bg-[var(--border-default)] hidden sm:block shrink-0" />
 
         <div className="flex items-center gap-2 min-w-0">
-          <span className="font-mono text-xs text-[var(--text-muted)] shrink-0">
+          <span className="font-mono text-xs text-[var(--text-muted)] tabular-nums shrink-0">
             #{problem.id}
           </span>
           <h1 className="text-xs font-semibold text-[var(--text-primary)] truncate">

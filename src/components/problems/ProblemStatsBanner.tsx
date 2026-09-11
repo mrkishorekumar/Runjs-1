@@ -42,10 +42,10 @@ function ProblemStatsBanner({
         {/* Left: Overall Completion & Info */}
         <div className="flex items-center gap-3.5">
           <div className="flex flex-col items-center justify-center w-14 h-14 rounded-md border border-[var(--border-default)] bg-[var(--bg-app)] shrink-0 font-mono">
-            <span className="text-lg font-bold text-amber-500 leading-none">
+            <span className="text-lg font-bold text-amber-500 leading-none tabular-nums">
               {stats.solved}
             </span>
-            <span className="text-[10px] text-[var(--text-muted)] mt-1">
+            <span className="text-[10px] text-[var(--text-muted)] mt-1 tabular-nums">
               /{stats.total}
             </span>
           </div>
@@ -56,14 +56,14 @@ function ProblemStatsBanner({
                 Challenge Progress
               </h2>
               {stats.solved > 0 && (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono font-medium tabular-nums bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   <CheckCircle2 className="w-3 h-3" />
                   {stats.percentage}%
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-3 mt-1 text-xs font-mono text-[var(--text-muted)]">
+            <div className="flex items-center gap-3 mt-1 text-xs font-mono tabular-nums text-[var(--text-muted)]">
               <span className="flex items-center gap-1">
                 <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                 <span>{stats.starredCount} starred</span>
@@ -83,7 +83,7 @@ function ProblemStatsBanner({
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
               <span className="font-mono font-medium text-emerald-600 dark:text-emerald-400">Easy</span>
-              <span className="font-mono text-[10px] text-[var(--text-muted)]">
+              <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.easySolved}/{stats.easyTotal}
               </span>
             </div>
@@ -99,7 +99,7 @@ function ProblemStatsBanner({
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
               <span className="font-mono font-medium text-amber-600 dark:text-amber-400">Medium</span>
-              <span className="font-mono text-[10px] text-[var(--text-muted)]">
+              <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.mediumSolved}/{stats.mediumTotal}
               </span>
             </div>
@@ -115,7 +115,7 @@ function ProblemStatsBanner({
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
               <span className="font-mono font-medium text-rose-600 dark:text-rose-400">Hard</span>
-              <span className="font-mono text-[10px] text-[var(--text-muted)]">
+              <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.hardSolved}/{stats.hardTotal}
               </span>
             </div>

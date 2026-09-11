@@ -235,7 +235,7 @@ function HomeIdeDemo() {
           )}
 
           {phase === 'success' && (
-            <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 whitespace-nowrap shrink-0">
+            <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md text-[10px] font-mono tabular-nums text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 whitespace-nowrap shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
               <span className="hidden sm:inline">
                 done // {executionTime}ms

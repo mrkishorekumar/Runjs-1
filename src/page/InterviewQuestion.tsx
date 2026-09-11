@@ -498,7 +498,7 @@ export default function InterviewQuestion() {
                 >
                   <FileQuestion className="w-3.5 h-3.5 text-amber-500" />
                   <span className="hidden sm:inline">Technical</span> Q&A
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/20">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/20 font-mono tabular-nums">
                     {allQuestions.length}
                   </span>
                 </button>
@@ -509,7 +509,7 @@ export default function InterviewQuestion() {
                 >
                   <Brain className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                   <span>Output Quiz</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 font-mono tabular-nums">
                     100
                   </span>
                 </Link>
@@ -582,7 +582,7 @@ export default function InterviewQuestion() {
                 title={`${stats.totalMastered} questions mastered`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span>
+                <span className="font-mono tabular-nums">
                   {stats.totalMastered}/{allQuestions.length}
                 </span>
               </div>
@@ -595,7 +595,7 @@ export default function InterviewQuestion() {
                 title="Open question navigator grid (Shortcut: Q)"
               >
                 <LayoutGrid className="w-3.5 h-3.5 text-amber-500" />
-                <span>
+                <span className="font-mono tabular-nums">
                   Q{currentQId} of {allQuestions.length}
                 </span>
               </button>
@@ -678,7 +678,7 @@ export default function InterviewQuestion() {
                 <div className="flex items-center justify-between gap-2 pb-3 border-b border-[var(--border-subtle)]">
                   <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-wrap">
                     {/* Question ID Badge */}
-                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs border border-amber-500/20 shadow-2xs shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-xs border border-amber-500/20 shadow-2xs shrink-0 font-mono tabular-nums">
                       #{currentQId}
                     </span>
 

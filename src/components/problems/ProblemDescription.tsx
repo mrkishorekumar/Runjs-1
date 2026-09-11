@@ -130,11 +130,11 @@ function ProblemDescription({
       <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-6 leading-relaxed text-[var(--text-primary)]">
         {/* Description View */}
         {activeTab === 'description' && (
-          <div className="space-y-6">
+          <div className="space-y-6 max-w-3xl">
             {/* Header info */}
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="font-mono text-xs text-[var(--text-muted)]">
+                <span className="font-mono text-xs text-[var(--text-muted)] tabular-nums">
                   #{problem.id}
                 </span>
                 <h2 className="text-lg font-bold text-[var(--text-primary)]">
@@ -152,7 +152,7 @@ function ProblemDescription({
                     {t}
                   </span>
                 ))}
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-default)]">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-mono tabular-nums font-medium bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-default)]">
                   Acceptance: {problem.acceptanceRate}
                 </span>
               </div>
@@ -249,7 +249,7 @@ function ProblemDescription({
 
         {/* Hints View */}
         {activeTab === 'hints' && problem.hints && (
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-3xl">
             <div className="flex items-center gap-2 pb-2 border-b border-[var(--border-default)]">
               <Lightbulb className="w-4 h-4 text-amber-500" />
               <h3 className="text-sm font-bold text-[var(--text-primary)]">
@@ -301,7 +301,7 @@ function ProblemDescription({
 
         {/* Solution View */}
         {activeTab === 'solution' && problem.solution && (
-          <div className="space-y-5">
+          <div className="space-y-5 max-w-3xl">
             <div className="flex items-center justify-between pb-2 border-b border-[var(--border-default)]">
               <div className="flex items-center gap-2">
                 <BookCheck className="w-4 h-4 text-emerald-500" />
@@ -336,7 +336,7 @@ function ProblemDescription({
                   <Clock className="w-3.5 h-3.5 text-amber-500" />
                   <span>Time Complexity</span>
                 </div>
-                <div className="font-mono text-xs font-semibold text-[var(--text-primary)]">
+                <div className="font-mono text-xs font-semibold text-[var(--text-primary)] tabular-nums">
                   {problem.solution.complexity.time}
                 </div>
               </div>
@@ -346,7 +346,7 @@ function ProblemDescription({
                   <HardDrive className="w-3.5 h-3.5 text-blue-500" />
                   <span>Space Complexity</span>
                 </div>
-                <div className="font-mono text-xs font-semibold text-[var(--text-primary)]">
+                <div className="font-mono text-xs font-semibold text-[var(--text-primary)] tabular-nums">
                   {problem.solution.complexity.space}
                 </div>
               </div>

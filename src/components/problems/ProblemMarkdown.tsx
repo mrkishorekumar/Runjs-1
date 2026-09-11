@@ -201,7 +201,7 @@ function ProblemMarkdown({ content, className = '' }: ProblemMarkdownProps) {
               elements.push(
                 <h4
                   key={lineIdx}
-                  className="text-xs sm:text-sm font-bold text-amber-500 uppercase tracking-wider mt-4 mb-1.5"
+                  className="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mt-4 mb-1.5"
                 >
                   {parseInlineFormatting(headingText)}
                 </h4>
@@ -219,7 +219,7 @@ function ProblemMarkdown({ content, className = '' }: ProblemMarkdownProps) {
               elements.push(
                 <h6
                   key={lineIdx}
-                  className="text-xs font-bold text-amber-500/90 dark:text-amber-400 mt-2.5 mb-1"
+                  className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-2.5 mb-1"
                 >
                   {parseInlineFormatting(headingText)}
                 </h6>
