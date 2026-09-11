@@ -30,7 +30,7 @@
     "pages:deploy": "pnpm run build && wrangler pages deploy ./dist",
     "worker:dev": "wrangler dev",
     "worker:deploy": "pnpm run build && wrangler deploy",
-    "deploy": "pnpm run pages:deploy"
+    "deploy": "pnpm run worker:deploy"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
