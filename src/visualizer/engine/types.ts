@@ -90,13 +90,7 @@ export interface ExecutionStep {
   logs: ConsoleLogEntry[];
   activeLine: number | null;
   activePanel:
-    | 'stack'
-    | 'loop'
-    | 'microtasks'
-    | 'tasks'
-    | 'webapis'
-    | 'console'
-    | null;
+    'stack' | 'loop' | 'microtasks' | 'tasks' | 'webapis' | 'console' | null;
   highlightedItemId?: string;
 }
 

@@ -82,7 +82,9 @@ function ProblemStatsBanner({
           {/* Easy */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-emerald-600 dark:text-emerald-400">Easy</span>
+              <span className="font-mono font-medium text-emerald-600 dark:text-emerald-400">
+                Easy
+              </span>
               <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.easySolved}/{stats.easyTotal}
               </span>
@@ -98,7 +100,9 @@ function ProblemStatsBanner({
           {/* Medium */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-amber-600 dark:text-amber-400">Medium</span>
+              <span className="font-mono font-medium text-amber-600 dark:text-amber-400">
+                Medium
+              </span>
               <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.mediumSolved}/{stats.mediumTotal}
               </span>
@@ -114,7 +118,9 @@ function ProblemStatsBanner({
           {/* Hard */}
           <div className="p-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-app)]">
             <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="font-mono font-medium text-rose-600 dark:text-rose-400">Hard</span>
+              <span className="font-mono font-medium text-rose-600 dark:text-rose-400">
+                Hard
+              </span>
               <span className="font-mono text-[10px] text-[var(--text-muted)] tabular-nums">
                 {stats.hardSolved}/{stats.hardTotal}
               </span>

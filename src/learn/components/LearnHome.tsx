@@ -100,9 +100,9 @@ function LearnHome() {
           Learn JavaScript From Scratch
         </h1>
         <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          A structured, hands-on learning path from language fundamentals
-          to advanced patterns. Interactive lessons, runnable Monaco code
-          examples, sandbox exercises, and quizzes.
+          A structured, hands-on learning path from language fundamentals to
+          advanced patterns. Interactive lessons, runnable Monaco code examples,
+          sandbox exercises, and quizzes.
         </p>
 
         {/* CTA */}

@@ -125,9 +125,7 @@ function TestResultsPanel({
             )}
 
             <div className="space-y-1">
-              <div className="text-[10px] text-[var(--text-muted)]">
-                Input:
-              </div>
+              <div className="text-[10px] text-[var(--text-muted)]">Input:</div>
               <div className="p-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] break-all">
                 <code>
                   {formatValueForDisplay(lastSubmission.failedCase.input)}
@@ -285,7 +283,10 @@ function TestResultsPanel({
               </div>
               <div className="p-2 rounded-md bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] text-[var(--text-secondary)] space-y-0.5">
                 {currentCase.logs.map((log, i) => (
-                  <div key={i} className="text-amber-600 dark:text-amber-400 font-mono">
+                  <div
+                    key={i}
+                    className="text-amber-600 dark:text-amber-400 font-mono"
+                  >
                     &gt; {log}
                   </div>
                 ))}
@@ -308,7 +309,8 @@ function TestResultsPanel({
           Ready to Test
         </h4>
         <p className="text-[11px] text-[var(--text-secondary)]">
-          Click <strong>Run</strong> for sample cases or <strong>Submit</strong> for full verification.
+          Click <strong>Run</strong> for sample cases or <strong>Submit</strong>{' '}
+          for full verification.
         </p>
       </div>
       <button

@@ -83,7 +83,9 @@ function LanguageCard({ option, isSelected, onSelect }: LanguageCardProps) {
       }`}
     >
       <div className="flex items-center justify-between w-full mb-0.5">
-        <span className={`font-mono font-medium text-xs ${option.textColorClass}`}>
+        <span
+          className={`font-mono font-medium text-xs ${option.textColorClass}`}
+        >
           {option.label}
         </span>
         {isSelected && (
@@ -293,7 +295,10 @@ const CreatePlayground = ({
         </div>
 
         {/* Form */}
-        <form onSubmit={createNewPlayGroundFunction} className="mt-4 space-y-3.5">
+        <form
+          onSubmit={createNewPlayGroundFunction}
+          className="mt-4 space-y-3.5"
+        >
           {/* File Name Field */}
           <div>
             <label
@@ -322,7 +327,9 @@ const CreatePlayground = ({
               className="block text-xs font-mono text-[var(--text-secondary)] mb-1"
             >
               Tag / Category{' '}
-              <span className="text-[var(--text-muted)] text-[11px]">(optional)</span>
+              <span className="text-[var(--text-muted)] text-[11px]">
+                (optional)
+              </span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-[var(--text-muted)]">

@@ -58,15 +58,14 @@ function HomePage() {
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-primary)] leading-[1.15]">
             Run, Practice & Master{' '}
-            <span className="text-amber-500">JavaScript</span>{' '}
-            in Your Browser
+            <span className="text-amber-500">JavaScript</span> in Your Browser
           </h1>
 
           {/* Subtitle */}
           <p className="mt-4 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-            A fast, lightweight developer playground with zero setup.
-            Write modern JavaScript, compile TypeScript with esbuild WASM, build
-            React components, and master technical coding challenges.
+            A fast, lightweight developer playground with zero setup. Write
+            modern JavaScript, compile TypeScript with esbuild WASM, build React
+            components, and master technical coding challenges.
           </p>
 
           {/* CTA Buttons */}
@@ -237,8 +236,8 @@ function HomePage() {
                   interview_questions
                 </h2>
                 <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
-                  Technical interview Q&A with active recall, detailed solutions,
-                  and live sandboxes.
+                  Technical interview Q&A with active recall, detailed
+                  solutions, and live sandboxes.
                 </p>
               </div>
             </Link>
