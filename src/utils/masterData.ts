@@ -83,7 +83,7 @@ export const interviewLinks: InterviewItem[] = [
 ];
 
 export const primaryNavLinks: NavItem[] = [
-  { title: 'Learn JS', link: '/learn', badge: '0→Hero' },
+  { title: 'Learn JS', link: '/learn', badge: '0 → Hero' },
   { title: 'Problems', link: '/problems', badge: 'DSA' },
   { title: 'Dashboard', link: '/dashboard' },
 ];
