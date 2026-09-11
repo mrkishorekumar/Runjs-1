@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Build & Deploy to Cloudflare Pages
+    name: Build & Deploy to Cloudflare Worker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,9 +39,9 @@ jobs:
       - name: Build production bundle
         run: pnpm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=runjs
+          command: deploy
