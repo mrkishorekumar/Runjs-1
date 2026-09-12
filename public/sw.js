@@ -1,11 +1,14 @@
 // RunJS PWA Service Worker
-const CACHE_NAME = 'runjs-pwa-v2';
+const CACHE_NAME = 'runjs-pwa-v3';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/RunJS-192.png',
   '/RunJS-512.png',
+  '/RunJS-maskable-192.png',
+  '/RunJS-maskable-512.png',
+  '/apple-touch-icon.png',
   '/runjs.in.webp',
   '/favicon.ico',
   '/favicon.svg',

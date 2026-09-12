@@ -1,135 +1,167 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; script-src-elem 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://registry.npmjs.org https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev blob: data:; worker-src 'self' blob: data:; frame-src 'self' https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev; object-src 'none'; base-uri 'self';"
+    />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/webp" href="/runjs.in.webp" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="canonical" href="https://runjs.in/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      RunJS.in - In-Browser JavaScript, TypeScript & React Playground
+    </title>
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; script-src-elem 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://registry.npmjs.org https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev blob: data:; worker-src 'self' blob: data:; frame-src 'self' https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev; object-src 'none'; base-uri 'self';">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/webp" href="/runjs.in.webp" />
-  <link rel="apple-touch-icon" href="/RunJS-192.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="canonical" href="https://runjs.in/" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RunJS.in - In-Browser JavaScript, TypeScript & React Playground</title>
+    <meta
+      name="theme-color"
+      content="#f59e0b"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#09090b"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="theme-color" content="#f59e0b" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta name="author" content="M R Kishore Kumar" />
+    <meta
+      name="keywords"
+      content="JavaScript online compiler, TypeScript playground, React sandbox, esbuild wasm, Monaco editor, JavaScript coding challenges, interview prep, web IDE, learn JavaScript"
+    />
+    <meta
+      name="description"
+      content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges."
+    />
 
-  <meta name="theme-color" content="#f59e0b" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="theme-color" content="#f59e0b">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <meta name="author" content="M R Kishore Kumar">
-  <meta name="keywords" content="JavaScript online compiler, TypeScript playground, React sandbox, esbuild wasm, Monaco editor, JavaScript coding challenges, interview prep, web IDE, learn JavaScript">
-  <meta name="description"
-    content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges.">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="RunJS" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://runjs.in/" />
+    <meta
+      property="og:title"
+      content="RunJS.in - In-Browser JavaScript, TypeScript & React Playground"
+    />
+    <meta
+      property="og:description"
+      content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges."
+    />
+    <meta property="og:image" content="https://runjs.in/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RunJS Developer Playground" />
+    <meta property="og:locale" content="en_US" />
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:site_name" content="RunJS" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://runjs.in/" />
-  <meta property="og:title" content="RunJS.in - In-Browser JavaScript, TypeScript & React Playground" />
-  <meta property="og:description"
-    content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges." />
-  <meta property="og:image" content="https://runjs.in/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="RunJS Developer Playground" />
-  <meta property="og:locale" content="en_US" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@mrkishorekumar" />
+    <meta name="twitter:creator" content="@mrkishorekumar" />
+    <meta
+      name="twitter:title"
+      content="RunJS.in - In-Browser JavaScript, TypeScript & React Playground"
+    />
+    <meta
+      name="twitter:description"
+      content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges."
+    />
+    <meta name="twitter:image" content="https://runjs.in/og-image.png" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@mrkishorekumar" />
-  <meta name="twitter:creator" content="@mrkishorekumar" />
-  <meta name="twitter:title" content="RunJS.in - In-Browser JavaScript, TypeScript & React Playground" />
-  <meta name="twitter:description"
-    content="Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, interactive lessons, and coding challenges." />
-  <meta name="twitter:image" content="https://runjs.in/og-image.png" />
-
-  <!-- Structured Data: WebApplication & WebSite -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
+    <!-- Structured Data: WebApplication & WebSite -->
+    <script type="application/ld+json">
       {
-        "@type": "WebApplication",
-        "@id": "https://runjs.in/#webapp",
-        "name": "RunJS",
-        "url": "https://runjs.in/",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Any (Web Browser)",
-        "description": "Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, and interactive coding challenges.",
-        "browserRequirements": "Requires JavaScript. Requires HTML5.",
-        "softwareVersion": "2.0.0",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "author": {
-          "@type": "Person",
-          "name": "M R Kishore Kumar",
-          "url": "https://github.com/mrkishorekumar"
-        }
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://runjs.in/#website",
-        "name": "RunJS",
-        "url": "https://runjs.in/",
-        "description": "Run, practice, and master JavaScript, TypeScript, and React directly in your browser.",
-        "publisher": {
-          "@type": "Organization",
-          "name": "RunJS",
-          "url": "https://runjs.in/",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://runjs.in/RunJS-512.png"
-          }
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://runjs.in/problems?search={search_term_string}"
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://runjs.in/#webapp",
+            "name": "RunJS",
+            "url": "https://runjs.in/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any (Web Browser)",
+            "description": "Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, and interactive coding challenges.",
+            "browserRequirements": "Requires JavaScript. Requires HTML5.",
+            "softwareVersion": "2.0.0",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "M R Kishore Kumar",
+              "url": "https://github.com/mrkishorekumar"
+            }
           },
-          "query-input": "required name=search_term_string"
-        }
+          {
+            "@type": "WebSite",
+            "@id": "https://runjs.in/#website",
+            "name": "RunJS",
+            "url": "https://runjs.in/",
+            "description": "Run, practice, and master JavaScript, TypeScript, and React directly in your browser.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "RunJS",
+              "url": "https://runjs.in/",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://runjs.in/RunJS-512.png"
+              }
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://runjs.in/problems?search={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
       }
-    ]
-  }
-  </script>
+    </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <script>
-    (function () {
-      try {
-        var theme = null;
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
         try {
-          theme = localStorage.getItem('runjs_theme');
+          var theme = null;
+          try {
+            theme = localStorage.getItem('runjs_theme');
+          } catch (e) {}
+          var isDark =
+            theme === 'dark' ||
+            (theme !== 'light' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+          }
         } catch (e) {}
-        var isDark =
-          theme === 'dark' ||
-          (theme !== 'light' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches);
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
-</head>
+      })();
+    </script>
+  </head>
 
-<body>
-  <div id="runjs"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+  <body>
+    <div id="runjs"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
