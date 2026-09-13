@@ -14,7 +14,10 @@ if (!fs.existsSync(indexHtmlPath)) {
 }
 
 const templateHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
-const baseUrl = (process.env.VITE_SITE_URL || 'https://runjs.in').replace(/\/$/, '');
+const baseUrl = (process.env.VITE_SITE_URL || 'https://runjs.in').replace(
+  /\/$/,
+  ''
+);
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -190,8 +193,11 @@ function renderLessonSections(sections) {
 
 async function main() {
   console.log('Loading dataset for prerendering...');
-  const { problems, curriculum, lessons, interviewQuestions } = await loadData();
-  console.log(`Loaded ${problems.length} problems, ${lessons.length} lessons, and ${interviewQuestions.length} interview questions.`);
+  const { problems, curriculum, lessons, interviewQuestions } =
+    await loadData();
+  console.log(
+    `Loaded ${problems.length} problems, ${lessons.length} lessons, and ${interviewQuestions.length} interview questions.`
+  );
 
   const lessonMap = new Map();
   for (const lesson of lessons) {
@@ -202,91 +208,108 @@ async function main() {
     {
       path: '/',
       title: 'RunJS.in - In-Browser JavaScript, TypeScript & React Playground',
-      description: 'Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, 175+ lessons, and coding challenges.',
+      description:
+        'Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, 175+ lessons, and coding challenges.',
       type: 'home',
     },
     {
       path: '/learn',
       title: 'Learn JavaScript - 175+ Interactive Lessons & Exercises | RunJS',
-      description: 'Master modern JavaScript from fundamentals to advanced concepts with 175+ interactive lessons, coding exercises, and instant browser execution.',
+      description:
+        'Master modern JavaScript from fundamentals to advanced concepts with 175+ interactive lessons, coding exercises, and instant browser execution.',
       type: 'learn-home',
     },
     {
       path: '/problems',
       title: 'JavaScript Coding Challenges & Algorithm Practice | RunJS',
-      description: 'Practice JavaScript algorithms, data structures, closures, promises, and polyfills with instant in-browser test execution, hints, and complexity analysis.',
+      description:
+        'Practice JavaScript algorithms, data structures, closures, promises, and polyfills with instant in-browser test execution, hints, and complexity analysis.',
       type: 'problems-home',
     },
     {
       path: '/js',
       title: 'Online JavaScript Compiler & Scratchpad (ES2024+) | RunJS',
-      description: 'Interactive in-browser JavaScript sandbox with Monaco editor, infinite loop protection, custom font controls, and interactive Luna console.',
+      description:
+        'Interactive in-browser JavaScript sandbox with Monaco editor, infinite loop protection, custom font controls, and interactive Luna console.',
       type: 'tool-js',
     },
     {
       path: '/visualizer',
       title: 'JavaScript Visualizer - Event Loop, Call Stack & Queues | RunJS',
-      description: 'Interactive visualizer for JavaScript execution. Step through Call Stack frames, Event Loop phases, Microtask Queue (Promises), and Task Queue (setTimeout) in real time.',
+      description:
+        'Interactive visualizer for JavaScript execution. Step through Call Stack frames, Event Loop phases, Microtask Queue (Promises), and Task Queue (setTimeout) in real time.',
       type: 'tool-visualizer',
     },
     {
       path: '/execution-context',
-      title: 'JavaScript Execution Context Visualizer - Memory Allocation & Hoisting | RunJS',
-      description: 'Interactive visualizer for JavaScript Execution Context. Step through Memory Allocation Phase (hoisting & TDZ), Code Execution Phase line by line, Global and Function Execution Contexts.',
+      title:
+        'JavaScript Execution Context Visualizer - Memory Allocation & Hoisting | RunJS',
+      description:
+        'Interactive visualizer for JavaScript Execution Context. Step through Memory Allocation Phase (hoisting & TDZ), Code Execution Phase line by line, Global and Function Execution Contexts.',
       type: 'tool-execution-context',
     },
     {
       path: '/ts',
       title: 'Online TypeScript Playground with esbuild Wasm | RunJS',
-      description: 'Fast, client-side TypeScript compiler powered by esbuild WebAssembly. Type check, compile, and execute TypeScript directly in your browser.',
+      description:
+        'Fast, client-side TypeScript compiler powered by esbuild WebAssembly. Type check, compile, and execute TypeScript directly in your browser.',
       type: 'tool-ts',
     },
     {
       path: '/react',
       title: 'Online React & Vite Playground (Sandpack) | RunJS',
-      description: 'In-browser React development environment with multi-file explorer, Sandpack live bundler, interactive preview, and xterm terminal.',
+      description:
+        'In-browser React development environment with multi-file explorer, Sandpack live bundler, interactive preview, and xterm terminal.',
       type: 'tool-react',
     },
     {
       path: '/html',
       title: 'Online HTML & CSS Preview Studio | RunJS',
-      description: 'Interactive in-browser HTML, CSS, and JavaScript preview studio with live reload, console drawer, and responsive viewport controls.',
+      description:
+        'Interactive in-browser HTML, CSS, and JavaScript preview studio with live reload, console drawer, and responsive viewport controls.',
       type: 'tool-html',
     },
     {
       path: '/interview',
       title: 'JavaScript Technical Interview Questions & Answers | RunJS',
-      description: 'Master JavaScript technical interviews with curated questions and detailed solutions covering closures, event loop, promises, prototypes, and async/await.',
+      description:
+        'Master JavaScript technical interviews with curated questions and detailed solutions covering closures, event loop, promises, prototypes, and async/await.',
       type: 'interview',
     },
     {
       path: '/output-questions',
       title: 'JavaScript Output Questions — Predict the Output Quiz | RunJS',
-      description: 'Test your JavaScript knowledge with 100 output-based MCQ questions covering closures, hoisting, promises, async/await, prototypes, type coercion, and more.',
+      description:
+        'Test your JavaScript knowledge with 100 output-based MCQ questions covering closures, hoisting, promises, async/await, prototypes, type coercion, and more.',
       type: 'output-questions',
     },
     {
       path: '/about',
-      title: 'About RunJS - Open Source Architecture & In-Browser IDE Story | RunJS',
-      description: 'Learn how RunJS works, its 100% in-browser client architecture, WebAssembly compilation, AST loop protection, and open-source foundation.',
+      title:
+        'About RunJS - Open Source Architecture & In-Browser IDE Story | RunJS',
+      description:
+        'Learn how RunJS works, its 100% in-browser client architecture, WebAssembly compilation, AST loop protection, and open-source foundation.',
       type: 'about',
     },
     {
       path: '/kishorekumar',
       title: 'M R Kishore Kumar - Creator & Maintainer of RunJS | Portfolio',
-      description: 'Meet M R Kishore Kumar, React Native Engineer with 4.5 years shipping consumer e-commerce apps at scale (1Cr+ downloads) and creator of RunJS.',
+      description:
+        'Meet M R Kishore Kumar, React Native Engineer with 4.5 years shipping consumer e-commerce apps at scale (1Cr+ downloads) and creator of RunJS.',
       type: 'creator',
     },
     {
       path: '/privacy',
       title: 'Privacy Policy - RunJS Developer Playground | RunJS',
-      description: 'Privacy Policy for RunJS. Understand how our client-side, zero-server-tracking architecture keeps your code and data private in your browser.',
+      description:
+        'Privacy Policy for RunJS. Understand how our client-side, zero-server-tracking architecture keeps your code and data private in your browser.',
       type: 'privacy',
     },
     {
       path: '/terms',
       title: 'Terms and Conditions - RunJS Developer Playground | RunJS',
-      description: 'Terms and Conditions for RunJS. Review user guidelines, code ownership guarantees, open-source licensing, and acceptable use policy.',
+      description:
+        'Terms and Conditions for RunJS. Review user guidelines, code ownership guarantees, open-source licensing, and acceptable use policy.',
       type: 'terms',
     },
     {
@@ -312,7 +335,10 @@ async function main() {
     routes.push({
       path: `/learn/${lesson.slug}`,
       title: `${lesson.title} - JavaScript Tutorial | RunJS`,
-      description: escapeAttr(lesson.description || `Learn ${lesson.title} in JavaScript with interactive explanations, examples, and coding exercises on RunJS.`),
+      description: escapeAttr(
+        lesson.description ||
+          `Learn ${lesson.title} in JavaScript with interactive explanations, examples, and coding exercises on RunJS.`
+      ),
       type: 'lesson-detail',
       data: lesson,
     });
@@ -372,12 +398,17 @@ async function main() {
             <p style="font-size: 0.95rem; color: #a1a1aa; margin-bottom: 16px;">Structured learning path from fundamentals to advanced concepts, DOM manipulation, async JavaScript, and algorithms.</p>
             <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
-                ${curriculum.slice(0, 4).map(part => `
+                ${curriculum
+                  .slice(0, 4)
+                  .map(
+                    (part) => `
                   <div>
                     <h4 style="font-size: 0.9rem; font-weight: 700; color: #f59e0b;">Part ${part.partNumber}: ${escapeHtml(part.title)}</h4>
                     <p style="font-size: 0.8rem; color: #71717a; margin-top: 4px;">${escapeHtml(part.description)}</p>
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </div>
               <div style="margin-top: 16px; text-align: right;">
                 <a href="/learn" style="color: #f59e0b; font-weight: 700; font-size: 0.9rem; text-decoration: none;">View All 175+ Lessons &rarr;</a>
@@ -389,12 +420,17 @@ async function main() {
             <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 20px;">Coding Challenges (${problems.length} Problems)</h2>
             <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
               <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
-                ${problems.slice(0, 12).map(p => `
+                ${problems
+                  .slice(0, 12)
+                  .map(
+                    (p) => `
                   <li style="font-size: 0.9rem;">
                     <a href="/problems/${p.slug}" style="color: #f59e0b; font-weight: 600; text-decoration: none;">#${p.id} ${escapeHtml(p.title)}</a>
                     <span style="font-size: 0.75rem; color: #71717a; margin-left: 6px;">(${p.difficulty})</span>
                   </li>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </ul>
               <div style="margin-top: 16px; text-align: right;">
                 <a href="/problems" style="color: #f59e0b; font-weight: 700; font-size: 0.9rem; text-decoration: none;">View All ${problems.length} Coding Challenges &rarr;</a>
@@ -410,34 +446,52 @@ async function main() {
           <p style="font-size: 1.05rem; color: #d4d4d8; max-width: 850px; margin-bottom: 32px;">Master modern JavaScript from zero to advanced. 175+ structured lessons with runnable code examples, interactive exercises, and quizzes.</p>
           
           <div style="display: flex; flex-direction: column; gap: 32px;">
-            ${curriculum.map(part => `
+            ${curriculum
+              .map(
+                (part) => `
               <div style="padding: 24px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: #18181b;">
                 <span style="font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase;">Part ${part.partNumber}</span>
                 <h2 style="font-size: 1.35rem; font-weight: 800; margin: 4px 0 8px;">${escapeHtml(part.title)}</h2>
                 <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 20px;">${escapeHtml(part.description)}</p>
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-                  ${part.topics.map(topic => `
+                  ${part.topics
+                    .map(
+                      (topic) => `
                     <div style="padding: 16px; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; background: #09090b;">
                       <h3 style="font-size: 1rem; font-weight: 700; color: #e4e4e7; margin-bottom: 6px;">${escapeHtml(topic.title)}</h3>
                       <p style="font-size: 0.8rem; color: #71717a; margin-bottom: 12px;">${escapeHtml(topic.description)}</p>
                       
                       <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
-                        ${topic.lessonSlugs.map(slug => {
-                          const l = lessonMap.get(slug);
-                          const title = l ? l.title : slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                          return `
+                        ${topic.lessonSlugs
+                          .map((slug) => {
+                            const l = lessonMap.get(slug);
+                            const title = l
+                              ? l.title
+                              : slug
+                                  .split('-')
+                                  .map(
+                                    (w) =>
+                                      w.charAt(0).toUpperCase() + w.slice(1)
+                                  )
+                                  .join(' ');
+                            return `
                             <li>
                               <a href="/learn/${slug}" style="font-size: 0.85rem; color: #f59e0b; text-decoration: none;">&bull; ${escapeHtml(title)}</a>
                             </li>
                           `;
-                        }).join('')}
+                          })
+                          .join('')}
                       </ul>
                     </div>
-                  `).join('')}
+                  `
+                    )
+                    .join('')}
                 </div>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
         </main>
       `;
@@ -445,7 +499,9 @@ async function main() {
       const lesson = route.data;
       const readTime = lesson.readingTime || lesson.timeToRead || 5;
       const sectionsContentHtml = renderLessonSections(lesson.sections);
-      const fallbackContentHtml = lesson.content ? `<div style="font-size: 1rem; color: #e4e4e7; line-height: 1.7;">${escapeHtml(lesson.content).replace(/\n/g, '<br/>')}</div>` : '';
+      const fallbackContentHtml = lesson.content
+        ? `<div style="font-size: 1rem; color: #e4e4e7; line-height: 1.7;">${escapeHtml(lesson.content).replace(/\n/g, '<br/>')}</div>`
+        : '';
 
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px;">
@@ -466,14 +522,18 @@ async function main() {
 
             ${sectionsContentHtml || fallbackContentHtml}
 
-            ${lesson.keyTakeaways && lesson.keyTakeaways.length > 0 ? `
+            ${
+              lesson.keyTakeaways && lesson.keyTakeaways.length > 0
+                ? `
               <div style="padding: 20px; border: 1px solid rgba(245, 158, 11, 0.2); background: rgba(245, 158, 11, 0.04); border-radius: 12px; margin: 32px 0;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #f59e0b; margin-bottom: 12px;">Key Takeaways</h3>
                 <ul style="color: #d4d4d8; font-size: 0.95rem; line-height: 1.6; padding-left: 20px; margin: 0;">
-                  ${lesson.keyTakeaways.map(kt => `<li>${escapeHtml(kt)}</li>`).join('')}
+                  ${lesson.keyTakeaways.map((kt) => `<li>${escapeHtml(kt)}</li>`).join('')}
                 </ul>
               </div>
-            ` : ''}
+            `
+                : ''
+            }
 
             <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; margin-top: 48px;">
               <a href="/learn" style="color: #f59e0b; font-weight: 700; text-decoration: none;">&larr; Back to Learning Hub</a>
@@ -499,7 +559,9 @@ async function main() {
                 </tr>
               </thead>
               <tbody>
-                ${problems.map(p => `
+                ${problems
+                  .map(
+                    (p) => `
                   <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
                     <td style="padding: 12px 8px; color: #71717a;">#${p.id}</td>
                     <td style="padding: 12px 8px;">
@@ -511,7 +573,9 @@ async function main() {
                     <td style="padding: 12px 8px; color: #a1a1aa; font-size: 0.8rem;">${escapeHtml(p.topics ? p.topics.join(', ') : '')}</td>
                     <td style="padding: 12px 8px; text-align: right; color: #71717a;">${p.acceptanceRate || '80%'}</td>
                   </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </tbody>
             </table>
           </div>
@@ -537,54 +601,78 @@ async function main() {
             <h1 style="font-size: 2.25rem; font-weight: 900; color: #ffffff; margin-bottom: 16px;">${escapeHtml(prob.title)}</h1>
             
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
-              ${(prob.topics || []).map(t => `<span style="font-size: 0.75rem; background: rgba(255,255,255,0.06); color: #a1a1aa; padding: 2px 8px; border-radius: 4px;">${escapeHtml(t)}</span>`).join('')}
+              ${(prob.topics || []).map((t) => `<span style="font-size: 0.75rem; background: rgba(255,255,255,0.06); color: #a1a1aa; padding: 2px 8px; border-radius: 4px;">${escapeHtml(t)}</span>`).join('')}
             </div>
 
             <section style="font-size: 1rem; color: #e4e4e7; line-height: 1.7; margin-bottom: 32px; white-space: pre-line;">
               ${escapeHtml(prob.description)}
             </section>
 
-            ${prob.examples && prob.examples.length > 0 ? `
+            ${
+              prob.examples && prob.examples.length > 0
+                ? `
               <section style="margin-bottom: 32px;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #f59e0b; margin-bottom: 16px;">Example Test Cases</h3>
-                ${prob.examples.map((ex, i) => `
+                ${prob.examples
+                  .map(
+                    (ex, i) => `
                   <div style="padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #18181b; margin-bottom: 12px; font-family: monospace; font-size: 0.85rem;">
                     <strong>Example ${i + 1}:</strong><br/>
                     <span style="color: #a1a1aa;">Input:</span> ${escapeHtml(ex.input)}<br/>
                     <span style="color: #a1a1aa;">Output:</span> ${escapeHtml(ex.output)}<br/>
                     ${ex.explanation ? `<span style="color: #71717a;">Explanation: ${escapeHtml(ex.explanation)}</span>` : ''}
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </section>
-            ` : ''}
+            `
+                : ''
+            }
 
-            ${prob.constraints && prob.constraints.length > 0 ? `
+            ${
+              prob.constraints && prob.constraints.length > 0
+                ? `
               <section style="margin-bottom: 32px;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #f59e0b; margin-bottom: 12px;">Constraints</h3>
                 <ul style="color: #a1a1aa; font-family: monospace; font-size: 0.85rem; padding-left: 20px;">
-                  ${prob.constraints.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+                  ${prob.constraints.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}
                 </ul>
               </section>
-            ` : ''}
+            `
+                : ''
+            }
 
-            ${prob.starterCode ? `
+            ${
+              prob.starterCode
+                ? `
               <section style="margin-bottom: 32px;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #f59e0b; margin-bottom: 12px;">JavaScript Solution Template</h3>
                 <pre style="background: #18181b; padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; font-family: monospace; font-size: 0.9rem; color: #f4f4f5;"><code>${escapeHtml(prob.starterCode.javascript || prob.starterCode.typescript || '')}</code></pre>
               </section>
-            ` : ''}
+            `
+                : ''
+            }
 
-            ${prob.hints && prob.hints.length > 0 ? `
+            ${
+              prob.hints && prob.hints.length > 0
+                ? `
               <section style="margin-bottom: 32px;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #f59e0b; margin-bottom: 12px;">Hints</h3>
-                ${prob.hints.map((h, i) => `
+                ${prob.hints
+                  .map(
+                    (h, i) => `
                   <details style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #18181b; margin-bottom: 8px; font-size: 0.9rem;">
                     <summary style="cursor: pointer; color: #f59e0b; font-weight: 600;">Hint ${i + 1}</summary>
                     <p style="margin-top: 8px; color: #d4d4d8;">${escapeHtml(h)}</p>
                   </details>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </section>
-            ` : ''}
+            `
+                : ''
+            }
 
             <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; margin-top: 48px;">
               <a href="/problems" style="color: #f59e0b; font-weight: 700; text-decoration: none;">&larr; Back to Problemset Table</a>
@@ -599,15 +687,19 @@ async function main() {
           <p style="font-size: 1.05rem; color: #d4d4d8; max-width: 850px; margin-bottom: 32px;">Master frontend engineering technical interviews with curated questions covering closures, event loop, promises, prototypes, async/await, and React performance.</p>
 
           <div style="display: flex; flex-direction: column; gap: 16px;">
-            ${interviewQuestions.map((iq, i) => `
+            ${interviewQuestions
+              .map(
+                (iq, i) => `
               <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
                 <div style="font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; margin-bottom: 4px;">Q${i + 1} &bull; ${escapeHtml(iq.category || 'JavaScript')}</div>
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">${escapeHtml(iq.question)}</h3>
                 <div style="font-size: 0.9rem; color: #a1a1aa; line-height: 1.6;">
-                  ${iq.answer ? iq.answer.map(a => `<p style="margin-bottom: 6px;">${escapeHtml(a.data ? a.data.join(' ') : '')}</p>`).join('') : ''}
+                  ${iq.answer ? iq.answer.map((a) => `<p style="margin-bottom: 6px;">${escapeHtml(a.data ? a.data.join(' ') : '')}</p>`).join('') : ''}
                 </div>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
         </main>
       `;
@@ -700,9 +792,24 @@ async function main() {
           {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${baseUrl}/` },
-              { '@type': 'ListItem', position: 2, name: 'Problems', item: `${baseUrl}/problems` },
-              { '@type': 'ListItem', position: 3, name: prob.title, item: canonicalUrl },
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Problems',
+                item: `${baseUrl}/problems`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: prob.title,
+                item: canonicalUrl,
+              },
             ],
           },
         ],
@@ -730,9 +837,24 @@ async function main() {
           {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${baseUrl}/` },
-              { '@type': 'ListItem', position: 2, name: 'Learn', item: `${baseUrl}/learn` },
-              { '@type': 'ListItem', position: 3, name: lesson.title, item: canonicalUrl },
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Learn',
+                item: `${baseUrl}/learn`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: lesson.title,
+                item: canonicalUrl,
+              },
             ],
           },
         ],
@@ -749,7 +871,8 @@ async function main() {
           url: `${baseUrl}/`,
           applicationCategory: 'DeveloperApplication',
           operatingSystem: 'Any (Web Browser)',
-          description: 'Run, practice, and master JavaScript, TypeScript, and React directly in your browser.',
+          description:
+            'Run, practice, and master JavaScript, TypeScript, and React directly in your browser.',
         },
         {
           '@type': 'WebSite',
@@ -774,51 +897,51 @@ async function main() {
 
     // Replace canonical link
     html = html.replace(
-      /<link rel="canonical" href="[^"]*"\s*\/?>/,
+      /<link\s+[^>]*rel="canonical"[^>]*\/?>/i,
       `<link rel="canonical" href="${canonicalUrl}" />`
     );
 
     // Replace meta description
     html = html.replace(
-      /<meta name="description"[\s\S]*?content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*name="description"[^>]*\/?>/i,
       `<meta name="description" content="${escapeAttr(route.description)}">`
     );
 
     // Replace robots tag if noindex is true (e.g. for 404)
     if (route.noIndex) {
       html = html.replace(
-        /<meta name="robots" content="[^"]*"\s*\/?>/,
+        /<meta\s+[^>]*name="robots"[^>]*\/?>/i,
         `<meta name="robots" content="noindex, follow">`
       );
     }
 
     // Replace og:title
     html = html.replace(
-      /<meta property="og:title" content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*property="og:title"[^>]*\/?>/i,
       `<meta property="og:title" content="${escapeAttr(route.title)}" />`
     );
 
     // Replace og:description
     html = html.replace(
-      /<meta property="og:description" content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*property="og:description"[^>]*\/?>/i,
       `<meta property="og:description" content="${escapeAttr(route.description)}" />`
     );
 
     // Replace og:url
     html = html.replace(
-      /<meta property="og:url" content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*property="og:url"[^>]*\/?>/i,
       `<meta property="og:url" content="${canonicalUrl}" />`
     );
 
     // Replace twitter:title
     html = html.replace(
-      /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*name="twitter:title"[^>]*\/?>/i,
       `<meta name="twitter:title" content="${escapeAttr(route.title)}" />`
     );
 
     // Replace twitter:description
     html = html.replace(
-      /<meta name="twitter:description" content="[^"]*"\s*\/?>/,
+      /<meta\s+[^>]*name="twitter:description"[^>]*\/?>/i,
       `<meta name="twitter:description" content="${escapeAttr(route.description)}" />`
     );
 
@@ -851,10 +974,12 @@ async function main() {
     prerenderRoute(route);
   }
 
-  console.log(`Successfully pre-rendered ${routes.length} static HTML route files with complete body content & schema in dist/.`);
+  console.log(
+    `Successfully pre-rendered ${routes.length} static HTML route files with complete body content & schema in dist/.`
+  );
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('Prerender script failed:', err);
   process.exit(1);
 });
