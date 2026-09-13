@@ -9,8 +9,8 @@ interface Env {
 const SECURITY_HEADERS: Record<string, string> = {
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
-    "script-src-elem 'self' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
+    "script-src 'self' 'sha256-0mMKUFO/NuIvybcvvGw7PUDoXnlsXaPplv0yJod+Axk=' 'sha256-r/gJ76xjzRMyLkTE4dfCuXLlYsaS8kakrGmtWKPrx5o=' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
+    "script-src-elem 'self' 'sha256-0mMKUFO/NuIvybcvvGw7PUDoXnlsXaPplv0yJod+Axk=' 'sha256-r/gJ76xjzRMyLkTE4dfCuXLlYsaS8kakrGmtWKPrx5o=' 'sha256-1dPro/fD2S5/wkAu3BGLYvHgEhscriMlL+8xD/rEGlE=' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com",
     "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com data:",
     "img-src 'self' data: https: blob:",
