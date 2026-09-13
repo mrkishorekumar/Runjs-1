@@ -125,6 +125,9 @@ function JSsaved() {
         const final = addInfiniteLoopProtection(code?.code ?? '');
         const result = await runInSandbox(final, {
           timeoutMs: 5000,
+          onClear: () => {
+            lunaConsole.clear();
+          },
           onLog: (type, args) => {
             if (type === 'error') {
               lunaConsole.error(...args);

@@ -9,6 +9,7 @@ export interface SandboxLogEntry {
 export interface SandboxRunOptions {
   timeoutMs?: number;
   onLog?: (type: SandboxLogMethod, args: unknown[]) => void;
+  onClear?: () => void;
 }
 
 export interface SandboxResult {
@@ -17,7 +18,7 @@ export interface SandboxResult {
   durationMs: number;
 }
 
-const WORKER_BOOTSTRAP = `
+export const WORKER_BOOTSTRAP = `
 (function() {
   // Strip sensitive host storage and network capabilities from the worker
   try { delete self.indexedDB; } catch(e) {}
@@ -29,6 +30,20 @@ const WORKER_BOOTSTRAP = `
   try { delete self.EventSource; } catch(e) {}
   try { delete self.BroadcastChannel; } catch(e) {}
   try { delete self.SharedWorker; } catch(e) {}
+
+  // Cache trusted APIs before prototype freezing or user overrides
+  const trustedPostMessage = self.postMessage.bind(self);
+  const originalSetTimeout = self.setTimeout.bind(self);
+  const originalClearTimeout = self.clearTimeout.bind(self);
+  const originalSetInterval = self.setInterval.bind(self);
+  const originalClearInterval = self.clearInterval.bind(self);
+  const originalQueueMicrotask = typeof self.queueMicrotask === 'function'
+    ? self.queueMicrotask.bind(self)
+    : function(fn) { originalSetTimeout(fn, 0); };
+  const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+
+  // Window alias for code expecting window.*
+  try { self.window = self; } catch(e) {}
 
   // Freeze prototypes to prevent prototype poisoning
   try {
@@ -89,7 +104,7 @@ const WORKER_BOOTSTRAP = `
   function postLog(method, args) {
     try {
       const serialized = args.map(function(a) { return serializeArg(a); });
-      self.postMessage({ type: 'LOG', method: method, args: serialized });
+      trustedPostMessage({ type: 'LOG', method: method, args: serialized });
     } catch(e) {}
   }
 
@@ -98,22 +113,173 @@ const WORKER_BOOTSTRAP = `
     info: function() { postLog('info', Array.prototype.slice.call(arguments)); },
     warn: function() { postLog('warn', Array.prototype.slice.call(arguments)); },
     error: function() { postLog('error', Array.prototype.slice.call(arguments)); },
-    clear: function() { self.postMessage({ type: 'CLEAR' }); }
+    clear: function() { trustedPostMessage({ type: 'CLEAR' }); }
   };
+
+  try { self.console = customConsole; } catch(e) {}
+
+  const activeTimers = new Set();
+  const activeIntervals = new Set();
+  let isInitialExecutionComplete = false;
+  let isFinished = false;
+  let checkTimer = null;
+  let executionResult = undefined;
+  let maxTimeoutMs = 5000;
+
+  function checkCompletion() {
+    if (!isInitialExecutionComplete || isFinished) return;
+    if (activeTimers.size > 0 || activeIntervals.size > 0) {
+      if (checkTimer !== null) {
+        originalClearTimeout(checkTimer);
+        checkTimer = null;
+      }
+      return;
+    }
+
+    if (checkTimer !== null) return;
+
+    checkTimer = originalSetTimeout(function() {
+      checkTimer = null;
+      originalQueueMicrotask(function() {
+        if (!isInitialExecutionComplete || isFinished) return;
+        if (activeTimers.size === 0 && activeIntervals.size === 0) {
+          isFinished = true;
+          trustedPostMessage({ type: 'DONE', result: serializeArg(executionResult) });
+        }
+      });
+    }, 25);
+  }
+
+  function handleExecutionError(err) {
+    if (isFinished) return;
+    isFinished = true;
+    if (checkTimer !== null) {
+      originalClearTimeout(checkTimer);
+      checkTimer = null;
+    }
+    const msg = err && err.message ? err.message : String(err);
+    postLog('error', [msg]);
+    trustedPostMessage({ type: 'ERROR', error: msg });
+  }
+
+  self.setTimeout = function(handler, timeout) {
+    const args = Array.prototype.slice.call(arguments, 2);
+    const delay = Math.max(0, Number(timeout) || 0);
+    let timerId;
+    const wrappedHandler = function() {
+      activeTimers.delete(timerId);
+      try {
+        if (typeof handler === 'function') {
+          handler.apply(self, args);
+        } else {
+          eval(handler);
+        }
+      } catch (err) {
+        handleExecutionError(err);
+      } finally {
+        checkCompletion();
+      }
+    };
+    timerId = originalSetTimeout(wrappedHandler, delay);
+    if (delay < maxTimeoutMs) {
+      activeTimers.add(timerId);
+      if (checkTimer !== null) {
+        originalClearTimeout(checkTimer);
+        checkTimer = null;
+      }
+    }
+    return timerId;
+  };
+
+  self.clearTimeout = function(id) {
+    if (id !== undefined && id !== null) {
+      activeTimers.delete(id);
+      originalClearTimeout(id);
+      checkCompletion();
+    }
+  };
+
+  self.setInterval = function(handler, interval) {
+    const args = Array.prototype.slice.call(arguments, 2);
+    const delay = Math.max(0, Number(interval) || 0);
+    let intervalId;
+    const wrappedHandler = function() {
+      try {
+        if (typeof handler === 'function') {
+          handler.apply(self, args);
+        } else {
+          eval(handler);
+        }
+      } catch (err) {
+        handleExecutionError(err);
+      }
+    };
+    intervalId = originalSetInterval(wrappedHandler, delay);
+    activeIntervals.add(intervalId);
+    if (checkTimer !== null) {
+      originalClearTimeout(checkTimer);
+      checkTimer = null;
+    }
+    return intervalId;
+  };
+
+  self.clearInterval = function(id) {
+    if (id !== undefined && id !== null) {
+      activeIntervals.delete(id);
+      originalClearInterval(id);
+      checkCompletion();
+    }
+  };
+
+  if (typeof self.setImmediate !== 'function') {
+    self.setImmediate = function(cb) {
+      const args = Array.prototype.slice.call(arguments, 1);
+      return self.setTimeout.apply(self, [cb, 0].concat(args));
+    };
+    self.clearImmediate = function(id) {
+      self.clearTimeout(id);
+    };
+  }
+
+  if (typeof self.requestAnimationFrame !== 'function') {
+    self.requestAnimationFrame = function(cb) {
+      return self.setTimeout(function() {
+        cb(performance.now());
+      }, 16);
+    };
+    self.cancelAnimationFrame = function(id) {
+      self.clearTimeout(id);
+    };
+  }
+
+  if (typeof self.addEventListener === 'function') {
+    self.addEventListener('unhandledrejection', function(event) {
+      handleExecutionError(event.reason);
+    });
+  }
 
   self.onmessage = async function(e) {
     const code = e.data && e.data.code;
     if (typeof code !== 'string') return;
+    if (typeof e.data.timeoutMs === 'number' && e.data.timeoutMs > 0) {
+      maxTimeoutMs = e.data.timeoutMs;
+    }
 
     try {
-      // Execute in sandboxed worker scope with shadowed console
-      const runner = new Function('console', code);
-      const res = await runner(customConsole);
-      self.postMessage({ type: 'DONE', result: serializeArg(res) });
+      // Execute in sandboxed worker scope with shadowed console and timers
+      let runner;
+      try {
+        runner = new AsyncFunction('console', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', code);
+      } catch (syntaxErr) {
+        runner = new Function('console', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', code);
+      }
+      executionResult = await runner(customConsole, self.setTimeout, self.clearTimeout, self.setInterval, self.clearInterval);
     } catch (err) {
-      const msg = err && err.message ? err.message : String(err);
-      postLog('error', [msg]);
-      self.postMessage({ type: 'ERROR', error: msg });
+      handleExecutionError(err);
+      return;
+    } finally {
+      isInitialExecutionComplete = true;
+      checkCompletion();
     }
   };
 })();
@@ -201,6 +367,8 @@ export function runInSandbox(
             timestamp: Date.now(),
           });
           onLog?.(method, data.args);
+        } else if (data.type === 'CLEAR') {
+          options.onClear?.();
         } else if (data.type === 'DONE') {
           finish();
         } else if (data.type === 'ERROR') {
@@ -219,7 +387,7 @@ export function runInSandbox(
         finish(errorMsg);
       };
 
-      worker.postMessage({ code });
+      worker.postMessage({ code, timeoutMs });
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);
       onLog?.('error', [errorMsg]);
