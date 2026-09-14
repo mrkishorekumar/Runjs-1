@@ -21,8 +21,10 @@ import { ITypeScriptError, ModalRef } from '../utils/interface';
 import HelpModal from '../components/HelpModal';
 import useWarnOnClose from '../hook/useWarnOnClose ';
 import useFormatDocument from '../hook/useFormatDocument';
-import useDownloadFile from '../hook/useDownloadFile';
 import useMediaQuery from '../hook/useMediaQuery';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
+import { usePlaygroundPersistence } from '../hook/usePlaygroundPersistence';
 import CodeEditor from '../components/CodeEditor';
 import Terminal from '../components/Terminal';
 import ThemeSelector from '../components/ThemeSelector';
@@ -188,9 +190,15 @@ function TSPlayground() {
     saveJSTSFile(code, 'script', 'ts');
   }
 
+  const persistence = usePlaygroundPersistence({
+    type: 'ts',
+    getCurrentData: () => ({
+      code,
+    }),
+  });
+
   useAdjustFontSize(handleFontSize);
   useComplieCode(handleRunClick);
-  useDownloadFile(handleDownload);
   useWarnOnClose();
   useFormatDocument(() => {
     if (editorRef.current) {
@@ -267,6 +275,16 @@ function TSPlayground() {
                 ⌘R
               </kbd>
             </button>
+
+            {/* Save Button */}
+            <SavePlaygroundButton
+              isSaved={persistence.isSaved}
+              isDirty={persistence.isDirty}
+              isSaving={persistence.isSaving}
+              onSave={persistence.triggerSave}
+              playgroundType="ts"
+              shortcutText={persistence.shortcutText}
+            />
 
             {/* Cross-Tool Interlink Menu */}
             <ToolInterlinkMenu currentTool="ts" getCode={() => code} />
@@ -464,6 +482,15 @@ function TSPlayground() {
       />
 
       <HelpModal ref={dialogRef} />
+
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveModalOpen}
+        defaultName={persistence.defaultName}
+        playgroundType="ts"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveNew}
+        onClose={persistence.closeSaveModal}
+      />
     </Fragment>
   );
 }

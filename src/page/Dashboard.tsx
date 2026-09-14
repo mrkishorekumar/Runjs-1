@@ -89,6 +89,7 @@ function Dashboard() {
   const jsCount = userSavedCode.filter((c) => c.language === 'js').length;
   const tsCount = userSavedCode.filter((c) => c.language === 'ts').length;
   const reactCount = userSavedCode.filter((c) => c.language === 'react').length;
+  const htmlCount = userSavedCode.filter((c) => c.language === 'html').length;
 
   return (
     <div className="min-h-screen w-full flex flex-col justify-between bg-[var(--bg-app)] text-[var(--text-primary)] transition-colors duration-150">
@@ -151,6 +152,13 @@ function Dashboard() {
                 <span className="text-[var(--text-muted)]">ts:</span>
                 <span className="font-semibold text-[var(--text-primary)]">
                   {tsCount}
+                </span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                <span className="text-[var(--text-muted)]">html:</span>
+                <span className="font-semibold text-[var(--text-primary)]">
+                  {htmlCount}
                 </span>
               </span>
             </span>

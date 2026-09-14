@@ -43,13 +43,16 @@ import {
 import ThemeSelector from '../components/ThemeSelector';
 import HelpModal from '../components/HelpModal';
 import HTMLResetModal from '../components/html-playground/HTMLResetModal';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
+import { usePlaygroundPersistence } from '../hook/usePlaygroundPersistence';
 import useMediaQuery from '../hook/useMediaQuery';
 import useWarnOnClose from '../hook/useWarnOnClose ';
 import useLocalStorageState from '../hook/useLocalStorageState';
 import useAdjustFontSize from '../hook/useAdjustFontSize';
 import useFormatDocument from '../hook/useFormatDocument';
 import { compileHtmlDocument } from '../utils/htmlCompiler';
-import { getCode, updateCode } from '../db/operations';
+import { getCode } from '../db/operations';
 import { ModalRef, UserCodeBase } from '../utils/interface';
 import SEO from '../components/SEO';
 
@@ -175,6 +178,35 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
   const [html, setHtml] = useState<string>(initialCode.html);
   const [css, setCss] = useState<string>(initialCode.css);
   const [javascript, setJavascript] = useState<string>(initialCode.javascript);
+  const [savedInitialCode, setSavedInitialCode] = useState<{
+    html: string;
+    css: string;
+    js: string;
+  }>({
+    html: initialCode.html,
+    css: initialCode.css,
+    js: initialCode.javascript,
+  });
+
+  const persistence = usePlaygroundPersistence({
+    id,
+    type: 'html',
+    initialName: savedProject?.fileName,
+    getCurrentData: () => ({
+      htmlCode: html,
+      cssCode: css,
+      jsCode: javascript,
+      code: javascript,
+    }),
+    onSaved: (updatedDoc) => {
+      setSavedProject(updatedDoc);
+      setSavedInitialCode({
+        html: updatedDoc.htmlCode || '',
+        css: updatedDoc.cssCode || '',
+        js: updatedDoc.jsCode || updatedDoc.code || '',
+      });
+    },
+  });
 
   // Settings
   const [autoRun, setAutoRun] = useState<boolean>(() => {
@@ -270,7 +302,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
   // UI state
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTab>('preview');
   const [isCompiling, setIsCompiling] = useState(false);
-  const [isDirty, setIsDirty] = useState(false);
+  const [isCodeDirty, setIsCodeDirty] = useState(false);
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
 
   // Compiled document for iframe preview
@@ -295,8 +327,8 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
       try {
         const doc = await getCode(projId);
         if (!isMounted) return;
-        if (!doc) {
-          navigate('/404');
+        if (!doc || doc.isDelete) {
+          navigate('/404', { replace: true });
           return;
         }
         setSavedProject(doc);
@@ -306,6 +338,11 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
         setHtml(newHtml);
         setCss(newCss);
         setJavascript(newJs);
+        setSavedInitialCode({
+          html: newHtml,
+          css: newCss,
+          js: newJs,
+        });
         setCompiledDoc(
           compileHtmlDocument({
             html: newHtml,
@@ -348,26 +385,25 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
     return () => clearTimeout(timer);
   }, [id, html, css, javascript]);
 
-  // Persist to IndexedDB when in saved /html/:id (Dashboard project flow)
+  // Track unsaved changes for saved project (/html/:id)
   useEffect(() => {
-    if (!id || !savedProject || isLoadingProject) return;
-    const currentId = id;
-    const timer = setTimeout(async () => {
-      try {
-        await updateCode(currentId, {
-          htmlCode: html,
-          cssCode: css,
-          jsCode: javascript,
-          code: javascript,
-          lastModifiedAt: new Date(),
-        });
-      } catch (e) {
-        console.error('Failed to update project in DB', e);
-      }
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, [id, savedProject, isLoadingProject, html, css, javascript]);
+    if (id && savedProject && !isLoadingProject) {
+      const isModified =
+        html !== savedInitialCode.html ||
+        css !== savedInitialCode.css ||
+        javascript !== savedInitialCode.js;
+      persistence.setIsDirty(isModified);
+    }
+  }, [
+    id,
+    savedProject,
+    isLoadingProject,
+    html,
+    css,
+    javascript,
+    savedInitialCode,
+    persistence.setIsDirty,
+  ]);
 
   // Recompile function
   const runCompilation = useCallback(
@@ -385,7 +421,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
       });
 
       setCompiledDoc(doc);
-      setIsDirty(false);
+      setIsCodeDirty(false);
       setTimeout(() => setIsCompiling(false), 200);
     },
     [html, css, javascript]
@@ -394,7 +430,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
   // Auto-run trigger with 450ms debounce
   useEffect(() => {
     if (!autoRun) {
-      setIsDirty(true);
+      setIsCodeDirty(true);
       return;
     }
 
@@ -1055,8 +1091,8 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
           {/* Left: Brand & Title */}
           <div className="flex items-center gap-2.5">
             <Link
-              to={id ? '/dashboard' : '/'}
-              title={id ? 'Back to Dashboard' : 'Back to Home'}
+              to="/dashboard"
+              title="Back to Dashboard"
               className="flex items-center gap-1.5 px-2 py-1 rounded text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -1074,10 +1110,16 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               <span className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
                 {id ? 'project' : 'scratchpad'}
               </span>
+              {id && persistence.isDirty && (
+                <span className="flex items-center gap-1 text-[11px] font-mono text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded animate-pulse">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                  Unsaved changes
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Center: Primary Actions (Run, Auto-Run, Reset, Format, Font, Download) */}
+          {/* Center: Primary Actions (Run, Save, Auto-Run, Reset, Format, Font, Download) */}
           <div className="flex items-center gap-1.5">
             {/* Run Button */}
             <button
@@ -1086,7 +1128,7 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               disabled={isCompiling}
               title="Run code (Ctrl/Cmd + R)"
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold cursor-pointer disabled:opacity-50 transition-colors ${
-                isDirty && !autoRun
+                isCodeDirty && !autoRun
                   ? 'bg-amber-500 text-black ring-1 ring-amber-400'
                   : 'bg-amber-500 hover:bg-amber-400 text-black'
               }`}
@@ -1101,6 +1143,19 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
                 ⌘R
               </kbd>
             </button>
+
+            {/* Save Button */}
+            <SavePlaygroundButton
+              isSaved={persistence.isSaved}
+              isDirty={persistence.isDirty}
+              isSaving={persistence.isSaving}
+              onSave={persistence.triggerSave}
+              onSaveCopy={
+                persistence.isSaved ? persistence.openSaveCopyModal : undefined
+              }
+              playgroundType="html"
+              shortcutText={persistence.shortcutText}
+            />
 
             {/* Auto Run Toggle */}
             <button
@@ -1489,6 +1544,24 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
         isOpen={isResetModalOpen}
         onClose={() => setIsResetModalOpen(false)}
         onConfirm={executeReset}
+      />
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveModalOpen}
+        defaultName={persistence.defaultName}
+        playgroundType="html"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveNew}
+        onClose={persistence.closeSaveModal}
+      />
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveCopyModalOpen}
+        title="Save as Copy"
+        description="Create a new playground with a copy of this code."
+        defaultName={`${savedProject?.fileName || 'HTML Playground'} (Copy)`}
+        playgroundType="html"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveCopy}
+        onClose={persistence.closeSaveCopyModal}
       />
     </Fragment>
   );

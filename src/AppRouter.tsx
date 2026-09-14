@@ -42,6 +42,9 @@ const HTMLPlayground = lazyWithRetry(() => import('./page/HTMLPlayground'));
 const HTMLStandalonePreview = lazyWithRetry(
   () => import('./page/HTMLStandalonePreview')
 );
+const SavedPlaygroundRedirect = lazyWithRetry(
+  () => import('./page/SavedPlaygroundRedirect')
+);
 
 const Problemset = lazyWithRetry(() => import('./page/Problemset'));
 const ProblemSolving = lazyWithRetry(() => import('./page/ProblemSolving'));
@@ -101,6 +104,10 @@ function AppRouter() {
                   <Dashboard />
                 </Suspense>
               }
+            />
+            <Route
+              path="/dashboard/playground/:id"
+              element={<SavedPlaygroundRedirect />}
             />
             <Route path="/interview" element={<Interview />} />
             <Route path="/output-questions" element={<OutputQuestions />} />

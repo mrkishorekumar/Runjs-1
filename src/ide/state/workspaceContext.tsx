@@ -4,6 +4,7 @@ import { TEMPLATES, VITE_REACT_TEMPLATE } from '../templates/defaultTemplates';
 import { UserCodeBase } from '../../utils/interface';
 import { getCode, updateCode, addCode } from '../../db/operations';
 import { normalizePath } from '../fs/pathUtils';
+import { v4 as uuidv4 } from 'uuid';
 import useLocalStorageState from '../../hook/useLocalStorageState';
 import { WorkspaceContext } from './workspaceTypes';
 import { getAllPackageVirtualFiles } from '../languages/typescript/packageDefinitions';
@@ -17,11 +18,13 @@ import {
 
 interface WorkspaceProviderProps {
   initialProjectId?: string;
+  onNotFound?: () => void;
   children: React.ReactNode;
 }
 
 export function WorkspaceProvider({
   initialProjectId,
+  onNotFound,
   children,
 }: WorkspaceProviderProps) {
   const effectiveProjectId = initialProjectId || 'default-react-workspace';
@@ -67,10 +70,13 @@ export function WorkspaceProvider({
   const syncSandpackFiles = useCallback(
     async (fileOverrides?: Record<string, string>) => {
       const vfsJson = await vfs.toJSON();
-      const merged = fileOverrides
-        ? { ...vfsJson, ...fileOverrides }
-        : { ...vfsJson, ...fileContents };
-      const prepared = prepareSandpackFiles(merged, templateId);
+      const mergedWithEditor = {
+        ...vfsJson,
+        ...fileContents,
+        ...(fileOverrides || {}),
+      };
+
+      const prepared = prepareSandpackFiles(mergedWithEditor, templateId);
       setSandpackFiles(prepared);
       return prepared;
     },
@@ -80,6 +86,9 @@ export function WorkspaceProvider({
   // Helper to persist current VFS state to IndexedDB
   const persistToDatabase = useCallback(
     async (currentVfsFiles: Record<string, string>) => {
+      // Unsaved scratchpads (/react) should only persist to localStorage drafts, never to IndexedDB!
+      if (!initialProjectId) return;
+
       try {
         const mainCode =
           currentVfsFiles['/src/App.jsx'] ||
@@ -122,7 +131,14 @@ export function WorkspaceProvider({
         console.error('Failed to persist project to IndexedDB:', err);
       }
     },
-    [projectId, projectName, projectTag, activeFile, openFiles]
+    [
+      initialProjectId,
+      projectId,
+      projectName,
+      projectTag,
+      activeFile,
+      openFiles,
+    ]
   );
 
   // Dual-tier Workspace Loading on mount (Draft Storage -> IndexedDB -> Default Template)
@@ -177,7 +193,7 @@ export function WorkspaceProvider({
         // Tier 2: Check IndexedDB (for initialProjectId or saved default workspace)
         try {
           const dbCode = await getCode(effectiveProjectId);
-          if (dbCode && !isCancelled) {
+          if (dbCode && !dbCode.isDelete && !isCancelled) {
             setProjectId(dbCode.id);
             setProjectName(dbCode.fileName || 'React App');
             setProjectTag(dbCode.tag || 'react');
@@ -217,7 +233,13 @@ export function WorkspaceProvider({
           console.error('Failed to load project from IndexedDB:', e);
         }
 
-        // Tier 3: Fresh Default Template
+        // If an initialProjectId was requested but not found in draft or IndexedDB, trigger not found
+        if (initialProjectId && !isCancelled) {
+          onNotFound?.();
+          return;
+        }
+
+        // Tier 3: Fresh Default Template (for /react scratchpad)
         if (!isCancelled) {
           await vfs.fromJSON(VITE_REACT_TEMPLATE.files);
           setOpenFiles(VITE_REACT_TEMPLATE.openFiles);
@@ -243,7 +265,7 @@ export function WorkspaceProvider({
     return () => {
       isCancelled = true;
     };
-  }, [effectiveProjectId, draftKey, vfs]);
+  }, [initialProjectId, onNotFound, effectiveProjectId, draftKey, vfs]);
 
   // Debounced draft persistence to localStorage
   useEffect(() => {
@@ -495,6 +517,96 @@ export function WorkspaceProvider({
     draftKey,
   ]);
 
+  const saveProjectAs = useCallback(
+    async (name: string, overrideId?: string): Promise<string> => {
+      setIsSaving(true);
+      try {
+        for (const dirtyPath of dirtyFiles) {
+          if (dirtyPath.startsWith('/node_modules/')) continue;
+          const content = fileContents[dirtyPath];
+          if (content !== undefined) {
+            await vfs.writeFile(dirtyPath, content);
+          }
+        }
+        setDirtyFiles(new Set());
+
+        const allFiles = await vfs.toJSON();
+        const mainCode =
+          allFiles['/src/App.jsx'] ||
+          allFiles['/src/App.tsx'] ||
+          allFiles['/src/main.jsx'] ||
+          allFiles['/src/main.tsx'] ||
+          '';
+
+        const targetId = overrideId || uuidv4();
+        const cleanName = name.trim() || 'React Playground';
+
+        const payload: UserCodeBase = {
+          id: targetId,
+          fileName: cleanName,
+          tag: projectTag || 'react',
+          language: 'react',
+          template: templateId,
+          code: mainCode,
+          htmlCode: allFiles['/index.html'] || '',
+          cssCode: allFiles['/src/App.css'] || allFiles['/src/index.css'] || '',
+          jsCode: mainCode,
+          createdAt: new Date(),
+          lastModifiedAt: new Date(),
+          isDelete: false,
+          star: 0,
+          dbUpload: false,
+          files: allFiles,
+          activeFile,
+          openFiles,
+        };
+
+        await addCode(payload);
+        setProjectId(targetId);
+        setProjectName(cleanName);
+
+        const draft: WorkspaceDraft = {
+          projectId: targetId,
+          projectName: cleanName,
+          projectTag,
+          templateId,
+          activeFile,
+          openFiles,
+          dirtyFiles: [],
+          fileContents,
+          vfsFiles: allFiles,
+          updatedAt: Date.now(),
+        };
+        localStorage.setItem(
+          `${DRAFT_STORAGE_PREFIX}${targetId}`,
+          JSON.stringify(draft)
+        );
+
+        await syncSandpackFiles();
+        return targetId;
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [
+      dirtyFiles,
+      fileContents,
+      vfs,
+      projectTag,
+      templateId,
+      activeFile,
+      openFiles,
+      syncSandpackFiles,
+    ]
+  );
+
+  const saveProjectAsCopy = useCallback(
+    async (copyName: string): Promise<string> => {
+      return saveProjectAs(copyName);
+    },
+    [saveProjectAs]
+  );
+
   const switchTemplate = useCallback(
     async (newTemplateId: string) => {
       const template =
@@ -589,6 +701,7 @@ export function WorkspaceProvider({
         dirtyFiles,
         fileContents,
         isSaving,
+        isSaved: Boolean(initialProjectId),
         isLoading,
         fontSize,
         isExplorerOpen,
@@ -604,6 +717,8 @@ export function WorkspaceProvider({
         updateFileContent,
         saveFile,
         saveProject,
+        saveProjectAs,
+        saveProjectAsCopy,
         setProjectName,
         setProjectTag,
         switchTemplate,

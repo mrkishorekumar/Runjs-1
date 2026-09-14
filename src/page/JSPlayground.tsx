@@ -13,8 +13,10 @@ import { Link, useLocation } from 'react-router';
 import HelpModal from '../components/HelpModal';
 import useWarnOnClose from '../hook/useWarnOnClose ';
 import useFormatDocument from '../hook/useFormatDocument';
-import useDownloadFile from '../hook/useDownloadFile';
 import useMediaQuery from '../hook/useMediaQuery';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
+import { usePlaygroundPersistence } from '../hook/usePlaygroundPersistence';
 import CodeEditor from '../components/CodeEditor';
 import Terminal from '../components/Terminal';
 import ThemeSelector from '../components/ThemeSelector';
@@ -151,9 +153,16 @@ function JSPlayground() {
     saveJSTSFile(code, 'script', 'js');
   }
 
+  const persistence = usePlaygroundPersistence({
+    type: 'js',
+    getCurrentData: () => ({
+      code,
+      jsCode: code,
+    }),
+  });
+
   useAdjustFontSize(handleFontSize);
   useComplieCode(handleRunClick);
-  useDownloadFile(handleDownload);
   useWarnOnClose();
   useFormatDocument(() => {
     if (editorRef.current) {
@@ -231,6 +240,16 @@ function JSPlayground() {
                 ⌘R
               </kbd>
             </button>
+
+            {/* Save Button */}
+            <SavePlaygroundButton
+              isSaved={persistence.isSaved}
+              isDirty={persistence.isDirty}
+              isSaving={persistence.isSaving}
+              onSave={persistence.triggerSave}
+              playgroundType="js"
+              shortcutText={persistence.shortcutText}
+            />
 
             {/* Complexity Analyzer Button */}
             <ComplexityButton
@@ -440,6 +459,15 @@ function JSPlayground() {
         onClose={closeComplexityModal}
         result={complexityResult}
         codeSnippet={complexityAnalyzedCode}
+      />
+
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveModalOpen}
+        defaultName={persistence.defaultName}
+        playgroundType="js"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveNew}
+        onClose={persistence.closeSaveModal}
       />
     </Fragment>
   );

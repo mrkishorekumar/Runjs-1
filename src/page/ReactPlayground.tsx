@@ -7,7 +7,9 @@ import {
   useMemo,
   Suspense,
 } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
 import { SandpackProvider } from '@codesandbox/sandpack-react';
 import Split from 'react-split';
 import { WorkspaceProvider } from '../ide/state/workspaceContext';
@@ -40,7 +42,6 @@ import { getBreadcrumbSchema, getWebApplicationSchema } from '../seo/seoConfig';
 import {
   ChevronLeft,
   Atom,
-  Save,
   AlignLeft,
   ZoomIn,
   ZoomOut,
@@ -65,6 +66,7 @@ function ReactWorkspace() {
     fileContents,
     fontSize,
     isSaving,
+    isSaved,
     isLoading,
     isExplorerOpen,
     isTerminalOpen,
@@ -79,6 +81,8 @@ function ReactWorkspace() {
     updateFileContent,
     saveFile,
     saveProject,
+    saveProjectAs,
+    saveProjectAsCopy,
     setProjectName,
     resetWorkspace,
     toggleExplorer,
@@ -89,6 +93,7 @@ function ReactWorkspace() {
     handleFileRenamed,
   } = useWorkspace();
 
+  const navigate = useNavigate();
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTab>('code');
@@ -96,6 +101,39 @@ function ReactWorkspace() {
   const [titleValue, setTitleValue] = useState(projectName);
   const [previewReloadTrigger, setPreviewReloadTrigger] = useState(0);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isSaveCopyModalOpen, setIsSaveCopyModalOpen] = useState(false);
+
+  const isMac =
+    typeof window !== 'undefined' &&
+    /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
+  const shortcutText = isMac ? '⌘S' : 'Ctrl+S';
+
+  const handleTriggerSave = useCallback(async () => {
+    if (!isSaved) {
+      setIsSaveModalOpen(true);
+    } else {
+      await saveProject();
+    }
+  }, [isSaved, saveProject]);
+
+  const handleSaveNew = useCallback(
+    async (name: string) => {
+      const newId = await saveProjectAs(name);
+      setIsSaveModalOpen(false);
+      navigate(`/react/${newId}`);
+    },
+    [saveProjectAs, navigate]
+  );
+
+  const handleSaveCopy = useCallback(
+    async (copyName: string) => {
+      const newId = await saveProjectAsCopy(copyName);
+      setIsSaveCopyModalOpen(false);
+      navigate(`/react/${newId}`);
+    },
+    [saveProjectAsCopy, navigate]
+  );
 
   const handleConfirmReset = useCallback(async () => {
     await resetWorkspace();
@@ -168,11 +206,30 @@ function ReactWorkspace() {
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Cmd+S / Ctrl+S
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+      const isSaveKey =
+        (e.metaKey || e.ctrlKey) &&
+        !e.altKey &&
+        (e.key === 's' || e.key === 'S');
+
+      if (isSaveKey) {
         e.preventDefault();
-        saveProject();
+        const target = e.target as HTMLElement | null;
+        if (target) {
+          const isFormInput =
+            target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.isContentEditable;
+          if (isFormInput && !target.closest('.monaco-editor')) {
+            return;
+          }
+        }
+        if (isSaveModalOpen || isSaveCopyModalOpen) {
+          return;
+        }
+        handleTriggerSave();
+        return;
       }
+
       // Cmd+B / Ctrl+B: Toggle Explorer
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
         e.preventDefault();
@@ -185,9 +242,16 @@ function ReactWorkspace() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [saveProject, toggleExplorer, toggleTerminal]);
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () =>
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+  }, [
+    handleTriggerSave,
+    toggleExplorer,
+    toggleTerminal,
+    isSaveModalOpen,
+    isSaveCopyModalOpen,
+  ]);
 
   const handleTitleSubmit = () => {
     if (titleValue.trim()) {
@@ -290,6 +354,13 @@ function ReactWorkspace() {
               </div>
             )}
 
+            {dirtyFiles.size > 0 && (
+              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono text-cyan-500 dark:text-cyan-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                Unsaved changes
+              </span>
+            )}
+
             <span className="text-[var(--border-default)]">/</span>
             <span className="hidden sm:inline-block text-[10px] text-[var(--text-muted)]">
               Vite HMR
@@ -311,21 +382,19 @@ function ReactWorkspace() {
         </div>
 
         {/* Center: Actions (Save, Format, Font Zoom, Panel Toggles) */}
-        <div className="hidden md:flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
           {/* Save Project Button */}
-          <button
-            type="button"
-            onClick={saveProject}
-            disabled={isSaving}
-            title="Save Project (⌘S)"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 text-white text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
-          >
-            <Save className={`w-3 h-3 ${isSaving ? 'animate-spin' : ''}`} />
-            <span>{isSaving ? 'Saving...' : 'Save'}</span>
-            <kbd className="hidden lg:inline-block ml-0.5 px-1 py-0.2 text-[9px] font-mono bg-white/20 text-white rounded">
-              ⌘S
-            </kbd>
-          </button>
+          <SavePlaygroundButton
+            isSaved={isSaved}
+            isDirty={dirtyFiles.size > 0}
+            isSaving={isSaving}
+            onSave={handleTriggerSave}
+            onSaveCopy={
+              isSaved ? () => setIsSaveCopyModalOpen(true) : undefined
+            }
+            playgroundType="react"
+            shortcutText={shortcutText}
+          />
 
           {/* Format Document */}
           <button
@@ -504,6 +573,7 @@ function ReactWorkspace() {
                       onCloseAllTabs={closeAllFiles}
                       onChangeCode={updateFileContent}
                       onSaveFile={saveFile}
+                      onSaveProject={handleTriggerSave}
                       fontSize={fontSize}
                       editorRef={editorRef}
                       allFiles={allFiles}
@@ -532,6 +602,7 @@ function ReactWorkspace() {
                     onCloseAllTabs={closeAllFiles}
                     onChangeCode={updateFileContent}
                     onSaveFile={saveFile}
+                    onSaveProject={handleTriggerSave}
                     fontSize={fontSize}
                     editorRef={editorRef}
                     allFiles={allFiles}
@@ -599,6 +670,7 @@ function ReactWorkspace() {
                 onCloseAllTabs={closeAllFiles}
                 onChangeCode={updateFileContent}
                 onSaveFile={saveFile}
+                onSaveProject={handleTriggerSave}
                 fontSize={fontSize}
                 editorRef={editorRef}
                 allFiles={allFiles}
@@ -647,15 +719,41 @@ function ReactWorkspace() {
         onClose={() => setIsResetModalOpen(false)}
         onConfirm={handleConfirmReset}
       />
+
+      <SavePlaygroundModal
+        isOpen={isSaveModalOpen}
+        defaultName={
+          projectName === 'React App' ? 'React Playground' : projectName
+        }
+        playgroundType="react"
+        isSaving={isSaving}
+        onSave={handleSaveNew}
+        onClose={() => setIsSaveModalOpen(false)}
+      />
+
+      <SavePlaygroundModal
+        isOpen={isSaveCopyModalOpen}
+        title="Save as Copy"
+        description="Create a new playground with a copy of this React project."
+        defaultName={`${projectName} (Copy)`}
+        playgroundType="react"
+        isSaving={isSaving}
+        onSave={handleSaveCopy}
+        onClose={() => setIsSaveCopyModalOpen(false)}
+      />
     </main>
   );
 }
 
 function ReactPlayground() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   return (
-    <WorkspaceProvider initialProjectId={id}>
+    <WorkspaceProvider
+      initialProjectId={id}
+      onNotFound={() => navigate('/404', { replace: true })}
+    >
       <SEO
         title={
           id
