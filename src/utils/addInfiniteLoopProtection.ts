@@ -9,10 +9,10 @@ export function addInfiniteLoopProtection(
 
   const helper = `
 const __runjs_check_loop = (() => {
-  const counts = new Map();
+  const counts = Object.create(null);
   return (id, max = ${maxIterations}) => {
-    const count = (counts.get(id) || 0) + 1;
-    counts.set(id, count);
+    const count = (counts[id] || 0) + 1;
+    counts[id] = count;
     if (count > max) {
       throw new RangeError('Potential infinite loop detected: exceeded ' + max + ' iterations.');
     }
@@ -24,6 +24,8 @@ const __runjs_check_loop = (() => {
     const program = acorn.parse(code, {
       ecmaVersion: 'latest',
       sourceType: 'script',
+      allowAwaitOutsideFunction: true,
+      allowReturnOutsideFunction: true,
     }) as unknown as { body: unknown[] };
     const insertions = new Map<number, string[]>();
     let loopId = 0;
