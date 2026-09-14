@@ -48,6 +48,7 @@ interface MultiTabEditorProps {
   onCloseAllTabs: () => void;
   onChangeCode: (path: string, newCode: string) => void;
   onSaveFile: (path: string) => void;
+  onSaveProject?: () => void;
   fontSize: number;
   /* eslint-disable @typescript-eslint/no-explicit-any */
   editorRef?: React.MutableRefObject<any>;
@@ -65,6 +66,7 @@ export function MultiTabEditor({
   onCloseAllTabs,
   onChangeCode,
   onSaveFile,
+  onSaveProject,
   fontSize,
   editorRef: externalEditorRef,
   allFiles = {},
@@ -74,6 +76,7 @@ export function MultiTabEditor({
   const monacoInstanceRef = useRef<Monaco | null>(null);
   const activeFileRef = useRef(activeFile);
   const onSaveFileRef = useRef(onSaveFile);
+  const onSaveProjectRef = useRef(onSaveProject);
   const allFilesRef = useRef(allFiles);
   const languageDisposersRef = useRef<Array<() => void>>([]);
   const pendingPositionRef = useRef<{
@@ -88,6 +91,10 @@ export function MultiTabEditor({
   useEffect(() => {
     onSaveFileRef.current = onSaveFile;
   }, [onSaveFile]);
+
+  useEffect(() => {
+    onSaveProjectRef.current = onSaveProject;
+  }, [onSaveProject]);
 
   useEffect(() => {
     const packageVirtualFiles = getAllPackageVirtualFiles();
@@ -342,7 +349,9 @@ export function MultiTabEditor({
               editor.addCommand(
                 monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
                 () => {
-                  if (activeFileRef.current) {
+                  if (onSaveProjectRef.current) {
+                    onSaveProjectRef.current();
+                  } else if (activeFileRef.current) {
                     onSaveFileRef.current(activeFileRef.current);
                   }
                 }

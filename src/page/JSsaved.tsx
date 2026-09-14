@@ -10,12 +10,13 @@ import { ModalRef, UserCodeBase } from '../utils/interface';
 import useAdjustFontSize from '../hook/useAdjustFontSize';
 import useComplieCode from '../hook/useComplieCode';
 import { getCode } from '../db/operations';
-import useIndexDBState from '../hook/useIndexDBState';
 import HelpModal from '../components/HelpModal';
 import useWarnOnClose from '../hook/useWarnOnClose ';
 import useFormatDocument from '../hook/useFormatDocument';
-import useDownloadFile from '../hook/useDownloadFile';
 import useMediaQuery from '../hook/useMediaQuery';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
+import { usePlaygroundPersistence } from '../hook/usePlaygroundPersistence';
 import CodeEditor from '../components/CodeEditor';
 import Terminal from '../components/Terminal';
 import ThemeSelector from '../components/ThemeSelector';
@@ -41,9 +42,10 @@ import {
 function JSsaved() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [code, setcode] = useIndexDBState(id ?? '');
-  const [currentFontSize, setFontSize] = useLocalStorageState('fontSize', '14');
+  const [editorCode, setEditorCode] = useState<string>('');
+  const [initialCode, setInitialCode] = useState<string>('');
   const [savedCode, setSavedCode] = useState<UserCodeBase>();
+  const [currentFontSize, setFontSize] = useLocalStorageState('fontSize', '14');
   const [activeMobileTab, setActiveMobileTab] = useState<'editor' | 'console'>(
     'editor'
   );
@@ -55,7 +57,7 @@ function JSsaved() {
     isModalOpen: isComplexityModalOpen,
     analyze: handleAnalyzeComplexity,
     closeModal: closeComplexityModal,
-  } = useComplexityAnalyzer(() => code?.code ?? '');
+  } = useComplexityAnalyzer(() => editorCode);
   const consoleRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<ModalRef>(null);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -63,15 +65,30 @@ function JSsaved() {
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery('(min-width: 640px)');
 
+  const persistence = usePlaygroundPersistence({
+    id,
+    type: 'js',
+    initialName: savedCode?.fileName,
+    getCurrentData: () => ({
+      code: editorCode,
+      jsCode: editorCode,
+    }),
+    onSaved: (updatedDoc) => {
+      setSavedCode(updatedDoc);
+      setInitialCode(updatedDoc.code ?? '');
+    },
+  });
+
   async function dbcall() {
     if (id) {
       try {
         const dbResult = await getCode(id);
-        if (!dbResult) {
-          return navigate('/404');
+        if (!dbResult || dbResult.isDelete) {
+          return navigate('/404', { replace: true });
         }
         setSavedCode(dbResult);
-        setcode(dbResult);
+        setEditorCode(dbResult.code ?? '');
+        setInitialCode(dbResult.code ?? '');
       } catch (error) {
         console.log('Error', error);
       }
@@ -85,15 +102,14 @@ function JSsaved() {
     fetchUserSavedCode();
   }, [id]);
 
-  function handleTextChange(txt: string) {
+  useEffect(() => {
     if (savedCode) {
-      const payload: UserCodeBase = {
-        ...savedCode,
-        code: txt,
-        lastModifiedAt: new Date(),
-      };
-      setcode(payload);
+      persistence.setIsDirty(editorCode !== initialCode);
     }
+  }, [editorCode, initialCode, savedCode, persistence.setIsDirty]);
+
+  function handleTextChange(txt: string) {
+    setEditorCode(txt);
   }
 
   function handleFontSize(operation: 'increaseFontSize' | 'decreaseFontSize') {
@@ -122,7 +138,7 @@ function JSsaved() {
       });
 
       try {
-        const final = addInfiniteLoopProtection(code?.code ?? '');
+        const final = addInfiniteLoopProtection(editorCode);
         const result = await runInSandbox(final, {
           timeoutMs: 5000,
           onClear: () => {
@@ -155,14 +171,11 @@ function JSsaved() {
   }
 
   function handleDownload() {
-    if (code) {
-      saveJSTSFile(code.code, code.fileName, 'js');
-    }
+    saveJSTSFile(editorCode, savedCode?.fileName || 'script', 'js');
   }
 
   useAdjustFontSize(handleFontSize);
   useComplieCode(handleRunClick);
-  useDownloadFile(handleDownload);
   useWarnOnClose();
   useFormatDocument(() => {
     if (editorRef.current) {
@@ -170,7 +183,7 @@ function JSsaved() {
     }
   });
 
-  const fileName = code?.fileName || savedCode?.fileName || 'script';
+  const fileName = savedCode?.fileName || 'script';
 
   return (
     <Fragment>
@@ -200,6 +213,12 @@ function JSsaved() {
               <span className="text-xs font-semibold text-[var(--text-primary)]">
                 {fileName}.js
               </span>
+              {persistence.isDirty && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-mono text-amber-500 dark:text-amber-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  Unsaved changes
+                </span>
+              )}
               {savedCode?.tag && (
                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-[var(--bg-surface-muted)] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
                   <TagIcon className="w-2.5 h-2.5 opacity-60" />
@@ -209,7 +228,7 @@ function JSsaved() {
             </div>
           </div>
 
-          {/* Center: Actions (Run, Format, Font, Download) */}
+          {/* Center: Actions (Run, Save, Format, Font, Download) */}
           <div className="flex items-center gap-1.5">
             {/* Run Button */}
             <button
@@ -228,6 +247,17 @@ function JSsaved() {
               </kbd>
             </button>
 
+            {/* Save Button */}
+            <SavePlaygroundButton
+              isSaved={true}
+              isDirty={persistence.isDirty}
+              isSaving={persistence.isSaving}
+              onSave={persistence.triggerSave}
+              onSaveCopy={persistence.openSaveCopyModal}
+              playgroundType="js"
+              shortcutText={persistence.shortcutText}
+            />
+
             {/* Complexity Analyzer Button */}
             <ComplexityButton
               onClick={handleAnalyzeComplexity}
@@ -236,10 +266,7 @@ function JSsaved() {
             />
 
             {/* Cross-Tool Interlink Menu */}
-            <ToolInterlinkMenu
-              currentTool="js"
-              getCode={() => code?.code ?? ''}
-            />
+            <ToolInterlinkMenu currentTool="js" getCode={() => editorCode} />
 
             {/* Format Document */}
             <button
@@ -366,7 +393,7 @@ function JSsaved() {
                   <div className="flex-1 overflow-hidden">
                     <CodeEditor
                       language="javascript"
-                      code={code?.code ?? ''}
+                      code={editorCode}
                       editorRef={editorRef}
                       currentFontSize={Number(currentFontSize)}
                       onChange={(value) => handleTextChange(value ?? '')}
@@ -393,7 +420,7 @@ function JSsaved() {
               >
                 <CodeEditor
                   language="javascript"
-                  code={code?.code ?? ''}
+                  code={editorCode}
                   editorRef={editorRef}
                   currentFontSize={Number(currentFontSize)}
                   onChange={(value) => handleTextChange(value ?? '')}
@@ -419,6 +446,17 @@ function JSsaved() {
         onClose={closeComplexityModal}
         result={complexityResult}
         codeSnippet={complexityAnalyzedCode}
+      />
+
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveCopyModalOpen}
+        title="Save as Copy"
+        description="Create a new playground with a copy of this code."
+        defaultName={`${savedCode?.fileName || 'JavaScript Playground'} (Copy)`}
+        playgroundType="js"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveCopy}
+        onClose={persistence.closeSaveCopyModal}
       />
 
       <HelpModal ref={dialogRef} />

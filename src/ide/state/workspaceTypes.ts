@@ -12,6 +12,7 @@ export interface WorkspaceContextType {
   dirtyFiles: Set<string>;
   fileContents: Record<string, string>;
   isSaving: boolean;
+  isSaved: boolean;
   isLoading: boolean;
   fontSize: number;
   isExplorerOpen: boolean;
@@ -29,6 +30,8 @@ export interface WorkspaceContextType {
   updateFileContent: (path: string, content: string) => void;
   saveFile: (path: string) => Promise<void>;
   saveProject: () => Promise<void>;
+  saveProjectAs: (name: string, overrideId?: string) => Promise<string>;
+  saveProjectAsCopy: (copyName: string) => Promise<string>;
   setProjectName: (name: string) => void;
   setProjectTag: (tag: string) => void;
   switchTemplate: (templateId: string) => Promise<void>;

@@ -15,15 +15,16 @@ import useAdjustFontSize from '../hook/useAdjustFontSize';
 import useComplieCode from '../hook/useComplieCode';
 import { addInfiniteLoopProtection } from '../utils/addInfiniteLoopProtection';
 import { runInSandbox } from '../utils/sandboxRunner';
-import useIndexDBState from '../hook/useIndexDBState';
 import { getCode } from '../db/operations';
 import { ITypeScriptError, ModalRef, UserCodeBase } from '../utils/interface';
 import HelpModal from '../components/HelpModal';
 import Split from 'react-split';
 import useWarnOnClose from '../hook/useWarnOnClose ';
 import useFormatDocument from '../hook/useFormatDocument';
-import useDownloadFile from '../hook/useDownloadFile';
 import useMediaQuery from '../hook/useMediaQuery';
+import SavePlaygroundButton from '../components/SavePlaygroundButton';
+import SavePlaygroundModal from '../components/SavePlaygroundModal';
+import { usePlaygroundPersistence } from '../hook/usePlaygroundPersistence';
 import CodeEditor from '../components/CodeEditor';
 import Terminal from '../components/Terminal';
 import ThemeSelector from '../components/ThemeSelector';
@@ -49,9 +50,10 @@ import {
 function TSsaved() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [code, setcode] = useIndexDBState(id ?? '');
-  const [currentFontSize, setFontSize] = useLocalStorageState('fontSize', '14');
+  const [editorCode, setEditorCode] = useState<string>('');
+  const [initialCode, setInitialCode] = useState<string>('');
   const [savedCode, setSavedCode] = useState<UserCodeBase>();
+  const [currentFontSize, setFontSize] = useLocalStorageState('fontSize', '14');
   const [activeMobileTab, setActiveMobileTab] = useState<'editor' | 'console'>(
     'editor'
   );
@@ -66,6 +68,19 @@ function TSsaved() {
   const editorRef = useRef<any>(null);
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery('(min-width: 640px)');
+
+  const persistence = usePlaygroundPersistence({
+    id,
+    type: 'ts',
+    initialName: savedCode?.fileName,
+    getCurrentData: () => ({
+      code: editorCode,
+    }),
+    onSaved: (updatedDoc) => {
+      setSavedCode(updatedDoc);
+      setInitialCode(updatedDoc.code ?? '');
+    },
+  });
 
   const handleValidate = useCallback((markers: any[]) => {
     const formatted: ITypeScriptError[] = markers
@@ -101,11 +116,12 @@ function TSsaved() {
     if (id) {
       try {
         const dbResult = await getCode(id);
-        if (!dbResult) {
-          return navigate('/404');
+        if (!dbResult || dbResult.isDelete) {
+          return navigate('/404', { replace: true });
         }
         setSavedCode(dbResult);
-        setcode(dbResult);
+        setEditorCode(dbResult.code ?? '');
+        setInitialCode(dbResult.code ?? '');
       } catch (error) {
         console.log('Error', error);
       }
@@ -118,6 +134,12 @@ function TSsaved() {
     }
     fetchUserSavedCode();
   }, [id]);
+
+  useEffect(() => {
+    if (savedCode) {
+      persistence.setIsDirty(editorCode !== initialCode);
+    }
+  }, [editorCode, initialCode, savedCode, persistence.setIsDirty]);
 
   function handleFontSize(operation: 'increaseFontSize' | 'decreaseFontSize') {
     let fontSize = Number(currentFontSize);
@@ -146,7 +168,7 @@ function TSsaved() {
 
       try {
         await loadTypscript();
-        const parseJavascriptCode = await transform(code?.code ?? '', {
+        const parseJavascriptCode = await transform(editorCode, {
           loader: 'ts',
         });
         let final = parseJavascriptCode.code;
@@ -177,14 +199,7 @@ function TSsaved() {
   }
 
   function handleTextChange(txt: string) {
-    if (savedCode) {
-      const payload: UserCodeBase = {
-        ...savedCode,
-        code: txt,
-        lastModifiedAt: new Date(),
-      };
-      setcode(payload);
-    }
+    setEditorCode(txt);
   }
 
   function clearTerminal() {
@@ -194,14 +209,11 @@ function TSsaved() {
   }
 
   function handleDownload() {
-    if (code) {
-      saveJSTSFile(code.code, code.fileName, 'ts');
-    }
+    saveJSTSFile(editorCode, savedCode?.fileName || 'script', 'ts');
   }
 
   useAdjustFontSize(handleFontSize);
   useComplieCode(handleRunClick);
-  useDownloadFile(handleDownload);
   useWarnOnClose();
   useFormatDocument(() => {
     if (editorRef.current) {
@@ -209,7 +221,7 @@ function TSsaved() {
     }
   });
 
-  const fileName = code?.fileName || savedCode?.fileName || 'script';
+  const fileName = savedCode?.fileName || 'script';
 
   return (
     <Fragment>
@@ -239,6 +251,12 @@ function TSsaved() {
               <span className="text-xs font-semibold text-[var(--text-primary)]">
                 {fileName}.ts
               </span>
+              {persistence.isDirty && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-mono text-blue-500 dark:text-blue-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  Unsaved changes
+                </span>
+              )}
               {savedCode?.tag && (
                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-[var(--bg-surface-muted)] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
                   <TagIcon className="w-2.5 h-2.5 opacity-60" />
@@ -248,7 +266,7 @@ function TSsaved() {
             </div>
           </div>
 
-          {/* Center: Actions (Run, Format, Font, Download) */}
+          {/* Center: Actions (Run, Save, Format, Font, Download) */}
           <div className="flex items-center gap-1.5">
             {/* Run Button */}
             <button
@@ -267,11 +285,19 @@ function TSsaved() {
               </kbd>
             </button>
 
-            {/* Cross-Tool Interlink Menu */}
-            <ToolInterlinkMenu
-              currentTool="ts"
-              getCode={() => code?.code ?? ''}
+            {/* Save Button */}
+            <SavePlaygroundButton
+              isSaved={true}
+              isDirty={persistence.isDirty}
+              isSaving={persistence.isSaving}
+              onSave={persistence.triggerSave}
+              onSaveCopy={persistence.openSaveCopyModal}
+              playgroundType="ts"
+              shortcutText={persistence.shortcutText}
             />
+
+            {/* Cross-Tool Interlink Menu */}
+            <ToolInterlinkMenu currentTool="ts" getCode={() => editorCode} />
 
             {/* Format Document */}
             <button
@@ -399,7 +425,7 @@ function TSsaved() {
                     <CodeEditor
                       language="typescript"
                       path="script.ts"
-                      code={code?.code ?? ''}
+                      code={editorCode}
                       editorRef={editorRef}
                       currentFontSize={Number(currentFontSize)}
                       onChange={(value) => handleTextChange(value ?? '')}
@@ -433,7 +459,7 @@ function TSsaved() {
                 <CodeEditor
                   language="typescript"
                   path="script.ts"
-                  code={code?.code ?? ''}
+                  code={editorCode}
                   editorRef={editorRef}
                   currentFontSize={Number(currentFontSize)}
                   onChange={(value) => handleTextChange(value ?? '')}
@@ -459,6 +485,17 @@ function TSsaved() {
           )}
         </section>
       </main>
+
+      <SavePlaygroundModal
+        isOpen={persistence.isSaveCopyModalOpen}
+        title="Save as Copy"
+        description="Create a new playground with a copy of this code."
+        defaultName={`${savedCode?.fileName || 'TypeScript Playground'} (Copy)`}
+        playgroundType="ts"
+        isSaving={persistence.isSaving}
+        onSave={persistence.confirmSaveCopy}
+        onClose={persistence.closeSaveCopyModal}
+      />
 
       <HelpModal ref={dialogRef} />
     </Fragment>
