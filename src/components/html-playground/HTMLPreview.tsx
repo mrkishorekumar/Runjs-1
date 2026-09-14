@@ -127,7 +127,14 @@ export const HTMLPreview = forwardRef<HTMLPreviewRef, HTMLPreviewProps>(
           data.method &&
           Array.isArray(data.args)
         ) {
-          const method = data.method as 'log' | 'info' | 'warn' | 'error';
+          const method = (
+            consoleDrawerRef.current &&
+            typeof consoleDrawerRef.current[
+              data.method as keyof HTMLConsoleRef
+            ] === 'function'
+              ? data.method
+              : 'log'
+          ) as 'log' | 'info' | 'warn' | 'error';
           if (
             consoleDrawerRef.current &&
             typeof consoleDrawerRef.current[method] === 'function'

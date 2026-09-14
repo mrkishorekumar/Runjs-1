@@ -72,7 +72,13 @@ export default function HTMLDashboardPreviewModal({
         return;
 
       if (data.type === 'console' && data.method && Array.isArray(data.args)) {
-        const method = data.method as 'log' | 'info' | 'warn' | 'error';
+        const method = (
+          typeof consoleDrawerRef.current?.[
+            data.method as keyof HTMLConsoleRef
+          ] === 'function'
+            ? data.method
+            : 'log'
+        ) as 'log' | 'info' | 'warn' | 'error';
         if (typeof consoleDrawerRef.current?.[method] === 'function') {
           consoleDrawerRef.current[method](...data.args);
         }
