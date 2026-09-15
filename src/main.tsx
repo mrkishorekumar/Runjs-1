@@ -4,8 +4,12 @@ import AppRouter from './AppRouter';
 import { ThemeProvider } from './context/ThemeContext';
 import { PwaProvider } from './context/PwaContext';
 
-// Register PWA service worker in browser environments
-if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+// Register PWA service worker in production browser environments
+if (
+  import.meta.env.PROD &&
+  typeof window !== 'undefined' &&
+  'serviceWorker' in navigator
+) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
@@ -16,6 +20,24 @@ if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
         console.warn('[SW] Registration failed:', err);
       });
   });
+} else if (
+  import.meta.env.DEV &&
+  typeof window !== 'undefined' &&
+  'serviceWorker' in navigator
+) {
+  // In development, unregister any active service worker and clean caches to prevent stale caching
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
+  });
+  if ('caches' in window) {
+    caches.keys().then((names) => {
+      for (const name of names) {
+        caches.delete(name);
+      }
+    });
+  }
 }
 
 // Request persistent storage to protect offline IndexedDB and Cache Storage from browser eviction
