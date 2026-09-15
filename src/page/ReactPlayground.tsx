@@ -109,13 +109,23 @@ function ReactWorkspace() {
     /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   const shortcutText = isMac ? '⌘S' : 'Ctrl+S';
 
-  const handleTriggerSave = useCallback(async () => {
+  // Save button click in navbar: ONLY opens modal to create a new playground
+  const handleSaveButtonClick = useCallback(() => {
     if (!isSaved) {
       setIsSaveModalOpen(true);
+    }
+    // For existing saved playgrounds, manual save behavior for updating is removed/disabled.
+    // Changes are automatically saved via auto-save.
+  }, [isSaved]);
+
+  // Immediate save for Cmd+S: saves current active file and workspace changes locally without opening modal!
+  const handleKeyboardSave = useCallback(async () => {
+    if (activeFile) {
+      await saveFile(activeFile);
     } else {
       await saveProject();
     }
-  }, [isSaved, saveProject]);
+  }, [activeFile, saveFile, saveProject]);
 
   const handleSaveNew = useCallback(
     async (name: string) => {
@@ -226,7 +236,8 @@ function ReactWorkspace() {
         if (isSaveModalOpen || isSaveCopyModalOpen) {
           return;
         }
-        handleTriggerSave();
+        // Save current file & workspace changes immediately; NEVER trigger "Create New Playground" on Cmd+S!
+        handleKeyboardSave();
         return;
       }
 
@@ -246,7 +257,7 @@ function ReactWorkspace() {
     return () =>
       window.removeEventListener('keydown', handleKeyDown, { capture: true });
   }, [
-    handleTriggerSave,
+    handleKeyboardSave,
     toggleExplorer,
     toggleTerminal,
     isSaveModalOpen,
@@ -354,10 +365,10 @@ function ReactWorkspace() {
               </div>
             )}
 
-            {dirtyFiles.size > 0 && (
+            {isSaving && (
               <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono text-cyan-500 dark:text-cyan-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                Unsaved changes
+                Saving...
               </span>
             )}
 
@@ -388,7 +399,7 @@ function ReactWorkspace() {
             isSaved={isSaved}
             isDirty={dirtyFiles.size > 0}
             isSaving={isSaving}
-            onSave={handleTriggerSave}
+            onSave={handleSaveButtonClick}
             onSaveCopy={
               isSaved ? () => setIsSaveCopyModalOpen(true) : undefined
             }
@@ -573,7 +584,7 @@ function ReactWorkspace() {
                       onCloseAllTabs={closeAllFiles}
                       onChangeCode={updateFileContent}
                       onSaveFile={saveFile}
-                      onSaveProject={handleTriggerSave}
+                      onSaveProject={handleKeyboardSave}
                       fontSize={fontSize}
                       editorRef={editorRef}
                       allFiles={allFiles}
@@ -602,7 +613,7 @@ function ReactWorkspace() {
                     onCloseAllTabs={closeAllFiles}
                     onChangeCode={updateFileContent}
                     onSaveFile={saveFile}
-                    onSaveProject={handleTriggerSave}
+                    onSaveProject={handleKeyboardSave}
                     fontSize={fontSize}
                     editorRef={editorRef}
                     allFiles={allFiles}
@@ -670,7 +681,7 @@ function ReactWorkspace() {
                 onCloseAllTabs={closeAllFiles}
                 onChangeCode={updateFileContent}
                 onSaveFile={saveFile}
-                onSaveProject={handleTriggerSave}
+                onSaveProject={handleKeyboardSave}
                 fontSize={fontSize}
                 editorRef={editorRef}
                 allFiles={allFiles}

@@ -349,10 +349,10 @@ export function MultiTabEditor({
               editor.addCommand(
                 monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
                 () => {
-                  if (onSaveProjectRef.current) {
-                    onSaveProjectRef.current();
-                  } else if (activeFileRef.current) {
+                  if (activeFileRef.current) {
                     onSaveFileRef.current(activeFileRef.current);
+                  } else if (onSaveProjectRef.current) {
+                    onSaveProjectRef.current();
                   }
                 }
               );

@@ -1110,10 +1110,10 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
               <span className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
                 {id ? 'project' : 'scratchpad'}
               </span>
-              {id && persistence.isDirty && (
-                <span className="flex items-center gap-1 text-[11px] font-mono text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded animate-pulse">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                  Unsaved changes
+              {id && persistence.isSaving && (
+                <span className="flex items-center gap-1 text-[11px] font-mono text-orange-500 bg-orange-500/10 border border-orange-500/20 px-1.5 py-0.5 rounded animate-pulse">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                  Saving...
                 </span>
               )}
             </div>
