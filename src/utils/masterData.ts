@@ -14,13 +14,6 @@ export interface PlaygroundItem {
 
 export const playgroundLinks: PlaygroundItem[] = [
   {
-    title: 'JavaScript',
-    link: '/js',
-    description: 'Instant JS execution with interactive console',
-    badge: 'ES2024',
-    iconName: 'js',
-  },
-  {
     title: 'JS Visualizer',
     link: '/visualizer',
     description: 'Interactive Call Stack, Event Loop & Queue visualizer',
@@ -33,6 +26,13 @@ export const playgroundLinks: PlaygroundItem[] = [
     description: 'Interactive Memory Allocation, Execution Phase & Call Stack',
     badge: 'New',
     iconName: 'context',
+  },
+  {
+    title: 'JavaScript',
+    link: '/js',
+    description: 'Instant JS execution with interactive console',
+    badge: 'ES2024',
+    iconName: 'js',
   },
   {
     title: 'TypeScript',
@@ -98,10 +98,10 @@ export interface MoreNavItem {
 
 export const moreNavLinks: MoreNavItem[] = [
   {
-    title: 'About RunJS',
-    link: '/about',
-    description: 'App architecture, packages, and technical credits',
-    iconName: 'about',
+    title: 'Recycle Bin',
+    link: '/bin',
+    description: 'Review and permanently remove deleted playgrounds',
+    iconName: 'bin',
   },
   {
     title: 'Privacy Policy',
@@ -116,17 +116,10 @@ export const moreNavLinks: MoreNavItem[] = [
     iconName: 'terms',
   },
   {
-    title: 'Recycle Bin',
-    link: '/bin',
-    description: 'Review and permanently remove deleted playgrounds',
-    iconName: 'bin',
-  },
-  {
-    title: 'GitHub Repository',
-    link: 'https://github.com/rigial/Runjs',
-    description: 'View source code, star the project, and report issues',
-    iconName: 'github',
-    isExternal: true,
+    title: 'About RunJS',
+    link: '/about',
+    description: 'App architecture, packages, and technical credits',
+    iconName: 'about',
   },
   {
     title: 'Creator Portfolio',
