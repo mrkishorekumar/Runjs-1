@@ -213,10 +213,10 @@ function JSsaved() {
               <span className="text-xs font-semibold text-[var(--text-primary)]">
                 {fileName}.js
               </span>
-              {persistence.isDirty && (
+              {persistence.isSaving && (
                 <span className="inline-flex items-center gap-1 text-[11px] font-mono text-amber-500 dark:text-amber-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                  Unsaved changes
+                  Saving...
                 </span>
               )}
               {savedCode?.tag && (

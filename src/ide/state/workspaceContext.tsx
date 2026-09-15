@@ -46,7 +46,18 @@ export function WorkspaceProvider({
     () => prepareSandpackFiles(VITE_REACT_TEMPLATE.files, 'vite-react')
   );
   const [isSaving, setIsSaving] = useState(false);
+  const isSavingRef = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const fileContentsRef = useRef(fileContents);
+  useEffect(() => {
+    fileContentsRef.current = fileContents;
+  }, [fileContents]);
+
+  const dirtyFilesRef = useRef(dirtyFiles);
+  useEffect(() => {
+    dirtyFilesRef.current = dirtyFiles;
+  }, [dirtyFiles]);
 
   // Layout states
   const [isExplorerOpen, setIsExplorerOpen] = useState(true);
@@ -434,57 +445,133 @@ export function WorkspaceProvider({
     setDirtyFiles((prev) => new Set(prev).add(norm));
   }, []);
 
-  // Save a single file: commits to VFS, saves to DB, and instantly updates Sandpack preview
+  // Save a single file: commits to VFS, merges with all other files, persists to DB & draft, and updates preview
   const saveFile = useCallback(
     async (path: string) => {
       const norm = normalizePath(path);
       if (norm.startsWith('/node_modules/')) return;
-      const content = fileContents[norm];
+      const content = fileContentsRef.current[norm];
       if (content !== undefined) {
         await vfs.writeFile(norm, content);
+
+        // Also commit any other dirty files to VFS so nothing is lost or overwritten
+        for (const [dirtyPath, dirtyContent] of Object.entries(
+          fileContentsRef.current
+        )) {
+          if (
+            !dirtyPath.startsWith('/node_modules/') &&
+            dirtyContent !== undefined
+          ) {
+            await vfs.writeFile(dirtyPath, dirtyContent);
+          }
+        }
+
         setDirtyFiles((prev) => {
           const next = new Set(prev);
           next.delete(norm);
           return next;
         });
 
-        const vfsJson = await vfs.toJSON();
-        vfsJson[norm] = content;
+        const rawVfs = await vfs.toJSON();
+        const allFiles = {
+          ...rawVfs,
+          ...fileContentsRef.current,
+          [norm]: content,
+        };
 
         // Instantly push to Sandpack preview
-        await syncSandpackFiles({ [norm]: content });
+        await syncSandpackFiles(allFiles);
 
         // Persist to IndexedDB
-        await persistToDatabase(vfsJson);
+        if (initialProjectId) {
+          await persistToDatabase(allFiles);
+        }
+
+        // Update draft in localStorage
+        const draft = createWorkspaceDraft({
+          projectId,
+          projectName,
+          projectTag,
+          templateId,
+          activeFile,
+          openFiles,
+          dirtyFiles: Array.from(dirtyFilesRef.current).filter(
+            (p) => p !== norm
+          ),
+          fileContents: fileContentsRef.current,
+          rawVfsFiles: allFiles,
+        });
+        try {
+          localStorage.setItem(draftKey, JSON.stringify(draft));
+        } catch (e) {
+          console.warn('Failed to update workspace draft:', e);
+        }
       }
     },
-    [fileContents, vfs, syncSandpackFiles, persistToDatabase]
+    [
+      vfs,
+      syncSandpackFiles,
+      persistToDatabase,
+      initialProjectId,
+      projectId,
+      projectName,
+      projectTag,
+      templateId,
+      activeFile,
+      openFiles,
+      draftKey,
+    ]
   );
 
   // Save entire project: commits all dirty files to VFS, saves to DB, and instantly updates preview
   const saveProject = useCallback(async () => {
+    if (isSavingRef.current) return;
+    isSavingRef.current = true;
     setIsSaving(true);
     try {
+      const currentContents = fileContentsRef.current;
+      const currentDirty = Array.from(dirtyFilesRef.current);
+
       // Save all dirty files into VFS
-      for (const dirtyPath of dirtyFiles) {
+      for (const dirtyPath of currentDirty) {
         if (dirtyPath.startsWith('/node_modules/')) continue;
-        const content = fileContents[dirtyPath];
+        const content = currentContents[dirtyPath];
         if (content !== undefined) {
           await vfs.writeFile(dirtyPath, content);
         }
       }
-      setDirtyFiles(new Set());
 
-      const allFiles = await vfs.toJSON();
+      // Also ensure any other edited files in currentContents are written to VFS so VFS is complete
+      for (const [filePath, content] of Object.entries(currentContents)) {
+        if (!filePath.startsWith('/node_modules/') && content !== undefined) {
+          await vfs.writeFile(filePath, content);
+        }
+      }
+
+      setDirtyFiles((prev) => {
+        const next = new Set(prev);
+        for (const p of currentDirty) {
+          next.delete(p);
+        }
+        return next;
+      });
+
+      const rawVfs = await vfs.toJSON();
+      const allFiles = {
+        ...rawVfs,
+        ...fileContentsRef.current,
+      };
 
       // Instantly push to Sandpack preview
-      await syncSandpackFiles();
+      await syncSandpackFiles(allFiles);
 
       // Persist to IndexedDB
-      await persistToDatabase(allFiles);
+      if (initialProjectId) {
+        await persistToDatabase(allFiles);
+      }
 
       // Update draft in localStorage
-      const draft: WorkspaceDraft = {
+      const draft = createWorkspaceDraft({
         projectId,
         projectName,
         projectTag,
@@ -492,22 +579,25 @@ export function WorkspaceProvider({
         activeFile,
         openFiles,
         dirtyFiles: [],
-        fileContents,
-        vfsFiles: allFiles,
-        updatedAt: Date.now(),
-      };
-      localStorage.setItem(draftKey, JSON.stringify(draft));
+        fileContents: fileContentsRef.current,
+        rawVfsFiles: allFiles,
+      });
+      try {
+        localStorage.setItem(draftKey, JSON.stringify(draft));
+      } catch (e) {
+        console.warn('Failed to update workspace draft:', e);
+      }
     } catch (e) {
       console.error('Failed to save project:', e);
     } finally {
+      isSavingRef.current = false;
       setIsSaving(false);
     }
   }, [
-    dirtyFiles,
-    fileContents,
     vfs,
     syncSandpackFiles,
     persistToDatabase,
+    initialProjectId,
     projectId,
     projectName,
     projectTag,
@@ -517,20 +607,41 @@ export function WorkspaceProvider({
     draftKey,
   ]);
 
+  // Debounced auto-save effect across all files in React playground
+  useEffect(() => {
+    if (isLoading || dirtyFiles.size === 0) return;
+
+    const timer = setTimeout(async () => {
+      await saveProject();
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [dirtyFiles, isLoading, saveProject]);
+
   const saveProjectAs = useCallback(
     async (name: string, overrideId?: string): Promise<string> => {
       setIsSaving(true);
       try {
-        for (const dirtyPath of dirtyFiles) {
+        const currentContents = fileContentsRef.current;
+        for (const dirtyPath of dirtyFilesRef.current) {
           if (dirtyPath.startsWith('/node_modules/')) continue;
-          const content = fileContents[dirtyPath];
+          const content = currentContents[dirtyPath];
           if (content !== undefined) {
             await vfs.writeFile(dirtyPath, content);
           }
         }
+        for (const [filePath, content] of Object.entries(currentContents)) {
+          if (!filePath.startsWith('/node_modules/') && content !== undefined) {
+            await vfs.writeFile(filePath, content);
+          }
+        }
         setDirtyFiles(new Set());
 
-        const allFiles = await vfs.toJSON();
+        const rawVfs = await vfs.toJSON();
+        const allFiles = {
+          ...rawVfs,
+          ...currentContents,
+        };
         const mainCode =
           allFiles['/src/App.jsx'] ||
           allFiles['/src/App.tsx'] ||
@@ -573,7 +684,7 @@ export function WorkspaceProvider({
           activeFile,
           openFiles,
           dirtyFiles: [],
-          fileContents,
+          fileContents: currentContents,
           vfsFiles: allFiles,
           updatedAt: Date.now(),
         };
@@ -582,22 +693,13 @@ export function WorkspaceProvider({
           JSON.stringify(draft)
         );
 
-        await syncSandpackFiles();
+        await syncSandpackFiles(allFiles);
         return targetId;
       } finally {
         setIsSaving(false);
       }
     },
-    [
-      dirtyFiles,
-      fileContents,
-      vfs,
-      projectTag,
-      templateId,
-      activeFile,
-      openFiles,
-      syncSandpackFiles,
-    ]
+    [vfs, projectTag, templateId, activeFile, openFiles, syncSandpackFiles]
   );
 
   const saveProjectAsCopy = useCallback(

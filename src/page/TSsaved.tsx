@@ -251,10 +251,10 @@ function TSsaved() {
               <span className="text-xs font-semibold text-[var(--text-primary)]">
                 {fileName}.ts
               </span>
-              {persistence.isDirty && (
+              {persistence.isSaving && (
                 <span className="inline-flex items-center gap-1 text-[11px] font-mono text-blue-500 dark:text-blue-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                  Unsaved changes
+                  Saving...
                 </span>
               )}
               {savedCode?.tag && (

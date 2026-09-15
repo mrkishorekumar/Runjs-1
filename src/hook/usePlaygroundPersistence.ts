@@ -11,6 +11,8 @@ export interface UsePlaygroundPersistenceOptions {
   getCurrentData: () => Partial<UserCodeBase>;
   onSaved?: (doc: UserCodeBase) => void;
   disabled?: boolean;
+  autoSave?: boolean;
+  autoSaveDebounceMs?: number;
 }
 
 export function getDefaultPlaygroundName(
@@ -49,12 +51,15 @@ export function usePlaygroundPersistence({
   getCurrentData,
   onSaved,
   disabled = false,
+  autoSave = true,
+  autoSaveDebounceMs = 750,
 }: UsePlaygroundPersistenceOptions) {
   const navigate = useNavigate();
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);
   const statusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [saveStatus, setSaveStatus] = useState<
     'idle' | 'saving' | 'saved' | 'unsaved'
@@ -76,6 +81,9 @@ export function usePlaygroundPersistence({
     return () => {
       if (statusTimerRef.current) {
         clearTimeout(statusTimerRef.current);
+      }
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
       }
     };
   }, []);
@@ -161,6 +169,33 @@ export function usePlaygroundPersistence({
       setIsSaving(false);
     }
   }, [id, defaultName, type, setTemporarySaveStatus]);
+
+  // Debounced auto-save effect for existing saved playgrounds
+  useEffect(() => {
+    if (disabled || !id || !autoSave || !isDirty) {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+        autoSaveTimerRef.current = null;
+      }
+      return;
+    }
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+
+    autoSaveTimerRef.current = setTimeout(() => {
+      autoSaveTimerRef.current = null;
+      saveExisting();
+    }, autoSaveDebounceMs);
+
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+        autoSaveTimerRef.current = null;
+      }
+    };
+  }, [disabled, id, autoSave, isDirty, autoSaveDebounceMs, saveExisting]);
 
   // Save new playground (from unsaved route)
   const confirmSaveNew = useCallback(
@@ -272,24 +307,17 @@ export function usePlaygroundPersistence({
     [defaultName, type, id, navigate, setTemporarySaveStatus]
   );
 
-  // Unified save trigger (button click or Cmd+S)
+  // Save button trigger: ONLY used for creating a new playground from an unsaved route
   const triggerSave = useCallback(async () => {
     if (disabled || isSaving || isSavingRef.current) return;
 
     if (!id) {
-      // Unsaved playground: open modal to get playground name
+      // Unsaved playground: open modal to get playground name and create new playground
       openSaveModal();
-    } else {
-      // Existing saved playground: update record directly
-      await saveExisting();
     }
-  }, [id, disabled, isSaving, openSaveModal, saveExisting]);
-
-  // Keep triggerSave reference for keyboard listener
-  const triggerSaveRef = useRef(triggerSave);
-  useEffect(() => {
-    triggerSaveRef.current = triggerSave;
-  }, [triggerSave]);
+    // For existing saved playgrounds, manual save behavior for updating is removed/disabled.
+    // Auto-save handles updating existing playgrounds automatically.
+  }, [id, disabled, isSaving, openSaveModal]);
 
   // Global keyboard shortcut listener for Cmd+S / Ctrl+S
   useEffect(() => {
@@ -330,7 +358,13 @@ export function usePlaygroundPersistence({
       if (isSaveCopy && id) {
         openSaveCopyModal();
       } else if (isNormalSave) {
-        triggerSaveRef.current?.();
+        if (id) {
+          // Existing saved playground: immediately flush auto-save to IndexedDB
+          saveExisting();
+        }
+        // In an unsaved playground, Cmd+S does NOT open "Create New Playground" modal.
+        // Auto-save already saves changes locally, and the Save button is kept
+        // strictly for creating a new playground.
       }
     };
 
@@ -338,7 +372,14 @@ export function usePlaygroundPersistence({
     return () => {
       window.removeEventListener('keydown', handleKeyDown, { capture: true });
     };
-  }, [disabled, isSaveModalOpen, isSaveCopyModalOpen, id, openSaveCopyModal]);
+  }, [
+    disabled,
+    isSaveModalOpen,
+    isSaveCopyModalOpen,
+    id,
+    openSaveCopyModal,
+    saveExisting,
+  ]);
 
   return {
     isSaved,
@@ -357,5 +398,7 @@ export function usePlaygroundPersistence({
     triggerSave,
     confirmSaveNew,
     confirmSaveCopy,
+    saveExisting,
+    flushSave: saveExisting,
   };
 }
