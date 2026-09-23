@@ -54,7 +54,7 @@ import useFormatDocument from '../hook/useFormatDocument';
 import { compileHtmlDocument } from '../utils/htmlCompiler';
 import { getCode } from '../db/operations';
 import { ModalRef, UserCodeBase } from '../utils/interface';
-import SEO from '../components/SEO';
+import SEO from '../seo/SEO';
 
 const DEFAULT_HTML = `<div class="container">
   <h1>Hello RunJS</h1>
@@ -1073,17 +1073,31 @@ function HTMLPlaygroundCore({ id }: { id?: string }) {
   return (
     <Fragment>
       <SEO
-        title="Online HTML, CSS & JavaScript Playground"
-        description="Interactive frontend web playground with 3-panel HTML/CSS/JS editors, live iframe preview, console logging, and responsive layouts."
-        keywords={[
-          'html playground',
-          'css editor',
-          'javascript online editor',
-          'frontend playground',
-          'codepen alternative',
-          'runjs html',
-        ]}
-        canonical={id ? `/html/${id}` : '/html'}
+        title={
+          id
+            ? 'Saved HTML Playground'
+            : 'Online HTML, CSS & JavaScript Playground'
+        }
+        description={
+          id
+            ? 'Saved HTML workspace in RunJS'
+            : 'Interactive frontend web playground with 3-panel HTML/CSS/JS editors, live iframe preview, console logging, and responsive layouts.'
+        }
+        keywords={
+          id
+            ? undefined
+            : [
+                'html playground',
+                'css editor',
+                'javascript online editor',
+                'frontend playground',
+                'codepen alternative',
+                'runjs html',
+              ]
+        }
+        canonical={id ? undefined : '/html'}
+        noIndex={Boolean(id)}
+        noFollow={Boolean(id)}
       />
       <main className="h-screen w-full flex flex-col bg-[var(--bg-app)] overflow-hidden">
         {/* Top Toolbar */}

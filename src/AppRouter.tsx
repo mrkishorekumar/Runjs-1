@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router';
 import { memo, Suspense, useEffect } from 'react';
 import PageSkeleton from './components/skeletons/PageSkeleton';
 import DashboardLoading from './components/DashboardLoading';
@@ -69,11 +75,14 @@ function AppRouter() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/kishorekumar" element={<CreatorPortfolioPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route
+              path="/privacy-policy"
+              element={<Navigate to="/privacy" replace />}
+            />
             <Route path="/terms" element={<TermsConditionsPage />} />
             <Route
               path="/terms-and-conditions"
-              element={<TermsConditionsPage />}
+              element={<Navigate to="/terms" replace />}
             />
             <Route path="/problems" element={<Problemset />} />
             <Route path="/problems/:slug" element={<ProblemSolving />} />
@@ -87,7 +96,71 @@ function AppRouter() {
             />
             <Route
               path="/context-visualizer"
-              element={<JSExecutionContextVisualizer />}
+              element={<Navigate to="/execution-context" replace />}
+            />
+            <Route
+              path="/javascript-playground"
+              element={<Navigate to="/js" replace />}
+            />
+            <Route
+              path="/javascript-compiler"
+              element={<Navigate to="/js" replace />}
+            />
+            <Route
+              path="/javascript-online-editor"
+              element={<Navigate to="/js" replace />}
+            />
+            <Route
+              path="/javascript-console"
+              element={<Navigate to="/js" replace />}
+            />
+            <Route
+              path="/js-playground"
+              element={<Navigate to="/js" replace />}
+            />
+            <Route
+              path="/typescript-playground"
+              element={<Navigate to="/ts" replace />}
+            />
+            <Route
+              path="/ts-playground"
+              element={<Navigate to="/ts" replace />}
+            />
+            <Route
+              path="/react-playground"
+              element={<Navigate to="/react" replace />}
+            />
+            <Route
+              path="/react-sandbox"
+              element={<Navigate to="/react" replace />}
+            />
+            <Route
+              path="/html-playground"
+              element={<Navigate to="/html" replace />}
+            />
+            <Route
+              path="/html-preview-studio"
+              element={<Navigate to="/html" replace />}
+            />
+            <Route
+              path="/learn-javascript"
+              element={<Navigate to="/learn" replace />}
+            />
+            <Route
+              path="/javascript-problems"
+              element={<Navigate to="/problems" replace />}
+            />
+            <Route
+              path="/javascript-event-loop"
+              element={<Navigate to="/visualizer" replace />}
+            />
+            <Route
+              path="/event-loop"
+              element={<Navigate to="/visualizer" replace />}
+            />
+            <Route
+              path="/event-loop-visualizer"
+              element={<Navigate to="/visualizer" replace />}
             />
             <Route path="/react" element={<ReactPlayground />} />
             <Route path="/react/:id" element={<ReactPlayground />} />

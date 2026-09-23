@@ -52,29 +52,38 @@ function setCanonicalLink(canonicalUrl: string | undefined) {
 }
 
 function setJsonLd(structuredData: SEOProps['structuredData']) {
-  // Remove existing dynamic JSON-LD scripts injected by useSEO
-  const existingScripts = document.querySelectorAll(
-    'script[type="application/ld+json"][data-dynamic-seo="true"]'
-  );
-  existingScripts.forEach((script) => script.remove());
+  const rootScript = document.getElementById(
+    'seo-json-ld'
+  ) as HTMLScriptElement | null;
 
-  if (!structuredData) return;
+  if (!structuredData) {
+    if (rootScript) {
+      rootScript.remove();
+    }
+    return;
+  }
 
   const dataArray = Array.isArray(structuredData)
     ? structuredData
     : [structuredData];
 
-  dataArray.forEach((data) => {
-    try {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-dynamic-seo', 'true');
-      script.textContent = JSON.stringify(data);
-      document.head.appendChild(script);
-    } catch (e) {
-      console.warn('Failed to inject JSON-LD structured data', e);
-    }
-  });
+  const payload =
+    dataArray.length === 1
+      ? dataArray[0]
+      : {
+          '@context': 'https://schema.org',
+          '@graph': dataArray,
+        };
+
+  if (rootScript) {
+    rootScript.textContent = JSON.stringify(payload);
+  } else {
+    const script = document.createElement('script');
+    script.id = 'seo-json-ld';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(payload);
+    document.head.appendChild(script);
+  }
 }
 
 /**
@@ -84,13 +93,29 @@ export function useSEO({
   title,
   description = SEO_CONFIG.defaultDescription,
   canonical,
-  image = SEO_CONFIG.defaultImage,
-  type = 'website',
+  image,
+  ogImage,
+  type,
+  ogType,
   noIndex = false,
+  noindex = false,
   noFollow = false,
   keywords,
   structuredData,
+  jsonLd,
 }: SEOProps) {
+  // Resolve aliases so pages migrated from src/components/SEO.tsx work without prop renames.
+  const resolvedImage = image ?? ogImage;
+  const resolvedType: 'website' | 'article' = type ?? ogType ?? 'website';
+  const resolvedNoIndex = noIndex || noindex;
+  const resolvedData = structuredData ?? jsonLd;
+  const resolvedKeywords: string[] | undefined =
+    keywords === undefined
+      ? undefined
+      : Array.isArray(keywords)
+        ? keywords
+        : [keywords];
+
   useEffect(() => {
     // 1. Update Document Title
     const formattedTitle = formatDocumentTitle(title);
@@ -99,19 +124,19 @@ export function useSEO({
     // 2. Canonical URL & Image URL
     const canonicalUrl =
       canonical === undefined ? undefined : getCanonicalUrl(canonical);
-    const absoluteImageUrl = getAbsoluteImageUrl(image);
+    const absoluteImageUrl = getAbsoluteImageUrl(resolvedImage);
 
     // 3. Standard Meta Directives
     const robotsContent =
-      noIndex || noFollow
-        ? `${noIndex ? 'noindex' : 'index'}, ${noFollow ? 'nofollow' : 'follow'}`
+      resolvedNoIndex || noFollow
+        ? `${resolvedNoIndex ? 'noindex' : 'index'}, ${noFollow ? 'nofollow' : 'follow'}`
         : 'index, follow';
 
     setMetaTag('name', 'description', description);
     setMetaTag('name', 'robots', robotsContent);
     setMetaTag('name', 'author', SEO_CONFIG.author);
-    if (keywords && keywords.length > 0) {
-      setMetaTag('name', 'keywords', keywords.join(', '));
+    if (resolvedKeywords && resolvedKeywords.length > 0) {
+      setMetaTag('name', 'keywords', resolvedKeywords.join(', '));
     }
 
     // 4. Canonical Link
@@ -126,7 +151,7 @@ export function useSEO({
       setMetaTag('property', 'og:url', undefined);
     }
     setMetaTag('property', 'og:image', absoluteImageUrl);
-    setMetaTag('property', 'og:type', type);
+    setMetaTag('property', 'og:type', resolvedType);
     setMetaTag('property', 'og:site_name', SEO_CONFIG.siteName);
     setMetaTag('property', 'og:locale', SEO_CONFIG.locale);
 
@@ -139,24 +164,24 @@ export function useSEO({
     setMetaTag('name', 'twitter:site', SEO_CONFIG.twitterHandle);
 
     // 7. Structured Data (JSON-LD)
-    setJsonLd(structuredData);
+    setJsonLd(resolvedData as SEOProps['structuredData']);
 
     return () => {
       // Clean up dynamic structured data when route unmounts
-      const scripts = document.querySelectorAll(
-        'script[type="application/ld+json"][data-dynamic-seo="true"]'
-      );
-      scripts.forEach((script) => script.remove());
+      const rootScript = document.getElementById('seo-json-ld');
+      if (rootScript) {
+        rootScript.remove();
+      }
     };
   }, [
     title,
     description,
     canonical,
-    image,
-    type,
-    noIndex,
+    resolvedImage,
+    resolvedType,
+    resolvedNoIndex,
     noFollow,
-    keywords,
-    structuredData,
+    resolvedKeywords,
+    resolvedData,
   ]);
 }

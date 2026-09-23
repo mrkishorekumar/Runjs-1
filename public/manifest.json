@@ -1,7 +1,7 @@
 {
   "name": "RunJS.in",
   "short_name": "RunJS",
-  "description": "Online Compiler allows you to write and run JavaScript code directly in your web browser.",
+  "description": "Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, and interactive coding challenges.",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",

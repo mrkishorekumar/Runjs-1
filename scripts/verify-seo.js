@@ -131,10 +131,46 @@ assert(robotsTxt.includes('Disallow: /bin'), 'Disallows /bin');
 assert(robotsTxt.includes('Disallow: /404'), 'Disallows /404');
 assert(robotsTxt.includes('Disallow: /dashboard'), 'Disallows /dashboard');
 assert(
+  robotsTxt.includes('Disallow: /html-preview'),
+  'Disallows /html-preview'
+);
+assert(
   robotsTxt.includes('Sitemap: https://runjs.in/sitemap.xml'),
   'References production sitemap.xml'
 );
 assert(robotsTxt.includes('Host: https://runjs.in'), 'References Host header');
+
+// AI Search & Retrieval Crawlers (explicitly allowed)
+const allowedBots = [
+  'Googlebot',
+  'Bingbot',
+  'Applebot',
+  'OAI-SearchBot',
+  'Claude-Web',
+  'PerplexityBot',
+];
+for (const bot of allowedBots) {
+  assert(
+    robotsTxt.includes(`User-agent: ${bot}`),
+    `robots.txt explicitly configures allowed search bot: ${bot}`
+  );
+}
+
+// AI Model Training Crawlers (explicitly disallowed)
+const disallowedBots = [
+  'GPTBot',
+  'ClaudeBot',
+  'Google-Extended',
+  'Applebot-Extended',
+  'CCBot',
+  'cohere-ai',
+];
+for (const bot of disallowedBots) {
+  assert(
+    robotsTxt.includes(`User-agent: ${bot}`),
+    `robots.txt explicitly blocks AI training bot: ${bot}`
+  );
+}
 
 console.log('\n--- 3. Validating public/sitemap.xml ---');
 const sitemapPath = path.join(rootDir, 'public/sitemap.xml');
@@ -172,8 +208,16 @@ assert(
   'Includes /react'
 );
 assert(
+  sitemapXml.includes('<loc>https://runjs.in/html</loc>'),
+  'Includes /html'
+);
+assert(
   sitemapXml.includes('<loc>https://runjs.in/interview</loc>'),
   'Includes /interview'
+);
+assert(
+  sitemapXml.includes('<loc>https://runjs.in/output-questions</loc>'),
+  'Includes /output-questions'
 );
 assert(
   sitemapXml.includes('<loc>https://runjs.in/about</loc>'),
@@ -220,7 +264,32 @@ assert(
   `og-image.png has valid file size (${ogStat.size} bytes)`
 );
 
-console.log('\n--- 5. Validating Prerendered Static HTML Files in dist/ ---');
+console.log('\n--- 5. Validating Cloudflare Worker Redirection & Headers ---');
+const workerPath = path.join(rootDir, 'src/worker.ts');
+const workerCode = fs.readFileSync(workerPath, 'utf-8');
+assert(
+  workerCode.includes('www.runjs.in'),
+  'src/worker.ts handles www to non-www canonical redirect'
+);
+assert(
+  workerCode.includes("url.pathname.endsWith('/')"),
+  'src/worker.ts handles trailing slash normalization redirect'
+);
+assert(
+  workerCode.includes('ROUTE_REDIRECTS') || workerCode.includes('REDIRECT_MAP'),
+  'src/worker.ts defines permanent redirects for search intent aliases'
+);
+assert(
+  workerCode.includes("/javascript-playground': '/js'") ||
+    workerCode.includes('/javascript-playground": "/js"'),
+  'src/worker.ts redirects /javascript-playground to /js'
+);
+assert(
+  workerCode.includes("X-Robots-Tag', 'noindex, follow'"),
+  'src/worker.ts sets X-Robots-Tag: noindex, follow on 404 responses'
+);
+
+console.log('\n--- 6. Validating Prerendered Static HTML Files in dist/ ---');
 const distDir = path.join(rootDir, 'dist');
 
 if (fs.existsSync(path.join(distDir, 'index.html'))) {
@@ -240,6 +309,105 @@ if (fs.existsSync(path.join(distDir, 'index.html'))) {
     distIndexHtml.includes('<link rel="canonical" href="https://runjs.in/" />'),
     'dist/index.html canonical matches root /'
   );
+
+  // Validate tool pages
+  const toolChecks = [
+    {
+      file: 'js/index.html',
+      canonical: 'https://runjs.in/js',
+      schema: 'WebApplication',
+      requiredText: 'JavaScript',
+    },
+    {
+      file: 'ts/index.html',
+      canonical: 'https://runjs.in/ts',
+      schema: 'WebApplication',
+      requiredText: 'TypeScript',
+    },
+    {
+      file: 'react/index.html',
+      canonical: 'https://runjs.in/react',
+      schema: 'WebApplication',
+      requiredText: 'React',
+    },
+    {
+      file: 'html/index.html',
+      canonical: 'https://runjs.in/html',
+      schema: 'WebApplication',
+      requiredText: 'HTML',
+    },
+    {
+      file: 'visualizer/index.html',
+      canonical: 'https://runjs.in/visualizer',
+      schema: 'WebApplication',
+      requiredText: 'Event Loop',
+    },
+    {
+      file: 'execution-context/index.html',
+      canonical: 'https://runjs.in/execution-context',
+      schema: 'WebApplication',
+      requiredText: 'Execution Context',
+    },
+    {
+      file: 'output-questions/index.html',
+      canonical: 'https://runjs.in/output-questions',
+      schema: 'CollectionPage',
+      requiredText: 'JavaScript Output',
+    },
+    {
+      file: 'about/index.html',
+      canonical: 'https://runjs.in/about',
+      schema: 'AboutPage',
+      requiredText: 'About RunJS',
+    },
+    {
+      file: 'kishorekumar/index.html',
+      canonical: 'https://runjs.in/kishorekumar',
+      schema: 'ProfilePage',
+      requiredText: 'Kishore Kumar',
+    },
+    {
+      file: 'privacy/index.html',
+      canonical: 'https://runjs.in/privacy',
+      schema: 'WebPage',
+      requiredText: 'Privacy Policy',
+    },
+    {
+      file: 'terms/index.html',
+      canonical: 'https://runjs.in/terms',
+      schema: 'WebPage',
+      requiredText: 'Terms of Service',
+    },
+  ];
+
+  for (const check of toolChecks) {
+    const fullPath = path.join(distDir, check.file);
+    if (fs.existsSync(fullPath)) {
+      const html = fs.readFileSync(fullPath, 'utf-8');
+      assert(
+        html.includes('<h1'),
+        `dist/${check.file} has prerendered <h1 heading`
+      );
+      assert(
+        html.includes(`<link rel="canonical" href="${check.canonical}" />`),
+        `dist/${check.file} canonical matches ${check.canonical}`
+      );
+      if (check.schema) {
+        assert(
+          html.includes(check.schema),
+          `dist/${check.file} contains ${check.schema} schema`
+        );
+      }
+      if (check.requiredText) {
+        assert(
+          html.includes(check.requiredText),
+          `dist/${check.file} contains text "${check.requiredText}"`
+        );
+      }
+    } else {
+      assert(false, `dist/${check.file} exists`);
+    }
+  }
 
   // Validate problem prerender
   const twoSumHtmlPath = path.join(distDir, 'problems/two-sum/index.html');

@@ -13,11 +13,23 @@ export interface SEOProps {
   description?: string;
   canonical?: string;
   image?: string;
+  /** Alias for `image` — accepted for backward compatibility. */
+  ogImage?: string;
   type?: 'website' | 'article';
+  /** Alias for `type` — accepted for backward compatibility. */
+  ogType?: 'website' | 'article';
   noIndex?: boolean;
+  /** Alias for `noIndex` — accepted for backward compatibility (lowercase). */
+  noindex?: boolean;
   noFollow?: boolean;
-  keywords?: string[];
-  structuredData?: SchemaOrgData | SchemaOrgData[];
+  keywords?: string | string[];
+  structuredData?:
+    | SchemaOrgData
+    | SchemaOrgData[]
+    | Record<string, unknown>
+    | Array<Record<string, unknown>>;
+  /** Alias for `structuredData` — accepted for backward compatibility. */
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 export const SEO_CONFIG = {
