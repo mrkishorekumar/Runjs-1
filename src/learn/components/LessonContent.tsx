@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router';
 import { getLessonBySlug } from '../data/lessonRegistry';
 import { getNextLessonSlug, getPreviousLessonSlug } from '../data/curriculum';
 import { useLearnProgress } from '../hooks/useLearnProgress';
-import SEO from '../../components/SEO';
+import SEO from '../../seo/SEO';
 import { generateLessonJsonLd } from '../seo/lessonJsonLd';
 import CodeBlock from './CodeBlock';
 import QuizComponent from './QuizComponent';

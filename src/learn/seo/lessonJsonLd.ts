@@ -118,7 +118,8 @@ export function generateCurriculumJsonLd(
       url: 'https://runjs.in',
       logo: 'https://runjs.in/runjs.in.webp',
     },
-    educationalCredentialAwarded: 'JavaScript Full Stack Competency',
+    teaches:
+      'Modern JavaScript, ES2024+, Asynchronous Programming, DOM Manipulation, Web Components',
     hasCourseInstance: {
       '@type': 'CourseInstance',
       courseMode: 'online',

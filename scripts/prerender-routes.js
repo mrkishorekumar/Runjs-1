@@ -13,7 +13,11 @@ if (!fs.existsSync(indexHtmlPath)) {
   process.exit(0);
 }
 
-const templateHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
+const rawTemplateHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
+const templateHtml = rawTemplateHtml.replace(
+  /<div id="runjs"[\s\S]*?<\/div>\s*(?=(?:<script\b|<\/body>))/i,
+  '<div id="runjs"></div>\n'
+);
 const baseUrl = (process.env.VITE_SITE_URL || 'https://runjs.in').replace(
   /\/$/,
   ''
@@ -228,14 +232,15 @@ async function main() {
     },
     {
       path: '/js',
-      title: 'Online JavaScript Compiler & Scratchpad (ES2024+) | RunJS',
+      title: 'JavaScript Playground - Run JavaScript in Your Browser | RunJS',
       description:
         'Interactive in-browser JavaScript sandbox with Monaco editor, infinite loop protection, custom font controls, and interactive Luna console.',
       type: 'tool-js',
     },
     {
       path: '/visualizer',
-      title: 'JavaScript Visualizer - Event Loop, Call Stack & Queues | RunJS',
+      title:
+        'JavaScript Event Loop Visualizer - Call Stack, Microtasks & Tasks | RunJS',
       description:
         'Interactive visualizer for JavaScript execution. Step through Call Stack frames, Event Loop phases, Microtask Queue (Promises), and Task Queue (setTimeout) in real time.',
       type: 'tool-visualizer',
@@ -243,28 +248,29 @@ async function main() {
     {
       path: '/execution-context',
       title:
-        'JavaScript Execution Context Visualizer - Memory Allocation & Hoisting | RunJS',
+        'JavaScript Execution Context Visualizer - Hoisting & Scope | RunJS',
       description:
         'Interactive visualizer for JavaScript Execution Context. Step through Memory Allocation Phase (hoisting & TDZ), Code Execution Phase line by line, Global and Function Execution Contexts.',
       type: 'tool-execution-context',
     },
     {
       path: '/ts',
-      title: 'Online TypeScript Playground with esbuild Wasm | RunJS',
+      title:
+        'TypeScript Playground - Run TypeScript Online with esbuild Wasm | RunJS',
       description:
         'Fast, client-side TypeScript compiler powered by esbuild WebAssembly. Type check, compile, and execute TypeScript directly in your browser.',
       type: 'tool-ts',
     },
     {
       path: '/react',
-      title: 'Online React & Vite Playground (Sandpack) | RunJS',
+      title: 'React Playground - Build and Test React in Your Browser | RunJS',
       description:
         'In-browser React development environment with multi-file explorer, Sandpack live bundler, interactive preview, and xterm terminal.',
       type: 'tool-react',
     },
     {
       path: '/html',
-      title: 'Online HTML & CSS Preview Studio | RunJS',
+      title: 'HTML & CSS Playground - Live Web Preview Studio | RunJS',
       description:
         'Interactive in-browser HTML, CSS, and JavaScript preview studio with live reload, console drawer, and responsive viewport controls.',
       type: 'tool-html',
@@ -703,30 +709,352 @@ async function main() {
           </div>
         </main>
       `;
+    } else if (route.type === 'tool-js') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>ECMAScript 2024+</span> &bull; <span>100% In-Browser</span> &bull; <span>No Sign-Up Required</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">JavaScript Playground &amp; Online Compiler</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">RunJS is an interactive, zero-setup JavaScript sandbox powered by Monaco Editor, an interactive Luna console, and real-time AST loop protection. Execute modern ES2024+ code directly in your browser with zero latency and full privacy.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/js" style="background: #f59e0b; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch JS Playground</a>
+              <a href="/visualizer" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Event Loop Visualizer</a>
+              <a href="/problems" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Coding Challenges</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #f59e0b; margin-bottom: 16px;">Key Features &amp; Technical Capabilities</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Modern ES2024+ Runtime</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Native client-side JavaScript execution supporting async/await, optional chaining, top-level await, Promise APIs, and modern ES standard specifications.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">AST Infinite Loop Guard</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Real-time Acorn AST transformation instruments loops with iteration count guards, preventing browser lockups and crashes from accidental infinite loops.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Monaco Code Editor</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">VS Code editing experience with syntax highlighting, IntelliSense autocomplete, bracket matching, Prettier document formatting, and customizable font size.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Interactive Luna Console</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Dedicated developer console displaying expandable nested objects, arrays, errors, stack traces, and execution time measurements.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">100% Client-Side Privacy</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">All code executes locally inside your browser via Web Workers. No code snippets or execution results are ever transmitted to external backend servers.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Time &amp; Space Complexity</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Built-in static AST algorithm analyzer evaluates time complexity (Big-O) and memory allocation characteristics with optimization tips.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-bottom: 40px; padding: 24px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: #18181b;">
+            <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 12px;">How to Use the JavaScript Playground</h2>
+            <ol style="color: #a1a1aa; font-size: 0.95rem; line-height: 1.7; padding-left: 20px; margin: 0 0 16px;">
+              <li><strong>Write Code:</strong> Type or paste your JavaScript snippet into the Monaco editor.</li>
+              <li><strong>Run:</strong> Click <code>Run</code> or press <code>Cmd/Ctrl + R</code> to execute immediately.</li>
+              <li><strong>Inspect Output:</strong> View console logs, return values, and errors in the interactive Luna terminal.</li>
+              <li><strong>Save &amp; Export:</strong> Workspaces automatically save to your local browser IndexedDB, or download as a standalone <code>.js</code> file.</li>
+            </ol>
+          </section>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 16px;">Frequently Asked Questions</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <details style="padding: 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #18181b;">
+                <summary style="cursor: pointer; font-weight: 700; color: #f59e0b;">Is RunJS free to use?</summary>
+                <p style="margin-top: 8px; color: #a1a1aa; font-size: 0.9rem;">Yes, RunJS is 100% free and open-source. There are no subscriptions, paywalls, or credit card requirements.</p>
+              </details>
+              <details style="padding: 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #18181b;">
+                <summary style="cursor: pointer; font-weight: 700; color: #f59e0b;">Is an account or sign-up required?</summary>
+                <p style="margin-top: 8px; color: #a1a1aa; font-size: 0.9rem;">No sign-up or registration is required. You can start writing and running code immediately.</p>
+              </details>
+              <details style="padding: 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #18181b;">
+                <summary style="cursor: pointer; font-weight: 700; color: #f59e0b;">Does RunJS protect against infinite loops?</summary>
+                <p style="margin-top: 8px; color: #a1a1aa; font-size: 0.9rem;">Yes. RunJS uses Acorn AST analysis to inject loop guards that automatically abort runaway loops before they can freeze the browser tab.</p>
+              </details>
+            </div>
+          </section>
+
+          <section style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Explore Related Developer Tools</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem;">
+              <a href="/ts" style="color: #3b82f6; text-decoration: none; font-weight: 600;">TypeScript Playground &rarr;</a>
+              <a href="/react" style="color: #06b6d4; text-decoration: none; font-weight: 600;">React &amp; Vite Sandbox &rarr;</a>
+              <a href="/visualizer" style="color: #a855f7; text-decoration: none; font-weight: 600;">Event Loop Visualizer &rarr;</a>
+              <a href="/execution-context" style="color: #10b981; text-decoration: none; font-weight: 600;">Execution Context Visualizer &rarr;</a>
+              <a href="/problems" style="color: #f59e0b; text-decoration: none; font-weight: 600;">Coding Challenges &rarr;</a>
+              <a href="/learn" style="color: #e4e4e7; text-decoration: none; font-weight: 600;">Learn JavaScript &rarr;</a>
+            </div>
+          </section>
+        </main>
+      `;
+    } else if (route.type === 'tool-ts') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>TypeScript 5.8</span> &bull; <span>esbuild WebAssembly</span> &bull; <span>Zero Setup</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">Online TypeScript Playground with esbuild Wasm</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">Compile and execute TypeScript directly in your browser. Powered by esbuild WebAssembly for instant compilation and Microsoft Monaco editor for full static type checking and IntelliSense.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/ts" style="background: #3b82f6; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch TypeScript Playground</a>
+              <a href="/js" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">JavaScript Sandbox</a>
+              <a href="/react" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">React Playground</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #3b82f6; margin-bottom: 16px;">TypeScript Engine &amp; Capabilities</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">esbuild WebAssembly Transpilation</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Transforms TypeScript types, interfaces, enums, and generics into clean executable JavaScript in sub-millisecond execution times directly on your CPU.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Inline Type Diagnostics</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Monaco editor language service provides real-time red squiggly underlines, error diagnostics, type tooltips, and autocomplete suggestions.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Zero Server Round-Trips</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Unlike standard online sandboxes that invoke remote compiler microservices, RunJS compiles TypeScript entirely client-side for zero latency and private execution.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Related Tools &amp; Resources</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem;">
+              <a href="/js" style="color: #f59e0b; text-decoration: none; font-weight: 600;">JavaScript Playground &rarr;</a>
+              <a href="/react" style="color: #06b6d4; text-decoration: none; font-weight: 600;">React Sandbox &rarr;</a>
+              <a href="/visualizer" style="color: #a855f7; text-decoration: none; font-weight: 600;">Event Loop Visualizer &rarr;</a>
+              <a href="/problems" style="color: #f59e0b; text-decoration: none; font-weight: 600;">Algorithm Challenges &rarr;</a>
+            </div>
+          </section>
+        </main>
+      `;
+    } else if (route.type === 'tool-react') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #06b6d4; text-transform: uppercase; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>React 19</span> &bull; <span>Vite Bundler</span> &bull; <span>Sandpack VFS</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">React Playground — Build &amp; Test React in Your Browser</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">Full-featured React and Vite development environment with multi-file project explorer, live preview rendering, xterm console, and Sandpack bundler. Zero setup, zero install, runs entirely in the browser.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/react" style="background: #06b6d4; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch React Playground</a>
+              <a href="/js" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">JavaScript Sandbox</a>
+              <a href="/html" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">HTML Studio</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #06b6d4; margin-bottom: 16px;">React Playground Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Multi-File Virtual File System</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Add, rename, and organize multiple JSX, TSX, CSS, and utility files just like a local Vite project.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Live Iframe Preview &amp; HMR</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Instant hot module reloading previews component changes in real time inside an isolated sandboxed iframe.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Embedded xterm Terminal</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Integrated terminal displays bundler build status, compilation diagnostics, console logs, and runtime warnings.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Explore Related Tools</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem;">
+              <a href="/js" style="color: #f59e0b; text-decoration: none; font-weight: 600;">JavaScript Playground &rarr;</a>
+              <a href="/html" style="color: #f97316; text-decoration: none; font-weight: 600;">HTML/CSS Preview Studio &rarr;</a>
+              <a href="/learn" style="color: #e4e4e7; text-decoration: none; font-weight: 600;">JavaScript Curriculum &rarr;</a>
+            </div>
+          </section>
+        </main>
+      `;
+    } else if (route.type === 'tool-html') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #f97316; text-transform: uppercase; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>HTML5 &bull; CSS3 &bull; JS</span> &bull; <span>Live Preview</span> &bull; <span>Console Drawer</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">HTML &amp; CSS Playground — Live Web Preview Studio</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">Interactive 3-panel frontend playground for HTML, CSS, and JavaScript. Edit markup, styles, and scripts simultaneously with real-time responsive preview and console output.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/html" style="background: #f97316; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch HTML Studio</a>
+              <a href="/js" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">JavaScript Sandbox</a>
+              <a href="/react" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">React Playground</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #f97316; margin-bottom: 16px;">HTML Studio Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">3-Panel Synchronized Editing</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Independent editor tabs for HTML markup, CSS stylesheets, and client JavaScript with Emmet and syntax highlighting.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Responsive Viewport Testing</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Test responsive CSS layouts across mobile, tablet, and desktop preview widths instantly.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Live Console Drawer</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Inspect DOM events, click handlers, script errors, and console.log messages in a slide-out drawer.</p>
+              </div>
+            </div>
+          </section>
+        </main>
+      `;
+    } else if (route.type === 'tool-visualizer') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #a855f7; text-transform: uppercase; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>Call Stack</span> &bull; <span>Event Loop</span> &bull; <span>Microtask Queue</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">JavaScript Event Loop Visualizer — Call Stack &amp; Queues</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">Interactive step-by-step visualizer for JavaScript asynchronous execution. Step through Call Stack frames, Event Loop phases, Microtask Queue (Promises), and Task Queue (setTimeout) in real time.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/visualizer" style="background: #a855f7; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch Event Loop Visualizer</a>
+              <a href="/execution-context" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Context Visualizer</a>
+              <a href="/interview" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Interview Q&amp;A</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #a855f7; margin-bottom: 16px;">Asynchronous Architecture Demystified</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Call Stack Inspection</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Watch stack frames push on invocation and pop upon return in Last-In, First-Out (LIFO) order.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Microtask Queue Priority</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">See why <code>Promise.then</code> and <code>queueMicrotask</code> callbacks completely drain before any timer task is dequeued.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Task Queue (Macrotasks)</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Visualize how <code>setTimeout</code>, <code>setInterval</code>, and DOM events wait in the task queue until the stack clears.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Related Visualizers &amp; Quizzes</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem;">
+              <a href="/execution-context" style="color: #10b981; text-decoration: none; font-weight: 600;">Execution Context Visualizer &rarr;</a>
+              <a href="/output-questions" style="color: #f59e0b; text-decoration: none; font-weight: 600;">Output Prediction Quiz &rarr;</a>
+              <a href="/interview" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Interview Questions &rarr;</a>
+              <a href="/js" style="color: #f59e0b; text-decoration: none; font-weight: 600;">JavaScript Playground &rarr;</a>
+            </div>
+          </section>
+        </main>
+      `;
+    } else if (route.type === 'tool-execution-context') {
+      contentHtml = `
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>Memory Phase</span> &bull; <span>Execution Phase</span> &bull; <span>Hoisting &amp; TDZ</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px; line-height: 1.2;">JavaScript Execution Context Visualizer — Memory Allocation &amp; Scope</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 900px; margin-bottom: 24px;">Interactive visualizer for the JavaScript Execution Context lifecycle. Inspect the Memory Creation Phase (hoisting, TDZ), Code Execution Phase line by line, Global and Function Execution Contexts, and Call Stack frames.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/execution-context" style="background: #10b981; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Launch Context Visualizer</a>
+              <a href="/visualizer" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Event Loop Visualizer</a>
+              <a href="/js" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">JavaScript Sandbox</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin-bottom: 16px;">Execution Context Phases Explained</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Phase 1: Memory Allocation</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">JavaScript scans the code and allocates memory for variables and functions. <code>var</code> receives <code>undefined</code>, while function declarations store their complete body.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Temporal Dead Zone (TDZ)</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Visualize how <code>let</code> and <code>const</code> variables remain in an uninitialized TDZ until execution reaches their declaration line.</p>
+              </div>
+              <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Phase 2: Code Execution</h3>
+                <p style="font-size: 0.9rem; color: #a1a1aa;">Step line-by-line as values are evaluated, assigned into memory slots, and function invocations spawn new Execution Contexts.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Explore Related Tools</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem;">
+              <a href="/visualizer" style="color: #a855f7; text-decoration: none; font-weight: 600;">Event Loop Visualizer &rarr;</a>
+              <a href="/output-questions" style="color: #f59e0b; text-decoration: none; font-weight: 600;">Output Questions Quiz &rarr;</a>
+              <a href="/interview" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Interview Q&amp;A &rarr;</a>
+              <a href="/learn" style="color: #e4e4e7; text-decoration: none; font-weight: 600;">Learn JavaScript &rarr;</a>
+            </div>
+          </section>
+        </main>
+      `;
     } else if (route.type === 'output-questions') {
       contentHtml = `
-        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px;">
-          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 12px;">JavaScript Output Questions — Predict the Output Quiz</h1>
-          <p style="font-size: 1.05rem; color: #d4d4d8; max-width: 850px; margin-bottom: 32px;">Test your JavaScript prediction skills with 100 interview-style output questions covering closures, hoisting, scope, and async execution.</p>
+        <main style="max-width: 1100px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <header style="margin-bottom: 36px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px;">
+              <span>100 MCQs</span> &bull; <span>3 Difficulty Tiers</span> &bull; <span>Interview Prep</span>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 16px;">JavaScript Output Questions — Predict the Output Quiz</h1>
+            <p style="font-size: 1.15rem; color: #d4d4d8; max-width: 850px; margin-bottom: 24px;">Test your JavaScript execution prediction skills with 100 interview-style output questions covering closures, hoisting, scope, promises, prototypes, type coercion, and async/await.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="/output-questions" style="background: #f59e0b; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Start Output Quiz</a>
+              <a href="/interview" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Technical Q&amp;A</a>
+              <a href="/visualizer" style="background: rgba(255,255,255,0.1); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none;">Event Loop Visualizer</a>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 32px; padding: 24px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: #18181b;">
+            <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 12px;">Core Quiz Categories Covered</h2>
+            <ul style="color: #a1a1aa; font-size: 0.95rem; line-height: 1.7; padding-left: 20px; margin: 0;">
+              <li><strong>Hoisting &amp; Temporal Dead Zone:</strong> Predict outcomes of <code>var</code>, <code>let</code>, <code>const</code>, and function declarations.</li>
+              <li><strong>Closures &amp; Lexical Scope:</strong> Retaining variable state across nested scopes and loops.</li>
+              <li><strong>Event Loop &amp; Microtasks:</strong> Ordering execution of <code>Promise.resolve()</code>, <code>setTimeout</code>, and synchronous code.</li>
+              <li><strong>Prototypes &amp; Inheritance:</strong> Prototype chain lookups, <code>__proto__</code>, and constructor functions.</li>
+              <li><strong>Type Coercion &amp; Equality:</strong> Implicit string conversion, truthy/falsy coercion, and strict vs loose equality.</li>
+            </ul>
+          </section>
         </main>
       `;
     } else if (route.type === 'about') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
           <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">About RunJS - In-Browser Developer IDE</h1>
-          <p style="font-size: 1.1rem; color: #d4d4d8; margin-bottom: 24px;">RunJS is a 100% client-side developer playground built to write, run, visualize, and practice JavaScript, TypeScript, and React directly in the browser.</p>
+          <p style="font-size: 1.1rem; color: #d4d4d8; margin-bottom: 24px;">RunJS is an open-source, 100% client-side developer playground built to write, run, visualize, and practice JavaScript, TypeScript, and React directly in the browser.</p>
 
           <h2 style="font-size: 1.4rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">Key Architectural Highlights</h2>
-          <ul style="color: #a1a1aa; padding-left: 20px;">
-            <li>100% In-Browser Execution via WebAssembly and Sandpack sandbox.</li>
-            <li>AST Analysis and infinite loop protection for real-time safety.</li>
-            <li>Zero server tracking or cloud code storage. Your data stays in IndexedDB.</li>
-            <li>Built-in Event Loop and Execution Context visualizers.</li>
-            <li>Curated JavaScript curriculum with 175+ interactive lessons and coding challenges.</li>
+          <ul style="color: #a1a1aa; padding-left: 20px; margin-bottom: 24px;">
+            <li><strong>100% In-Browser Execution:</strong> Zero code compilation on remote servers. Everything runs locally on your device using WebAssembly and Web Workers.</li>
+            <li><strong>AST Infinite Loop Guard:</strong> Real-time Acorn AST parsing instruments loops with safety thresholds, preventing browser tab freezes.</li>
+            <li><strong>Zero Server Tracking:</strong> No code snippets, project drafts, or telemetry are transmitted to external servers. Workspaces persist locally in IndexedDB.</li>
+            <li><strong>Interactive Visualizers:</strong> Real-time event loop stepping, call stack frames, hoisting, TDZ, and memory allocation inspection.</li>
+            <li><strong>Comprehensive Curriculum:</strong> 175+ structured interactive lessons and algorithmic coding challenges with in-browser test evaluation.</li>
           </ul>
 
           <h2 style="font-size: 1.4rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">Creator &amp; Maintainer</h2>
-          <p style="color: #a1a1aa;">Created by <a href="/kishorekumar" style="color: #f59e0b; font-weight: 700; text-decoration: none;">M R Kishore Kumar</a>, React Native Engineer shipping consumer e-commerce applications at scale (1Cr+ app downloads).</p>
+          <p style="color: #a1a1aa; margin-bottom: 24px;">Created and maintained by <a href="/kishorekumar" style="color: #f59e0b; font-weight: 700; text-decoration: none;">M R Kishore Kumar</a>, React Native Engineer with 4.5+ years of experience shipping consumer e-commerce applications at scale (1Cr+ app downloads). Built to empower developers with immediate, zero-friction coding tools.</p>
         </main>
       `;
     } else if (route.type === 'creator') {
@@ -742,14 +1070,20 @@ async function main() {
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
           <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Privacy Policy</h1>
           <p style="color: #d4d4d8; margin-bottom: 20px;">RunJS is engineered with a strict privacy-first architecture. All code compilation and execution occurs 100% locally within your browser using WebAssembly and client-side web workers.</p>
-          <p style="color: #a1a1aa;">No code snippets, personal files, or execution results are transmitted to external backend servers.</p>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Zero Server Storage</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">No code snippets, personal files, or execution results are transmitted to external backend servers. Your workspaces and saved drafts are stored exclusively in your browser's private local IndexedDB database.</p>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">No Tracking or Account Lock-In</h2>
+          <p style="color: #a1a1aa;">RunJS does not require user accounts, email registration, or profiling. You can clear your stored projects at any time through your browser settings or the built-in storage manager.</p>
         </main>
       `;
     } else if (route.type === 'terms') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
-          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Terms and Conditions</h1>
-          <p style="color: #d4d4d8; margin-bottom: 20px;">Welcome to RunJS. By using our website and tools, you agree to these Terms and Conditions.</p>
+          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Terms of Service &amp; Conditions</h1>
+          <p style="color: #d4d4d8; margin-bottom: 20px;">Welcome to RunJS. By using our website and tools, you agree to these Terms and Conditions (Terms of Service).</p>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Code Ownership</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">You retain 100% full ownership, copyright, and intellectual property rights to all code snippets and projects you create or paste into RunJS.</p>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Open Source &amp; Educational Use</h2>
           <p style="color: #a1a1aa;">RunJS provides interactive developer tools for educational and development purposes under open-source licenses.</p>
         </main>
       `;
@@ -776,18 +1110,110 @@ async function main() {
   function generateJsonLd(route) {
     const canonicalUrl = `${baseUrl}${route.path === '/' ? '/' : route.path}`;
 
-    if (route.type === 'problem-detail') {
-      const prob = route.data;
+    if (route.type === 'home') {
       return {
         '@context': 'https://schema.org',
         '@graph': [
           {
-            '@type': 'SoftwareSourceCode',
-            '@id': `${canonicalUrl}#code`,
-            name: prob.title,
-            description: prob.description,
-            programmingLanguage: 'JavaScript',
-            codeRepository: canonicalUrl,
+            '@type': 'WebApplication',
+            '@id': `${baseUrl}/#webapp`,
+            name: 'RunJS',
+            url: `${baseUrl}/`,
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: 'Any (Web Browser)',
+            description:
+              'Run, practice, and master JavaScript, TypeScript, and React directly in your browser. Zero setup, Monaco editor, esbuild WebAssembly compilation, and interactive coding challenges.',
+            browserRequirements: 'Requires JavaScript. Requires HTML5.',
+            softwareVersion: '2.0.0',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+            author: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              url: 'https://github.com/mrkishorekumar',
+            },
+          },
+          {
+            '@type': 'WebSite',
+            '@id': `${baseUrl}/#website`,
+            name: 'RunJS',
+            url: `${baseUrl}/`,
+            description:
+              'Run, practice, and master JavaScript, TypeScript, and React directly in your browser.',
+            publisher: {
+              '@type': 'Organization',
+              name: 'RunJS',
+              url: `${baseUrl}/`,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${baseUrl}/RunJS-512.png`,
+              },
+            },
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: `${baseUrl}/problems?search={search_term_string}`,
+              },
+              'query-input': 'required name=search_term_string',
+            },
+          },
+        ],
+      };
+    }
+
+    if (
+      route.type === 'tool-js' ||
+      route.type === 'tool-ts' ||
+      route.type === 'tool-react' ||
+      route.type === 'tool-html' ||
+      route.type === 'tool-visualizer' ||
+      route.type === 'tool-execution-context'
+    ) {
+      const toolNames = {
+        'tool-js': 'RunJS JavaScript Playground & Online Compiler',
+        'tool-ts': 'RunJS TypeScript Playground (esbuild Wasm)',
+        'tool-react': 'RunJS React & Vite Playground (Sandpack)',
+        'tool-html': 'RunJS HTML & CSS Live Studio',
+        'tool-visualizer': 'RunJS JavaScript Event Loop Visualizer',
+        'tool-execution-context':
+          'RunJS JavaScript Execution Context Visualizer',
+      };
+      const breadcrumbNames = {
+        'tool-js': 'JavaScript Playground',
+        'tool-ts': 'TypeScript Playground',
+        'tool-react': 'React Playground',
+        'tool-html': 'HTML Studio',
+        'tool-visualizer': 'Event Loop Visualizer',
+        'tool-execution-context': 'Context Visualizer',
+      };
+
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebApplication',
+            '@id': `${canonicalUrl}#webapp`,
+            name: toolNames[route.type] || 'RunJS Playground',
+            url: canonicalUrl,
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: 'Any (Web Browser)',
+            description: route.description,
+            browserRequirements: 'Requires JavaScript. Requires HTML5.',
+            softwareVersion: '2.0.0',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+            author: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              url: 'https://github.com/mrkishorekumar',
+            },
           },
           {
             '@type': 'BreadcrumbList',
@@ -801,13 +1227,7 @@ async function main() {
               {
                 '@type': 'ListItem',
                 position: 2,
-                name: 'Problems',
-                item: `${baseUrl}/problems`,
-              },
-              {
-                '@type': 'ListItem',
-                position: 3,
-                name: prob.title,
+                name: breadcrumbNames[route.type] || 'Tool',
                 item: canonicalUrl,
               },
             ],
@@ -816,16 +1236,71 @@ async function main() {
       };
     }
 
-    if (route.type === 'lesson-detail') {
-      const lesson = route.data;
+    if (route.type === 'interview') {
+      const faqItems = (interviewQuestions || []).slice(0, 25).map((iq) => {
+        const answerText = iq.answer
+          ? iq.answer
+              .map((a) => (a.data ? a.data.join(' ') : ''))
+              .filter(Boolean)
+              .join(' ')
+          : '';
+        return {
+          '@type': 'Question',
+          name: iq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: answerText || iq.question,
+          },
+        };
+      });
+
       return {
         '@context': 'https://schema.org',
         '@graph': [
           {
+            '@type': 'FAQPage',
+            '@id': `${canonicalUrl}#faq`,
+            name: 'JavaScript Technical Interview Questions & Answers',
+            url: canonicalUrl,
+            mainEntity: faqItems,
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Interview Questions',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'output-questions') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'CollectionPage',
+            '@id': `${canonicalUrl}#collection`,
+            name: 'JavaScript Output Questions — Predict the Output Quiz',
+            description: route.description,
+            url: canonicalUrl,
+          },
+          {
             '@type': 'TechArticle',
             '@id': `${canonicalUrl}#article`,
-            headline: lesson.title,
-            description: lesson.description,
+            headline: 'JavaScript Output Questions — Predict the Output Quiz',
+            description: route.description,
             url: canonicalUrl,
             inLanguage: 'en-US',
             author: {
@@ -846,13 +1321,285 @@ async function main() {
               {
                 '@type': 'ListItem',
                 position: 2,
-                name: 'Learn',
+                name: 'Output Questions',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'about') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'AboutPage',
+            '@id': `${canonicalUrl}#about`,
+            name: 'About RunJS',
+            url: canonicalUrl,
+            description: route.description,
+            mainEntity: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              jobTitle: 'Creator & Maintainer',
+              url: 'https://github.com/mrkishorekumar',
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'About',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'creator') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'ProfilePage',
+            '@id': `${canonicalUrl}#profile`,
+            name: 'M R Kishore Kumar Portfolio',
+            url: canonicalUrl,
+            mainEntity: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              jobTitle: 'React Native Engineer & Creator of RunJS',
+              url: 'https://github.com/mrkishorekumar',
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Creator',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'privacy' || route.type === 'terms') {
+      const pageName =
+        route.type === 'privacy' ? 'Privacy Policy' : 'Terms and Conditions';
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            '@id': `${canonicalUrl}#webpage`,
+            name: `RunJS ${pageName}`,
+            url: canonicalUrl,
+            description: route.description,
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: pageName,
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'learn-home') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Course',
+            '@id': `${canonicalUrl}#course`,
+            name: 'Learn JavaScript — 175+ Interactive Lessons',
+            description: route.description,
+            url: canonicalUrl,
+            provider: {
+              '@type': 'Organization',
+              name: 'RunJS',
+              url: `${baseUrl}/`,
+            },
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Learn JavaScript',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'problems-home') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'CollectionPage',
+            '@id': `${canonicalUrl}#collection`,
+            name: 'JavaScript Coding Challenges & Algorithm Practice',
+            description: route.description,
+            url: canonicalUrl,
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Coding Challenges',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'problem-detail') {
+      const prob = route.data || {};
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'SoftwareSourceCode',
+            '@id': `${canonicalUrl}#code`,
+            name: `${prob.title || 'Coding Challenge'} - JavaScript Solution`,
+            description: route.description,
+            programmingLanguage: 'JavaScript',
+            codeSampleType: 'code snippet',
+            author: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              url: 'https://github.com/mrkishorekumar',
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Coding Challenges',
+                item: `${baseUrl}/problems`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: prob.title || 'Problem',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'lesson-detail') {
+      const lesson = route.data || {};
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'TechArticle',
+            '@id': `${canonicalUrl}#article`,
+            headline: `${lesson.title || 'JavaScript Lesson'} - Learn JavaScript`,
+            description: route.description,
+            url: canonicalUrl,
+            inLanguage: 'en-US',
+            author: {
+              '@type': 'Person',
+              name: 'M R Kishore Kumar',
+              url: 'https://github.com/mrkishorekumar',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'RunJS',
+              url: `${baseUrl}/`,
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Learn JavaScript',
                 item: `${baseUrl}/learn`,
               },
               {
                 '@type': 'ListItem',
                 position: 3,
-                name: lesson.title,
+                name: lesson.title || 'Lesson',
                 item: canonicalUrl,
               },
             ],
@@ -948,7 +1695,7 @@ async function main() {
     // Inject Schema.org JSON-LD
     const jsonLd = generateJsonLd(route);
     html = html.replace(
-      /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
+      /<script\s+[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/i,
       `<script type="application/ld+json" id="seo-json-ld">${JSON.stringify(jsonLd)}</script>`
     );
 

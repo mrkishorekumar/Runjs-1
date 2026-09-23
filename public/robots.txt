@@ -1,13 +1,104 @@
-# https://www.robotstxt.org/robotstxt.html
+# ==============================================================================
+# RunJS (runjs.in) - robots.txt
+# Technical crawler policy for search engines and AI retrieval bots.
+# ==============================================================================
+
+# Canonical Host & Sitemap
+Host: https://runjs.in
+Sitemap: https://runjs.in/sitemap.xml
+
+# ------------------------------------------------------------------------------
+# 1. Search & Answer Engine Retrieval Crawlers
+# Allowed: Legitimate search engines and AI retrieval crawlers that discover,
+# index, and cite public RunJS pages in search and conversational answer experiences.
+# ------------------------------------------------------------------------------
+
+# Google Web Search Crawler
+User-agent: Googlebot
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# Microsoft Bing & Copilot Search Crawler
+User-agent: Bingbot
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# Apple Siri & Spotlight Search Crawler
+User-agent: Applebot
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# OpenAI Search Crawler (powers ChatGPT Search & real-time answer citations)
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# Anthropic User Search & Retrieval Crawler (powers Claude web search citations)
+User-agent: Claude-Web
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# Perplexity Search & Retrieval Engine (powers Perplexity answer citations)
+User-agent: PerplexityBot
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
+# ------------------------------------------------------------------------------
+# 2. AI Model Training & Large-Scale Dataset Scraping Crawlers
+# Disallowed: Crawlers dedicated to scraping website content for AI model
+# pre-training datasets without providing direct search citations.
+# Configured separately from search/retrieval crawlers.
+# ------------------------------------------------------------------------------
+
+# OpenAI Model Training Crawler (isolated from OAI-SearchBot)
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic Model Training Crawler (isolated from Claude-Web)
+User-agent: ClaudeBot
+Disallow: /
+
+# Google AI Model Training Crawler (Gemini / Vertex AI pre-training)
+User-agent: Google-Extended
+Disallow: /
+
+# Apple AI Model Training Crawler
+User-agent: Applebot-Extended
+Disallow: /
+
+# Cohere Model Training Crawler
+User-agent: cohere-ai
+Disallow: /
+
+# Common Crawl AI Training Dataset Crawler
+User-agent: CCBot
+Disallow: /
+
+# ------------------------------------------------------------------------------
+# 3. Default Policy for All Other Legitimate Crawlers
+# Allows public educational and playground pages; protects private user workspace state.
+# ------------------------------------------------------------------------------
 User-agent: *
 Allow: /
 Disallow: /bin
 Disallow: /404
 Disallow: /dashboard
-
-# Host
-Host: https://runjs.in
-
-# Sitemaps
-Sitemap: https://runjs.in/sitemap.xml
-
+Disallow: /html-preview

@@ -1,6 +1,6 @@
 import LearnLayout from '../learn/components/LearnLayout';
 import LearnHome from '../learn/components/LearnHome';
-import SEO from '../components/SEO';
+import SEO from '../seo/SEO';
 import { generateCurriculumJsonLd } from '../learn/seo/lessonJsonLd';
 import { curriculum, getTotalLessonCount } from '../learn/data/curriculum';
 
