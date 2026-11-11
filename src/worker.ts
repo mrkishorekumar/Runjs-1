@@ -9,14 +9,14 @@ interface Env {
 const SECURITY_HEADERS: Record<string, string> = {
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com",
-    "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com https://*.googleadservices.com",
+    "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com https://*.googleadservices.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com",
     "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com data:",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://registry.npmjs.org https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com https://*.doubleclick.net blob: data:",
+    "connect-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://registry.npmjs.org https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.adtrafficquality.google https://adservice.google.com https://*.google.com https://google.com https://*.doubleclick.net https://*.googleadservices.com blob: data:",
     "worker-src 'self' blob: data:",
-    "frame-src 'self' https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev https://*.google.com https://google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.googlesyndication.com https://tpc.googlesyndication.com",
+    "frame-src 'self' https://*.codesandbox.io https://*.csb.app https://sandpack-bundler.pages.dev https://*.google.com https://google.com https://*.adtrafficquality.google https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.googlesyndication.com https://tpc.googlesyndication.com https://*.googleadservices.com",
     "frame-ancestors 'self'",
     "object-src 'none'",
     "base-uri 'self'",

@@ -326,6 +326,11 @@ assert(
   workerCode.includes('*.google.com'),
   'src/worker.ts CSP whitelists *.google.com'
 );
+assert(
+  workerCode.includes('frame-src') &&
+    workerCode.includes('*.adtrafficquality.google'),
+  'src/worker.ts CSP frame-src whitelists *.adtrafficquality.google'
+);
 const headersPath = path.join(rootDir, 'public/_headers');
 const headersContent = fs.readFileSync(headersPath, 'utf-8');
 assert(
@@ -339,6 +344,11 @@ assert(
 assert(
   headersContent.includes('*.google.com'),
   'public/_headers CSP whitelists *.google.com'
+);
+assert(
+  headersContent.includes('frame-src') &&
+    headersContent.includes('*.adtrafficquality.google'),
+  'public/_headers CSP frame-src whitelists *.adtrafficquality.google'
 );
 assert(
   headersContent.includes('/ads.txt'),
