@@ -21,6 +21,14 @@ Disallow: /404
 Disallow: /dashboard
 Disallow: /html-preview
 
+# Google AdSense Contextual & Verification Crawler
+User-agent: Mediapartners-Google
+Allow: /
+Disallow: /bin
+Disallow: /404
+Disallow: /dashboard
+Disallow: /html-preview
+
 # Microsoft Bing & Copilot Search Crawler
 User-agent: Bingbot
 Allow: /

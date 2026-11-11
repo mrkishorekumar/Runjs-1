@@ -52,6 +52,20 @@ function GithubIcon({ className = 'w-5 h-5' }: { className?: string }) {
 
 const contactChannels = [
   {
+    id: 'email-support',
+    icon: Mail,
+    iconColor: 'text-emerald-500',
+    bgColor: 'bg-emerald-500/10',
+    borderColor: 'border-emerald-500/20',
+    title: 'Direct Email Support',
+    description:
+      'Have questions, feedback, or business inquiries? Send a direct email to the creator and maintainer.',
+    cta: 'mrkishorekumar18@gmail.com',
+    href: 'mailto:mrkishorekumar18@gmail.com',
+    external: false,
+    recommended: true,
+  },
+  {
     id: 'github-issues',
     icon: Bug,
     iconColor: 'text-red-500',
@@ -63,7 +77,7 @@ const contactChannels = [
     cta: 'Open a GitHub Issue',
     href: 'https://github.com/mrkishorekumar/Runjs-1/issues/new?template=bug_report.md',
     external: true,
-    recommended: true,
+    recommended: false,
   },
   {
     id: 'github-features',
@@ -176,9 +190,15 @@ function ContactPage() {
             Contact & Support
           </h1>
           <p className="mt-2 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-            RunJS is an open-source project maintained by one developer. The
-            best ways to reach us are GitHub (for bugs & features) and LinkedIn
-            (for general enquiries).
+            RunJS is an open-source project maintained by one developer. You can
+            reach out directly via email at{' '}
+            <a
+              href="mailto:mrkishorekumar18@gmail.com"
+              className="text-amber-600 dark:text-amber-400 font-semibold underline underline-offset-2 hover:opacity-80"
+            >
+              mrkishorekumar18@gmail.com
+            </a>
+            , or through GitHub and LinkedIn below.
           </p>
         </div>
 

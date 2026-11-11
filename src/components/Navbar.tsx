@@ -26,6 +26,7 @@ import {
   Boxes,
   Download,
   User,
+  Mail,
 } from 'lucide-react';
 import { usePwaInstall } from '../hook/usePwaInstall';
 
@@ -195,6 +196,12 @@ function Navbar() {
         return (
           <div className="w-7 h-7 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center justify-center shrink-0">
             <User className="w-3.5 h-3.5" />
+          </div>
+        );
+      case 'contact':
+        return (
+          <div className="w-7 h-7 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/20 flex items-center justify-center shrink-0">
+            <Mail className="w-3.5 h-3.5" />
           </div>
         );
       case 'about':

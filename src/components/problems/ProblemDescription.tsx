@@ -142,6 +142,18 @@ function ProblemDescription({
                 </h2>
               </div>
 
+              <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] mt-1 mb-2">
+                <span>Curated by</span>
+                <a
+                  href="/kishorekumar"
+                  className="font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                >
+                  M R Kishore Kumar
+                </a>
+                <span>•</span>
+                <span>JavaScript Coding Challenge</span>
+              </div>
+
               {/* Topics Pills */}
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {problem.topics.map((t) => (

@@ -532,7 +532,14 @@ async function main() {
               <span style="font-size: 0.8rem; color: #71717a;">${readTime} min read</span>
             </div>
 
-            <h1 style="font-size: 2.25rem; font-weight: 900; color: #ffffff; margin-bottom: 16px;">${escapeHtml(lesson.title)}</h1>
+            <h1 style="font-size: 2.25rem; font-weight: 900; color: #ffffff; margin-bottom: 12px;">${escapeHtml(lesson.title)}</h1>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <span>Curated by <a href="/kishorekumar" style="color: #f59e0b; font-weight: 600; text-decoration: none;">M R Kishore Kumar</a></span>
+              <span>&bull;</span>
+              <span>Updated November 2026</span>
+              <span>&bull;</span>
+              <span>RunJS Curriculum</span>
+            </div>
             <p style="font-size: 1.1rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 32px;">${escapeHtml(lesson.description)}</p>
 
             ${sectionsContentHtml || fallbackContentHtml}
@@ -613,7 +620,12 @@ async function main() {
               <span style="font-size: 0.8rem; color: #a1a1aa;">Acceptance: ${escapeHtml(prob.acceptanceRate || '85%')}</span>
             </div>
 
-            <h1 style="font-size: 2.25rem; font-weight: 900; color: #ffffff; margin-bottom: 16px;">${escapeHtml(prob.title)}</h1>
+            <h1 style="font-size: 2.25rem; font-weight: 900; color: #ffffff; margin-bottom: 12px;">${escapeHtml(prob.title)}</h1>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 20px;">
+              <span>Curated by <a href="/kishorekumar" style="color: #f59e0b; font-weight: 600; text-decoration: none;">M R Kishore Kumar</a></span>
+              <span>&bull;</span>
+              <span>JavaScript Coding Challenge</span>
+            </div>
             
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
               ${(prob.topics || []).map((t) => `<span style="font-size: 0.75rem; background: rgba(255,255,255,0.06); color: #a1a1aa; padding: 2px 8px; border-radius: 4px;">${escapeHtml(t)}</span>`).join('')}
@@ -1077,29 +1089,61 @@ async function main() {
     } else if (route.type === 'privacy') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
-          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Privacy Policy</h1>
-          <p style="color: #d4d4d8; margin-bottom: 20px;">RunJS is engineered with a strict privacy-first architecture. All code compilation and execution occurs 100% locally within your browser using WebAssembly and client-side web workers.</p>
-          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Zero Server Storage</h2>
-          <p style="color: #a1a1aa; margin-bottom: 16px;">No code snippets, personal files, or execution results are transmitted to external backend servers. Your workspaces and saved drafts are stored exclusively in your browser's private local IndexedDB database.</p>
-          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">No Tracking or Account Lock-In</h2>
-          <p style="color: #a1a1aa;">RunJS does not require user accounts, email registration, or profiling. You can clear your stored projects at any time through your browser settings or the built-in storage manager.</p>
+          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 8px;">Privacy Policy</h1>
+          <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 24px;">Last updated: November 11, 2026</p>
+
+          <p style="color: #d4d4d8; margin-bottom: 20px;">Welcome to RunJS (<a href="https://runjs.in" style="color: #f59e0b; text-decoration: none;">runjs.in</a>). RunJS is an open-source, in-browser developer playground, interactive JavaScript learning environment, and algorithm problem-solving platform created by M R Kishore Kumar. Your privacy is fundamental to our design: RunJS operates on a strict client-side-first architecture where your code, projects, and personal data remain entirely on your local machine.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">1. Client-Side Code Execution Guarantee</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">All JavaScript, TypeScript, React, and HTML/CSS execution happens directly within your local web browser. TypeScript is compiled via an in-browser WebAssembly port of esbuild (<code>esbuild-wasm</code>), React applications run inside client-side Sandpack sandboxes, and JavaScript algorithms evaluate locally in browser Web Workers. <strong>At no point is your code uploaded to, processed by, or stored on external backend servers.</strong></p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">2. Advertising &amp; Google AdSense</h2>
+          <p style="color: #d4d4d8; margin-bottom: 16px;">RunJS is supported by advertising revenue to keep all playgrounds, compilers, and educational curriculum free for developers worldwide. We partner with <strong>Google AdSense</strong>, a third-party advertising network operated by Google LLC, to display contextual and personalized advertisements.</p>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">Google AdSense may use cookies, web beacons, and similar tracking technologies to serve ads based on your visits to RunJS and other websites across the internet. We do not sell, rent, or share personal user data with third-party data brokers, and we never share your code snippets or workspace data with advertisers.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">3. Cookies &amp; Third-Party Tracking Technologies</h2>
+          <p style="color: #d4d4d8; margin-bottom: 16px;">RunJS itself does not set tracking cookies or require user accounts. However, third-party vendors, including Google, use cookies (including the DoubleClick cookie) to serve ads based on prior visits to our website or other sites on the Internet.</p>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">Google's use of advertising cookies enables it and its partners to serve personalized ads to our users based on their navigation history. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color: #f59e0b; text-decoration: underline;">Google Ads Settings</a>. Alternatively, you can opt out of third-party vendor cookies for personalized advertising by visiting the <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" style="color: #f59e0b; text-decoration: underline;">Digital Advertising Alliance (DAA) Consumer Choice page</a> or the <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer" style="color: #f59e0b; text-decoration: underline;">Network Advertising Initiative (NAI) opt-out page</a>.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">4. Local Browser Storage (IndexedDB &amp; LocalStorage)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">RunJS saves your scratchpads, problem solutions, and learning progress exclusively in your browser's private local IndexedDB database and LocalStorage. This data never leaves your device. You can clear your stored projects at any time through your browser's developer tools or settings.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">5. Third-Party Hosting &amp; CDN Infrastructure</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">Our static web assets are served via Cloudflare Pages and global edge networks. External public packages imported inside playgrounds may load from public CDNs such as unpkg or jsDelivr. These requests are subject to the respective privacy policies of those CDN providers.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">6. Contact Information</h2>
+          <p style="color: #a1a1aa;">If you have any questions or privacy concerns regarding this policy, please contact creator and maintainer M R Kishore Kumar directly via email at <a href="mailto:mrkishorekumar18@gmail.com" style="color: #f59e0b; font-weight: 600; text-decoration: none;">mrkishorekumar18@gmail.com</a>.</p>
         </main>
       `;
     } else if (route.type === 'contact') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
           <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Contact &amp; Support</h1>
-          <p style="font-size: 1.1rem; color: #d4d4d8; margin-bottom: 24px;">${escapeHtml(route.description)}</p>
+          <p style="font-size: 1.1rem; color: #d4d4d8; margin-bottom: 28px;">RunJS is an open-source project maintained by M R Kishore Kumar. Reach out directly via email, report issues on GitHub, or connect on LinkedIn.</p>
+
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
-            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
-              <h2 style="font-size: 1.1rem; font-weight: 700; color: #ef4444; margin-bottom: 8px;">Bug Reports &amp; Issues</h2>
-              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 12px;">Found a bug or something broken? Open a GitHub issue with steps to reproduce.</p>
+            <div style="padding: 24px; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; background: rgba(16, 185, 129, 0.05);">
+              <h2 style="font-size: 1.15rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">Direct Email Support</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 14px;">Have questions, feedback, commercial inquiries, or privacy concerns? Send a direct email to the maintainer.</p>
+              <a href="mailto:mrkishorekumar18@gmail.com" style="color: #10b981; font-weight: 700; text-decoration: underline; font-size: 0.95rem;">mrkishorekumar18@gmail.com &rarr;</a>
+            </div>
+
+            <div style="padding: 24px; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; background: rgba(239, 68, 68, 0.05);">
+              <h2 style="font-size: 1.15rem; font-weight: 700; color: #ef4444; margin-bottom: 8px;">Bug Reports &amp; Issues</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 14px;">Found a bug or unexpected behavior in a compiler or playground? Open an issue on GitHub with steps to reproduce.</p>
               <a href="https://github.com/mrkishorekumar/Runjs-1/issues" style="color: #f59e0b; font-weight: 600; text-decoration: none;">GitHub Issues &rarr;</a>
             </div>
-            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
-              <h2 style="font-size: 1.1rem; font-weight: 700; color: #3b82f6; margin-bottom: 8px;">LinkedIn — Company Page</h2>
-              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 12px;">Follow RunJS on LinkedIn or reach out for inquiries.</p>
+
+            <div style="padding: 24px; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; background: rgba(59, 130, 246, 0.05);">
+              <h2 style="font-size: 1.15rem; font-weight: 700; color: #3b82f6; margin-bottom: 8px;">LinkedIn — Company Page</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 14px;">Follow RunJS on LinkedIn for major feature releases, release notes, and team messages.</p>
               <a href="https://www.linkedin.com/company/runjs/" style="color: #3b82f6; font-weight: 600; text-decoration: none;">RunJS on LinkedIn &rarr;</a>
+            </div>
+
+            <div style="padding: 24px; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; background: rgba(168, 85, 247, 0.05);">
+              <h2 style="font-size: 1.15rem; font-weight: 700; color: #a855f7; margin-bottom: 8px;">GitHub Discussions</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 14px;">Ask coding questions, propose feature ideas, or share community solutions with fellow developers.</p>
+              <a href="https://github.com/mrkishorekumar/Runjs-1/discussions" style="color: #a855f7; font-weight: 600; text-decoration: none;">Join Discussions &rarr;</a>
             </div>
           </div>
         </main>
@@ -1107,12 +1151,31 @@ async function main() {
     } else if (route.type === 'terms') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
-          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Terms of Service &amp; Conditions</h1>
-          <p style="color: #d4d4d8; margin-bottom: 20px;">Welcome to RunJS. By using our website and tools, you agree to these Terms and Conditions (Terms of Service).</p>
-          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Code Ownership</h2>
-          <p style="color: #a1a1aa; margin-bottom: 16px;">You retain 100% full ownership, copyright, and intellectual property rights to all code snippets and projects you create or paste into RunJS.</p>
-          <h2 style="font-size: 1.3rem; font-weight: 800; color: #ffffff; margin: 24px 0 12px;">Open Source &amp; Educational Use</h2>
-          <p style="color: #a1a1aa;">RunJS provides interactive developer tools for educational and development purposes under open-source licenses.</p>
+          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 8px;">Terms and Conditions</h1>
+          <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 24px;">Last updated: November 11, 2026</p>
+
+          <p style="color: #d4d4d8; margin-bottom: 20px;">By accessing or using RunJS (<a href="https://runjs.in" style="color: #f59e0b; text-decoration: none;">runjs.in</a>), including all associated playgrounds, learning modules, coding challenge engines, and tools, you agree to comply with and be bound by these Terms and Conditions (Terms of Service) and our Privacy Policy.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">1. Service Description &amp; Educational Purpose</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">RunJS is an open-source, client-side web development utility and learning platform designed to provide instant browser-based execution for JavaScript (ES2024+), TypeScript (via WebAssembly esbuild), React (via Sandpack), and HTML/CSS environments, alongside curated algorithm practice problems and technical tutorials.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">2. Intellectual Property &amp; Your Code Ownership</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;"><strong>You own 100% of your code.</strong> Any code, algorithms, snippets, projects, or text you write, transpile, or execute in RunJS belongs exclusively to you. RunJS claims zero ownership, license, or intellectual property rights over user-created code.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">3. Acceptable Use Policy</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">You agree not to use RunJS to compile, test, or distribute malicious code, malware, viruses, phishing scripts, or tools designed to compromise computer security. You agree not to attempt denial-of-service attacks or disrupt the availability of RunJS infrastructure.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">4. Disclaimer of Warranties</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">RunJS is provided on an <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> basis, without warranties of any kind, whether express or implied. We do not guarantee that the service will be uninterrupted, error-free, or entirely bug-free, or that client-side IndexedDB storage will persist indefinitely across all browser updates.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">5. Limitation of Liability</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">To the maximum extent permitted by law, RunJS and its creator M R Kishore Kumar shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to loss of code, data corruption, browser crashes, or lost profits arising from your use of the platform.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">6. Advertising Policy (Google AdSense)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 16px;">RunJS displays advertisements served by Google AdSense to fund ongoing maintenance, development, and hosting. Third-party vendors, including Google, use cookies to serve ads based on user visits to this and other websites. By using this service, you acknowledge our advertising model as detailed in our Privacy Policy.</p>
+
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 32px 0 12px;">7. Contact &amp; Support</h2>
+          <p style="color: #a1a1aa;">For questions regarding these Terms, contact creator and maintainer M R Kishore Kumar via email at <a href="mailto:mrkishorekumar18@gmail.com" style="color: #f59e0b; font-weight: 600; text-decoration: none;">mrkishorekumar18@gmail.com</a>.</p>
         </main>
       `;
     } else if (route.type === '404') {
