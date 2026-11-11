@@ -61,6 +61,12 @@ function Footer({ className = '', hasMarginTop }: FooterProps) {
           >
             About & Credits
           </Link>
+          <Link
+            to="/contact"
+            className="hover:text-[var(--text-primary)] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/60 rounded px-0.5"
+          >
+            Contact
+          </Link>
           <a
             href="https://www.linkedin.com/company/runjs/"
             target="_blank"

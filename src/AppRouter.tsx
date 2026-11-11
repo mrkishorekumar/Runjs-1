@@ -35,6 +35,7 @@ const PrivacyPolicyPage = lazyWithRetry(
 const TermsConditionsPage = lazyWithRetry(
   () => import('./page/TermsConditionsPage')
 );
+const ContactPage = lazyWithRetry(() => import('./page/ContactPage'));
 const JSPlayground = lazyWithRetry(() => import('./page/JSPlayground'));
 const ReactPlayground = lazyWithRetry(() => import('./page/ReactPlayground'));
 const TSPlayground = lazyWithRetry(() => import('./page/TSPlayground'));
@@ -84,6 +85,7 @@ function AppRouter() {
               path="/terms-and-conditions"
               element={<Navigate to="/terms" replace />}
             />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/problems" element={<Problemset />} />
             <Route path="/problems/:slug" element={<ProblemSolving />} />
             <Route path="/learn" element={<LearnHomePage />} />

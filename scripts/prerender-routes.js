@@ -140,6 +140,7 @@ function renderFooter() {
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
           <a href="/about" style="color: inherit; text-decoration: none;">About</a>
           <a href="/kishorekumar" style="color: inherit; text-decoration: none;">Creator Portfolio</a>
+          <a href="/contact" style="color: inherit; text-decoration: none;">Contact</a>
           <a href="/privacy" style="color: inherit; text-decoration: none;">Privacy Policy</a>
           <a href="/terms" style="color: inherit; text-decoration: none;">Terms &amp; Conditions</a>
         </div>
@@ -317,6 +318,14 @@ async function main() {
       description:
         'Terms and Conditions for RunJS. Review user guidelines, code ownership guarantees, open-source licensing, and acceptable use policy.',
       type: 'terms',
+    },
+    {
+      path: '/contact',
+      title:
+        'Contact RunJS — Report Issues, Request Features & Get Help | RunJS',
+      description:
+        'Get in touch with the RunJS team. Report bugs, request features, ask questions, or reach out via GitHub Issues, GitHub Discussions, or the RunJS LinkedIn company page.',
+      type: 'contact',
     },
     {
       path: '/404',
@@ -1076,6 +1085,25 @@ async function main() {
           <p style="color: #a1a1aa;">RunJS does not require user accounts, email registration, or profiling. You can clear your stored projects at any time through your browser settings or the built-in storage manager.</p>
         </main>
       `;
+    } else if (route.type === 'contact') {
+      contentHtml = `
+        <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
+          <h1 style="font-size: 2.25rem; font-weight: 900; color: #f59e0b; margin-bottom: 16px;">Contact &amp; Support</h1>
+          <p style="font-size: 1.1rem; color: #d4d4d8; margin-bottom: 24px;">${escapeHtml(route.description)}</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+              <h2 style="font-size: 1.1rem; font-weight: 700; color: #ef4444; margin-bottom: 8px;">Bug Reports &amp; Issues</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 12px;">Found a bug or something broken? Open a GitHub issue with steps to reproduce.</p>
+              <a href="https://github.com/mrkishorekumar/Runjs-1/issues" style="color: #f59e0b; font-weight: 600; text-decoration: none;">GitHub Issues &rarr;</a>
+            </div>
+            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #18181b;">
+              <h2 style="font-size: 1.1rem; font-weight: 700; color: #3b82f6; margin-bottom: 8px;">LinkedIn — Company Page</h2>
+              <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 12px;">Follow RunJS on LinkedIn or reach out for inquiries.</p>
+              <a href="https://www.linkedin.com/company/runjs/" style="color: #3b82f6; font-weight: 600; text-decoration: none;">RunJS on LinkedIn &rarr;</a>
+            </div>
+          </div>
+        </main>
+      `;
     } else if (route.type === 'terms') {
       contentHtml = `
         <main style="max-width: 900px; margin: 0 auto; padding: 40px 16px; line-height: 1.7;">
@@ -1397,6 +1425,38 @@ async function main() {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Creator',
+                item: canonicalUrl,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (route.type === 'contact') {
+      return {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'ContactPage',
+            '@id': `${canonicalUrl}#contactpage`,
+            name: 'Contact RunJS',
+            url: canonicalUrl,
+            description: route.description,
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Contact',
                 item: canonicalUrl,
               },
             ],

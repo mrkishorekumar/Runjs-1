@@ -378,6 +378,12 @@ if (fs.existsSync(path.join(distDir, 'index.html'))) {
       schema: 'WebPage',
       requiredText: 'Terms of Service',
     },
+    {
+      file: 'contact/index.html',
+      canonical: 'https://runjs.in/contact',
+      schema: 'ContactPage',
+      requiredText: 'Contact',
+    },
   ];
 
   for (const check of toolChecks) {
