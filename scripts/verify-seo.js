@@ -318,11 +318,19 @@ assert(
   workerCode.includes('pagead2.googlesyndication.com'),
   'src/worker.ts CSP whitelists pagead2.googlesyndication.com'
 );
+assert(
+  workerCode.includes('*.adtrafficquality.google'),
+  'src/worker.ts CSP whitelists *.adtrafficquality.google'
+);
 const headersPath = path.join(rootDir, 'public/_headers');
 const headersContent = fs.readFileSync(headersPath, 'utf-8');
 assert(
   headersContent.includes('pagead2.googlesyndication.com'),
   'public/_headers CSP whitelists pagead2.googlesyndication.com'
+);
+assert(
+  headersContent.includes('*.adtrafficquality.google'),
+  'public/_headers CSP whitelists *.adtrafficquality.google'
 );
 assert(
   headersContent.includes('/ads.txt'),
