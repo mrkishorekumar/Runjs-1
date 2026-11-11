@@ -54,6 +54,7 @@ const coreRoutes = [
   { path: '/kishorekumar', changefreq: 'monthly', priority: '0.7' },
   { path: '/privacy', changefreq: 'monthly', priority: '0.5' },
   { path: '/terms', changefreq: 'monthly', priority: '0.5' },
+  { path: '/contact', changefreq: 'monthly', priority: '0.6' },
 ];
 
 let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';

@@ -13,10 +13,11 @@ import {
   ExternalLink,
   Cpu,
   Layers,
+  Megaphone,
 } from 'lucide-react';
 
 function TermsConditionsPage() {
-  const lastUpdated = 'September 2, 2026';
+  const lastUpdated = 'November 11, 2026';
 
   const sections = [
     {
@@ -259,12 +260,104 @@ function TermsConditionsPage() {
             endorse, or assume responsibility for the content, privacy policies,
             or availability of third-party sites or services.
           </p>
+          <p>
+            RunJS uses{' '}
+            <strong className="text-[var(--text-primary)]">
+              Google AdSense
+            </strong>
+            , a third-party advertising service operated by Google LLC, to
+            display advertisements. By using RunJS, you acknowledge that Google
+            AdSense may place and read cookies on your browser and may use web
+            beacons to collect information in the course of serving ads. This
+            activity is governed by{' '}
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+            >
+              <span>Google&apos;s Privacy Policy</span>
+              <ExternalLink className="w-3 h-3 opacity-60" />
+            </a>{' '}
+            and{' '}
+            <a
+              href="https://policies.google.com/technologies/ads"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+            >
+              <span>Google&apos;s Advertising Policies</span>
+              <ExternalLink className="w-3 h-3 opacity-60" />
+            </a>
+            , not by RunJS.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'advertising-policy',
+      title: '9. Advertising Policy (Google AdSense)',
+      icon: Megaphone,
+      content: (
+        <>
+          <p>
+            RunJS is a free platform supported by advertising. By using RunJS,
+            you agree to the display of advertisements served by{' '}
+            <strong className="text-[var(--text-primary)]">
+              Google AdSense
+            </strong>
+            .
+          </p>
+          <ul className="list-disc list-inside space-y-2 pl-2">
+            <li>
+              <strong className="text-[var(--text-primary)]">
+                Ad Personalisation:
+              </strong>{' '}
+              Google AdSense may serve personalised advertisements based on your
+              interests and browsing history. You may opt out of personalised
+              advertising at any time via{' '}
+              <a
+                href="https://www.google.com/settings/ads"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Google Ads Settings</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+              .
+            </li>
+            <li>
+              <strong className="text-[var(--text-primary)]">
+                Ad Interaction:
+              </strong>{' '}
+              Clicking on advertisements may direct you to third-party websites.
+              RunJS is not responsible for the content, accuracy, or privacy
+              practices of any advertiser&apos;s website.
+            </li>
+            <li>
+              <strong className="text-[var(--text-primary)]">
+                Ad Blocking:
+              </strong>{' '}
+              You are free to use ad-blocking tools; however, ad revenue helps
+              keep RunJS free, open-source, and actively maintained for
+              everyone.
+            </li>
+            <li>
+              <strong className="text-[var(--text-primary)]">
+                No Code Data to Advertisers:
+              </strong>{' '}
+              RunJS never transmits your code, local project data, or any
+              personally identifiable information to Google AdSense or any
+              advertising partner.
+            </li>
+          </ul>
         </>
       ),
     },
     {
       id: 'modifications',
-      title: '9. Modifications to Terms & Platform',
+      title: '10. Modifications to Terms & Platform',
       icon: FileText,
       content: (
         <>
@@ -282,7 +375,7 @@ function TermsConditionsPage() {
     },
     {
       id: 'contact',
-      title: '10. Contact & Community Support',
+      title: '11. Contact & Community Support',
       icon: HelpCircle,
       content: (
         <>
