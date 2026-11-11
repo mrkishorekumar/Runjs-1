@@ -13,10 +13,11 @@ import {
   HelpCircle,
   ExternalLink,
   Lock,
+  Megaphone,
 } from 'lucide-react';
 
 function PrivacyPolicyPage() {
-  const lastUpdated = 'September 2, 2026';
+  const lastUpdated = 'November 11, 2026';
 
   const sections = [
     {
@@ -159,10 +160,21 @@ function PrivacyPolicyPage() {
             </li>
             <li>Track keystrokes or record snippets written in the editor.</li>
             <li>
-              Sell, rent, monetize, or share your data with advertisers or
-              third-party data brokers.
+              Sell, rent, or share your personal data with third-party data
+              brokers.
             </li>
           </ul>
+          <p className="mt-2">
+            <strong>Note on Advertising:</strong> RunJS displays advertisements
+            served by{' '}
+            <strong className="text-[var(--text-primary)]">
+              Google AdSense
+            </strong>
+            . Google may use cookies and similar technologies to serve ads based
+            on your prior visits to this site or other websites. These
+            advertising cookies are managed by Google, not by RunJS. We do not
+            share your code or locally-stored data with Google AdSense.
+          </p>
         </>
       ),
     },
@@ -203,6 +215,46 @@ function PrivacyPolicyPage() {
               YouTube, and npm. We are not responsible for the privacy practices
               of external websites.
             </li>
+            <li>
+              <strong className="text-[var(--text-primary)]">
+                Google AdSense:
+              </strong>{' '}
+              RunJS uses Google AdSense to display advertisements. Google
+              AdSense uses cookies (including the DoubleClick cookie) to serve
+              ads that are relevant to you based on your browsing activity. You
+              may opt out of personalised advertising by visiting{' '}
+              <a
+                href="https://www.google.com/settings/ads"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Google Ads Settings</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>{' '}
+              or{' '}
+              <a
+                href="https://www.aboutads.info/choices/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>aboutads.info</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+              . For more details on how Google uses data from sites that use
+              Google services, please see{' '}
+              <a
+                href="https://policies.google.com/technologies/partner-sites"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Google&apos;s Privacy & Terms</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+              .
+            </li>
           </ul>
         </>
       ),
@@ -214,20 +266,126 @@ function PrivacyPolicyPage() {
       content: (
         <>
           <p>
-            RunJS does not use third-party tracking cookies, advertising
-            beacons, or cross-site tracking technologies.
+            RunJS itself does not use tracking cookies for advertising purposes.
+            Any client-side persistence used directly by RunJS is strictly
+            functional — keeping your theme choice consistent and preserving
+            your code scratchpad.
           </p>
           <p>
-            Any client-side persistence utilized is strictly functional (e.g.
-            keeping your theme choice consistent and preserving your code
-            scratchpad).
+            However, as part of displaying advertisements via{' '}
+            <strong className="text-[var(--text-primary)]">
+              Google AdSense
+            </strong>
+            , third-party cookies (including the DoubleClick cookie) may be
+            placed on your device by Google and its partners. These cookies
+            allow Google to serve personalised ads based on your browsing
+            history across websites. RunJS does not have access to these cookies
+            and does not control Google&apos;s cookie practices.
           </p>
+          <p>You can manage or disable advertising cookies at any time via:</p>
+          <ul className="list-disc list-inside space-y-2 pl-2">
+            <li>
+              <a
+                href="https://www.google.com/settings/ads"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Google Ads Settings</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+            </li>
+            <li>
+              Your browser&apos;s cookie settings or a privacy-focused browser
+              extension.
+            </li>
+            <li>
+              The{' '}
+              <a
+                href="https://www.aboutads.info/choices/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Digital Advertising Alliance opt-out</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+              .
+            </li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      id: 'advertising',
+      title: '7. Advertising (Google AdSense)',
+      icon: Megaphone,
+      content: (
+        <>
+          <p>
+            RunJS is supported by advertising revenue. We use{' '}
+            <strong className="text-[var(--text-primary)]">
+              Google AdSense
+            </strong>
+            , a third-party advertising service provided by Google LLC, to
+            display advertisements on this site.
+          </p>
+          <p>
+            Google AdSense may use cookies, web beacons, and similar tracking
+            technologies to:
+          </p>
+          <ul className="list-disc list-inside space-y-2 pl-2">
+            <li>
+              Serve ads relevant to your interests based on your prior visits to
+              this and other websites (interest-based / personalised
+              advertising).
+            </li>
+            <li>
+              Measure ad performance, impressions, and click-through rates.
+            </li>
+            <li>
+              Prevent the same ad from being shown to you too many times
+              (frequency capping).
+            </li>
+          </ul>
+          <p className="mt-2">
+            <strong className="text-[var(--text-primary)]">
+              What RunJS does not do:
+            </strong>{' '}
+            We never pass your code, local storage data, or any personally
+            identifiable information to Google AdSense.
+          </p>
+          <p>
+            Google&apos;s use of advertising cookies is governed by its own
+            Privacy Policy. You can review Google&apos;s advertising policies
+            and opt-out options here:
+          </p>
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <span>Google Privacy Policy</span>
+              <ExternalLink className="w-3 h-3 opacity-60" />
+            </a>
+            <a
+              href="https://www.google.com/settings/ads"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            >
+              <span>Opt Out of Personalised Ads</span>
+              <ExternalLink className="w-3 h-3 opacity-60" />
+            </a>
+          </div>
         </>
       ),
     },
     {
       id: 'data-control',
-      title: '7. Managing & Deleting Your Data',
+      title: '8. Managing & Deleting Your Data',
       icon: Trash2,
       content: (
         <>
@@ -267,7 +425,7 @@ function PrivacyPolicyPage() {
     },
     {
       id: 'children',
-      title: '8. Children’s Privacy',
+      title: '9. Children’s Privacy',
       icon: HelpCircle,
       content: (
         <>
@@ -283,7 +441,7 @@ function PrivacyPolicyPage() {
     },
     {
       id: 'contact',
-      title: '9. Changes & Contact Information',
+      title: '10. Changes & Contact Information',
       icon: HelpCircle,
       content: (
         <>
