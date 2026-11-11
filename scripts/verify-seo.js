@@ -98,6 +98,18 @@ assert(
   ),
   'Contains twitter:image'
 );
+assert(
+  indexHtml.includes(
+    'name="google-adsense-account" content="ca-pub-5230281793483036"'
+  ),
+  'Contains google-adsense-account meta verification tag'
+);
+assert(
+  indexHtml.includes(
+    'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5230281793483036'
+  ),
+  'Contains AdSense async script tag in index.html'
+);
 
 // JSON-LD validation in index.html
 const jsonLdMatch = indexHtml.match(
@@ -143,6 +155,7 @@ assert(robotsTxt.includes('Host: https://runjs.in'), 'References Host header');
 // AI Search & Retrieval Crawlers (explicitly allowed)
 const allowedBots = [
   'Googlebot',
+  'Mediapartners-Google',
   'Bingbot',
   'Applebot',
   'OAI-SearchBot',
@@ -152,7 +165,7 @@ const allowedBots = [
 for (const bot of allowedBots) {
   assert(
     robotsTxt.includes(`User-agent: ${bot}`),
-    `robots.txt explicitly configures allowed search bot: ${bot}`
+    `robots.txt explicitly configures allowed crawler: ${bot}`
   );
 }
 
@@ -169,6 +182,19 @@ for (const bot of disallowedBots) {
   assert(
     robotsTxt.includes(`User-agent: ${bot}`),
     `robots.txt explicitly blocks AI training bot: ${bot}`
+  );
+}
+
+console.log('\n--- 2b. Validating public/ads.txt ---');
+const adsTxtPath = path.join(rootDir, 'public/ads.txt');
+assert(fs.existsSync(adsTxtPath), 'public/ads.txt exists');
+if (fs.existsSync(adsTxtPath)) {
+  const adsTxt = fs.readFileSync(adsTxtPath, 'utf-8');
+  assert(
+    adsTxt.includes(
+      'google.com, pub-5230281793483036, DIRECT, f08c47fec0942fa0'
+    ),
+    'public/ads.txt contains valid publisher ID and authorization record'
   );
 }
 
@@ -287,6 +313,46 @@ assert(
 assert(
   workerCode.includes("X-Robots-Tag', 'noindex, follow'"),
   'src/worker.ts sets X-Robots-Tag: noindex, follow on 404 responses'
+);
+assert(
+  workerCode.includes('pagead2.googlesyndication.com'),
+  'src/worker.ts CSP whitelists pagead2.googlesyndication.com'
+);
+assert(
+  workerCode.includes('*.adtrafficquality.google'),
+  'src/worker.ts CSP whitelists *.adtrafficquality.google'
+);
+assert(
+  workerCode.includes('*.google.com'),
+  'src/worker.ts CSP whitelists *.google.com'
+);
+assert(
+  workerCode.includes('frame-src') &&
+    workerCode.includes('*.adtrafficquality.google'),
+  'src/worker.ts CSP frame-src whitelists *.adtrafficquality.google'
+);
+const headersPath = path.join(rootDir, 'public/_headers');
+const headersContent = fs.readFileSync(headersPath, 'utf-8');
+assert(
+  headersContent.includes('pagead2.googlesyndication.com'),
+  'public/_headers CSP whitelists pagead2.googlesyndication.com'
+);
+assert(
+  headersContent.includes('*.adtrafficquality.google'),
+  'public/_headers CSP whitelists *.adtrafficquality.google'
+);
+assert(
+  headersContent.includes('*.google.com'),
+  'public/_headers CSP whitelists *.google.com'
+);
+assert(
+  headersContent.includes('frame-src') &&
+    headersContent.includes('*.adtrafficquality.google'),
+  'public/_headers CSP frame-src whitelists *.adtrafficquality.google'
+);
+assert(
+  headersContent.includes('/ads.txt'),
+  'public/_headers defines caching rules for /ads.txt'
 );
 
 console.log('\n--- 6. Validating Prerendered Static HTML Files in dist/ ---');
@@ -459,8 +525,45 @@ if (fs.existsSync(path.join(distDir, 'index.html'))) {
       introHtml.includes('TechArticle'),
       'dist/learn/intro contains TechArticle JSON-LD schema'
     );
+    assert(
+      introHtml.includes('M R Kishore Kumar'),
+      'dist/learn/intro contains visible author attribution to M R Kishore Kumar'
+    );
   } else {
     assert(false, 'dist/learn/intro/index.html exists');
+  }
+
+  // Validate Privacy Policy AdSense and Cookie Disclosures
+  const privacyHtmlPath = path.join(distDir, 'privacy/index.html');
+  if (fs.existsSync(privacyHtmlPath)) {
+    const privacyHtml = fs.readFileSync(privacyHtmlPath, 'utf-8');
+    assert(
+      privacyHtml.includes('Google AdSense') &&
+        privacyHtml.includes('DoubleClick') &&
+        privacyHtml.includes('cookies'),
+      'dist/privacy/index.html contains full Google AdSense & DoubleClick cookie disclosures'
+    );
+  }
+
+  // Validate Contact Us Direct Email
+  const contactHtmlPath = path.join(distDir, 'contact/index.html');
+  if (fs.existsSync(contactHtmlPath)) {
+    const contactHtml = fs.readFileSync(contactHtmlPath, 'utf-8');
+    assert(
+      contactHtml.includes('mrkishorekumar18@gmail.com'),
+      'dist/contact/index.html contains visible direct email address'
+    );
+  }
+
+  // Validate Terms Limitation of Liability and Warranties
+  const termsHtmlPath = path.join(distDir, 'terms/index.html');
+  if (fs.existsSync(termsHtmlPath)) {
+    const termsHtml = fs.readFileSync(termsHtmlPath, 'utf-8');
+    assert(
+      termsHtml.includes('Limitation of Liability') &&
+        termsHtml.includes('Disclaimer of Warranties'),
+      'dist/terms/index.html contains Limitation of Liability & Disclaimer of Warranties'
+    );
   }
 
   // Validate 404 page

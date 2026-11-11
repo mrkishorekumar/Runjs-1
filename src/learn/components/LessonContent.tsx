@@ -203,7 +203,20 @@ function LessonContent() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
           {lesson.title}
         </h1>
-        <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed max-w-3xl">
+        <div className="flex flex-wrap items-center gap-2 mt-2.5 text-xs text-[var(--text-muted)]">
+          <span>Curated by</span>
+          <Link
+            to="/kishorekumar"
+            className="font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+          >
+            M R Kishore Kumar
+          </Link>
+          <span>•</span>
+          <span>Updated November 2026</span>
+          <span>•</span>
+          <span>RunJS Curriculum</span>
+        </div>
+        <p className="mt-2.5 text-sm text-[var(--text-secondary)] leading-relaxed max-w-3xl">
           {lesson.description}
         </p>
 

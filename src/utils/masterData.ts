@@ -92,7 +92,8 @@ export interface MoreNavItem {
   title: string;
   link: string;
   description: string;
-  iconName: 'about' | 'bin' | 'github' | 'privacy' | 'terms' | 'creator';
+  iconName:
+    'about' | 'bin' | 'github' | 'privacy' | 'terms' | 'creator' | 'contact';
   isExternal?: boolean;
 }
 
@@ -102,6 +103,12 @@ export const moreNavLinks: MoreNavItem[] = [
     link: '/bin',
     description: 'Review and permanently remove deleted playgrounds',
     iconName: 'bin',
+  },
+  {
+    title: 'Contact & Support',
+    link: '/contact',
+    description: 'Get in touch, report bugs, or submit feedback',
+    iconName: 'contact',
   },
   {
     title: 'Privacy Policy',
