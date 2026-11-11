@@ -1648,6 +1648,14 @@ async function main() {
       `<link rel="canonical" href="${canonicalUrl}" />`
     );
 
+    // Ensure Google AdSense account meta tag is present in every prerendered page
+    if (!html.includes('google-adsense-account')) {
+      html = html.replace(
+        /(<link\s+[^>]*rel="canonical"[^>]*\/?>)/i,
+        `$1\n    <meta name="google-adsense-account" content="ca-pub-5230281793483036" />`
+      );
+    }
+
     // Replace meta description
     html = html.replace(
       /<meta\s+[^>]*name="description"[^>]*\/?>/i,
